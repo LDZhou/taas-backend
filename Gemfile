@@ -65,6 +65,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 # Utility
 gem 'devise'
 gem 'carrierwave'
+gem 'carrierwave-tencent_cos'
 gem 'mini_magick'
 gem 'cloudinary'
 gem 'jwt'
