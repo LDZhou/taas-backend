@@ -1,7 +1,6 @@
 class Photo < ApplicationRecord
   mount_uploader :file, PhotoUploader
   belongs_to :target, polymorphic: true, optional: true
-
   scope :video, -> { where(photo_type: 'video') }
   scope :avatar, -> { where(photo_type: 'avatar')  }
 
