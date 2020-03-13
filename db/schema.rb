@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 20200313124223) do
   enable_extension "plpgsql"
 
   create_table "brands", force: :cascade do |t|
-    t.integer "brand_type"
+    t.string "brand_type"
     t.string "name"
     t.string "address"
     t.string "contact_name"
