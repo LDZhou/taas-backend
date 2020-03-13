@@ -5,4 +5,15 @@ class User < ApplicationRecord
     :recoverable, :rememberable, :validatable
 
   has_many :photos, -> { order 'created_at DESC'  }, as: :target
+
+  DEFAULT_PHOTO = "https://kems-1256104336.file.myqcloud.com/production/assets/blank-profile-picture.png"
+
+  def avatar
+    photo = photos.where(photo_type: 'avatar').first
+    if photo
+      photo.file.url
+    else
+      DEFAULT_PHOTO
+    end
+  end
 end
