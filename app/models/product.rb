@@ -3,6 +3,7 @@ class Product < ApplicationRecord
 
   has_many :photos, -> { order 'created_at DESC'  }, as: :target
   has_many :chains, -> { order 'created_at DESC'  }, as: :target
+  has_many :user_views, -> { order 'created_at DESC'  }, as: :target
 
   def product_manual
     manual = photos.where(photo_type: 'manual').first

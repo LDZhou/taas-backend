@@ -6,6 +6,7 @@ class User < ApplicationRecord
 
   has_many :photos, -> { order 'created_at DESC'  }, as: :target
   has_many :brands, -> { order 'created_at DESC'  }
+  has_many :user_views, -> { order 'created_at DESC'  }
 
   DEFAULT_PHOTO = "https://kems-1256104336.file.myqcloud.com/production/assets/blank-profile-picture.png"
 
@@ -16,5 +17,13 @@ class User < ApplicationRecord
     else
       DEFAULT_PHOTO
     end
+  end
+
+  def email_required?
+    false
+  end
+
+  def password_required?
+    false
   end
 end
