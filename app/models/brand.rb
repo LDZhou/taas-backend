@@ -1,4 +1,5 @@
 class Brand < ApplicationRecord
+  belongs_to :user
   has_many :products, -> { order 'created_at DESC'  }
 
   def business_license

@@ -2,6 +2,7 @@ class Product < ApplicationRecord
   belongs_to :brand
 
   has_many :photos, -> { order 'created_at DESC'  }, as: :target
+  has_many :chains, -> { order 'created_at DESC'  }, as: :target
 
   def product_manual
     manual = photos.where(photo_type: 'manual').first
