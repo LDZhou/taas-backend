@@ -12,7 +12,7 @@ class UserView < ApplicationRecord
     #return unless Rails.env.production?
     query_url = TENCENT_GEOCODE[:base_url] + "?location=#{latitude},#{longitude}" + '&key=' + TENCENT_GEOCODE[:key]
     res = HTTParty.get(URI.escape(query_url))
-    if res.code == 200
+    if res['status'] == 0
       if res['result']['formatted_address']
         self.address = res['result']['formatted_address']['recommend'] || res['result']['address']
       else
