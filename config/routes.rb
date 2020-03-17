@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     resources :users do
       collection do
         post :admin_login
+        post :upload_photo
       end
     end
     resources :products
