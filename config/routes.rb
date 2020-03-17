@@ -7,7 +7,14 @@ Rails.application.routes.draw do
 
   namespace :api do
     resources :users do
+      collection do
+        post :admin_login
+      end
     end
+    resources :products
+    resources :brands
+    resources :user_views
+    resources :chains
   end
 
   get '*path', to: "application#fallback_index_html", constraints: ->(request) do
