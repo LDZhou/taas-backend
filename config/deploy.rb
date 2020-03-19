@@ -1,7 +1,7 @@
 # Change these
 server '192.144.142.230', port: 5768, roles: [:web, :app, :db], primary: true
 
-set :repo_url,        'git@github.com:jiasilu/taas-backend.git'
+set :repo_url,        'git@github.com:Blur-Consulting/taas-backend.git'
 set :application,     'taas-backend'
 set :user,            'deploy'
 set :puma_threads,    [5, 15]
