@@ -90,4 +90,4 @@ gem 'nokogiri'
 gem "nilify_blanks"
 gem 'groupdate'
 gem 'acts-as-taggable-on', '~> 6.0'
-gem 'openssl', '~> 2.1.2'
+gem 'openssl', '~> 2.1.0'
