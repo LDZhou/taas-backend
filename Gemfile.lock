@@ -361,6 +361,7 @@ DEPENDENCIES
   mini_magick
   nilify_blanks
   nokogiri
+  openssl (~> 2.1.2)
   paranoia (~> 2.2)
   pg (>= 0.18, < 2.0)
   pry-nav
