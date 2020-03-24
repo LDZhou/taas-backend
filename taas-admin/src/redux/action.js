@@ -1,0 +1,5 @@
+
+
+export const SAVE_USER_INFO = 'SAVE_USER_INFO'
+
+export const DELETE_USER_INFO = 'DELETE_USER_INFO'

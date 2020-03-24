@@ -1,0 +1,14 @@
+
+.photos-wrap-c{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.photos-wrap-c img{
+  max-width: 600px;
+  padding-left: 20px;
+}
+
+.photos-wrap-c > div{
+  margin-bottom: 10px;
+}

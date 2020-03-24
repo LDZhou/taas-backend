@@ -1,0 +1,75 @@
+
+@media screen and (max-width: 992px) {
+  .ant-layout-sider > .ant-layout-sider-children > .homepage-logo {
+    padding: 20px 0 !important;
+  }
+  .ant-layout-sider > .ant-layout-sider-children > .homepage-logo > img{
+    max-height: 20px !important;
+  }
+}
+.ant-layout-has-sider > .ant-layout > .ant-layout-content{
+  overflow: auto;
+  background: #fff;
+}
+
+.homepage-menus{
+  /* border-top: 1px solid #999; */
+}
+
+.homepage-menus > .ant-menu-item{
+  margin-top: 0;
+}
+
+.homepage-logo{
+  height: 74px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
+
+.homepage-logo > img {
+  padding-right: 10px;
+  max-width: 174px;
+}
+
+.ant-menu-item .anticon {
+  font-size: 16px;
+}
+
+.ant-layout-header{
+  color:#aaa;
+  height: 74px;
+  line-height: 74px;
+  background: #171717;
+  padding: 0;
+  display: flex;
+  justify-content: flex-end;
+  box-shadow: 0 0 10px rgba(0,0,0,.5);
+}
+
+.login-sitename{
+  margin-right: 1em;
+  font-weight: 700;
+  color: #ff3a7f;
+}
+
+.logout-btn{
+  color:#aaa;
+  padding: 8px 15px;
+}
+
+.logout-btn:hover{
+  color: #fff;
+}
+
+
+.content-container{
+  margin: 10px 10px 0;
+}
+
+.content-container-wrap{
+  min-height: calc(100vh - 90px);
+  box-sizing: border-box;
+  padding: 30px 40px;
+}
