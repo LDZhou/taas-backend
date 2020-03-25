@@ -63,6 +63,14 @@ class Api::UsersController < ApiController
     end
   end
 
+  def index
+    page = params[:page] || 1
+		user = User.all.order('created_at DESC').page(page)
+    count = user.total_count
+    json = UserSerializer.new(user).serializable_hash[:data]
+    render json: { data: json, count: count, current_page: page }, status: :ok
+  end
+
   def update
     if @admin_request
       user = User.find_by_id(params[:id])
@@ -96,6 +104,14 @@ class Api::UsersController < ApiController
     end
   end
 
+  def view
+    chain = Chain.find_by_id(params[:chain_id])
+    if chain
+      current_user.user_views.create(target: chain)
+    end
+    render json: {}, status: :ok
+  end
+
   def upload_photo
     if @admin_request
       user = User.find_by_id(params[:id])
@@ -120,6 +136,6 @@ class Api::UsersController < ApiController
 
   private
   def user_params
-    params.require(:user).permit(:nickname, :phone, :email, :gender, :city, :province, :district, :admin)
+    params.require(:user).permit(:nickname, :phone, :email, :gender, :city, :province, :district, :admin, :date_of_birth)
   end
 end
