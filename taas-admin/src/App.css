@@ -54,6 +54,16 @@ a:hover{
 
 /* Antd Form Style */
 
+.ant-select-selection:active {
+  border-color: #ff3a7f;
+  box-shadow: unset;
+}
+
+.ant-select-open .ant-select-selection {
+  border-color: #ff3a7f;
+  box-shadow: unset;
+}
+
 .ant-select-dropdown-menu-item-active:not(.ant-select-dropdown-menu-item-disabled){
   background-color: #f5f7fa;
 }

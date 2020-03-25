@@ -1,6 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { Form, Input, Button, Row, Col, Popconfirm, message, Spin, DatePicker, Select } from 'antd';
-import './index.css'
 import UploadImg from '../../common/uploadImg/index'
 import moment from 'moment'
 import { BrandType } from '../../../utils/utils'
@@ -109,14 +108,14 @@ function Application(props) {
     });
   };
 
-  const confirmDeleteRecord = () => {
-    useLoading(true)
-    window.send.delete(`events/${productDetail.id}`)
-    .then(data => {
-      message.success('删除活动成功！')
-      useLoading(false)
-      props.history.goBack()
-    })
+  const confirmDeleteProduct = () => {
+    // useLoading(true)
+    // window.send.delete(`events/${productDetail.id}`)
+    // .then(data => {
+    //   message.success('产品删除成功！')
+    //   useLoading(false)
+    //   props.history.goBack()
+    // })
   }
 
   const { getFieldDecorator, setFieldsValue } = props.form
@@ -132,6 +131,9 @@ function Application(props) {
   }
 
   const renderDetailForm = {
+    name: {
+      label: '名称'
+    },
     wastage_percent: {
       label: '材料损耗⽐例'
     },
@@ -180,11 +182,10 @@ function Application(props) {
     },
     product_manual: {
       label: '产品⽂档',
-      tag: WrapPhotos,
+      tag: UploadImg,
       initValue: productDetail.product_manual,
       props: {
         bindUploadProps: {},
-        isEdit: isEdit,
         setFieldsValue: (result) => {
           setFieldsValue({product_manual: result})
         }
@@ -247,17 +248,7 @@ function Application(props) {
     },
     shipping_no: {
       label: '物流单号'
-    },
-    // status: {
-    //   label: '状态',
-    //   tag: Select,
-    //   props: {
-    //     placeholder: '请选择状态',
-    //     className: 'select-status',
-    //     getPopupContainer: () => document.getElementsByClassName('select-status')[0]
-    //   },
-    //   children: Object.entries(LiveStreamingStatus).map(item => <Option value={item[0]} key={item[0]}>{item[1]}</Option>)
-    // }
+    }
   }
 
   const renderDetail = (key) => {
@@ -276,7 +267,7 @@ function Application(props) {
         <Button type='primary' onClick={() => { useIsEdit(true) }} disabled={isEdit}>编辑</Button>
         {productDetail.id && <Popconfirm
           title="确定删除产品？"
-          onConfirm={confirmDeleteRecord}
+          onConfirm={confirmDeleteProduct}
           okText="Yes"
           cancelText="No"
         >
@@ -287,9 +278,6 @@ function Application(props) {
         <div className='form-content-wrap'>
           <Item label='ID'>
             <div>{productDetail.id || '-'}</div>
-          </Item>
-          <Item label='名称'>
-            <div>{productDetail.name || '-'}</div>
           </Item>
           {/* 品牌（brand.name，点击进⼊品牌详情brand_id） */}
           <Item label='品牌'>

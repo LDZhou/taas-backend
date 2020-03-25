@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { Form, Input, Button, Row, Col, Spin, Select, DatePicker, Table } from 'antd';
-import './index.css'
 import UploadImg from '../../common/uploadImg/index'
 import moment from 'moment'
 import { baseURL } from '../../../request'
@@ -28,16 +27,11 @@ function Application(props) {
     //   useLoading(false)
     // })
     useLoading(false)
-    useUserDetail({})
   }
 
   const [loading, useLoading] = useState(true)
 
   const [isEdit, useIsEdit] = useState(false)
-
-  const viewOrderDetail = (id) => {
-    props.history.push(`/app/orderList/detail/${id}`)
-  }
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -134,19 +128,31 @@ function Application(props) {
   const columns = [
     {
       title: 'ID',
-      dataIndex: 'id',
+      dataIndex: 'id'
+    },
+    { // 点击进入链条详情chain.id
+      title: '链条名称',
+      dataIndex: 'chain.name',
       render: text => (
         <span>
           <a onClick={(e) => {
             e.preventDefault()
-            viewOrderDetail(text)
+            // props.history.push(`/app/orderList/detail/${id}`)
           }}>{text}</a>
         </span>
       )
     },
     { // target_id点击 进⼊产品详情
       title: '产品名称',
-      dataIndex: 'target.name'
+      dataIndex: 'target.name',
+      render: text => (
+        <span>
+          <a onClick={(e) => {
+            e.preventDefault()
+            // props.history.push(`/app/orderList/detail/${id}`)
+          }}>{text}</a>
+        </span>
+      )
     },
     {
       title: '浏览时间',
@@ -221,16 +227,18 @@ function Application(props) {
         </div>
       </Form>
 
-      <div className='title-container title-container-next'>
-        <h2 className="title-text">浏览记录</h2>
-      </div>
-      <Table
-        className='list-table'
-        bordered={true}
-        rowKey='id'
-        columns={columns}
-        pagination={false}
-        dataSource={userDetail.user_views}/>
+      {userDetail.user_views && <Fragment>
+        <div className='title-container title-container-next'>
+          <h2 className="title-text">浏览记录</h2>
+        </div>
+        <Table
+          className='list-table'
+          bordered={true}
+          rowKey='id'
+          columns={columns}
+          pagination={false}
+          dataSource={userDetail.user_views}/>
+      </Fragment>}
     </Spin>
   )
 }

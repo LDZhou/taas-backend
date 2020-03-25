@@ -7,9 +7,8 @@ import { createStore } from 'redux'
 import { Provider } from "react-redux";
 import Reducers from "./redux/reducers";
 import moment from 'moment';
-import { LocaleProvider } from 'antd';
-import 'moment/locale/zh-cn';
 import zh_CN from 'antd/es/locale-provider/zh_CN';
+import { ConfigProvider } from 'antd';
 
 moment.locale('zh-cn')
 
@@ -18,9 +17,9 @@ window.send = request
 const store = createStore(Reducers)
 ReactDOM.render(
   <Provider store={store}>
-    <LocaleProvider locale={zh_CN}>
+    <ConfigProvider locale={zh_CN}>
       <App />
-    </LocaleProvider>
+    </ConfigProvider>
   </Provider>,
   document.getElementById('root')
 );

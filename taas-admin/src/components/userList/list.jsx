@@ -11,7 +11,6 @@ class List extends Component {
   }
   componentDidMount () {
     // this.getList()
-      this.setState({ data: [{id: 1}] })
   }
 
   getList = () => {

@@ -26,8 +26,8 @@ class List extends Component {
     })
   }
 
-  addActive = () => {
-    this.props.history.push(`/app/activeList/add`)
+  addChain = () => {
+    this.props.history.push(`/app/chainList/add`)
   }
 
   render() {
@@ -69,7 +69,7 @@ class List extends Component {
       <div>
         <div className='title-container'>
           <h2 className="title-text">链条</h2>
-          {/* <Button onClick={this.addActive} type='primary'>新建产品</Button> */}
+          <Button onClick={this.addChain} type='primary'>新建链条</Button>
         </div>
         <Table
           className='list-table'

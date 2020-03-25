@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Table} from 'antd'
+import { Table, Button } from 'antd'
 
 class List extends Component {
   state={
@@ -24,6 +24,10 @@ class List extends Component {
     .then(data => {
       this.setState({ data: data.data, total: data.count, loading: false })
     })
+  }
+
+  addBrand = () => {
+    this.props.history.push(`/app/brandList/add`)
   }
 
   render() {
@@ -88,6 +92,7 @@ class List extends Component {
       <div>
         <div className='title-container'>
           <h2 className="title-text">品牌</h2>
+          <Button onClick={this.addBrand} type='primary'>新建品牌</Button>
         </div>
         <Table
           className='list-table'
