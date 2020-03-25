@@ -38,13 +38,12 @@ class Api::UsersController < ApiController
       user = User.unscoped.where(openid: openid).first_or_create
     rescue => e
       user = User.unscoped.where(openid: openid).first
-      user.really_destroy! if user
+      user.destroy if user
     end
     user.openid = openid if openid && user.openid.nil?
     user.email = params[:user][:email] if params[:user][:email].present? && user.email.nil?
     user.nickname = params[:user][:nickname] if params[:user][:nickname].present? && user.nickname.nil?
     user.city = params[:user][:city] if params[:user][:city].present? && user.city.nil?
-    user.province = params[:user][:province] if params[:user][:province].present? && user.province.nil?
     # For WeChat, 0: Unknown, 1: Male, 2: Female
     gender = case params[:user][:gender].to_i
              when 0 then nil
