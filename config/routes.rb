@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   namespace :api do
     resources :users do
       collection do
+        post :login
         post :admin_login
         post :view
       end

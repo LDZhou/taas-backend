@@ -1,5 +1,5 @@
 class Api::BrandsController < ApiController
-  before_action :check_admin
+  before_action :check_admin, except: [:create]
 
   respond_to :json
 
