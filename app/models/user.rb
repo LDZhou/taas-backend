@@ -12,6 +12,9 @@ class User < ApplicationRecord
 
   DEFAULT_PHOTO = "https://kems-1256104336.file.myqcloud.com/production/assets/blank-profile-picture.png"
 
+  validates_uniqueness_of :email, :openid, allow_blank: true
+  validates :password, length: { within: 6..20  }, allow_blank: true
+
   after_create :set_slug
   after_create :set_auth_token
 
