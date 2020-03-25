@@ -1,4 +1,6 @@
 class Product < ApplicationRecord
+  paginates_per 20
+
   belongs_to :brand
 
   has_many :photos, -> { order 'created_at DESC'  }, as: :target
@@ -17,10 +19,10 @@ class Product < ApplicationRecord
   end
 
   def send_date_formatted
-    send_date.strftime("%Y-%m-%d %H:%M:%S")
+    send_date.strftime("%Y-%m-%d %H:%M:%S") if send_date
   end
 
   def deliver_date_formatted
-    deliver_date.strftime("%Y-%m-%d %H:%M:%S")
+    deliver_date.strftime("%Y-%m-%d %H:%M:%S") if deliver_date
   end
 end
