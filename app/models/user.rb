@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  paginates_per 20
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -22,8 +24,18 @@ class User < ApplicationRecord
     end
   end
 
+  def age
+    return unless date_of_birth
+    now = Time.now.utc.to_date
+    now.year - date_of_birth.year - ((now.month > date_of_birth.month || (now.month == date_of_birth.month && now.day >= date_of_birth.day)) ? 0 : 1)
+  end
+
   def created_at_formatted
     created_at.strftime("%Y-%m-%d %H:%M:%S")
+  end
+
+  def date_of_birth_formatted
+    date_of_birth.strftime("%Y-%m-%d %H:%M:%S") if date_of_birth
   end
 
   def set_slug
