@@ -1,4 +1,4 @@
-class Api::BrandsController < ApiController
+class Api::ProductsController < ApiController
   before_action :check_admin, except: [:create]
 
   respond_to :json

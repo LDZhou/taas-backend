@@ -8,6 +8,10 @@ class ProductSerializer
     p.created_at_formatted
   end
 
+  attribute :manufactured_at do |p|
+    p.manufactured_at_formatted
+  end
+
   attribute :send_date do |p|
     p.send_date_formatted
   end

@@ -18,6 +18,10 @@ class Product < ApplicationRecord
     created_at.strftime("%Y-%m-%d %H:%M:%S")
   end
 
+  def manufactured_at_formatted
+    manufactured_at.strftime("%Y-%m-%d %H:%M:%S")
+  end
+
   def send_date_formatted
     send_date.strftime("%Y-%m-%d %H:%M:%S") if send_date
   end
