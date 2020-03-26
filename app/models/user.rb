@@ -38,7 +38,7 @@ class User < ApplicationRecord
   end
 
   def date_of_birth_formatted
-    date_of_birth.strftime("%Y-%m-%d %H:%M:%S") if date_of_birth
+    date_of_birth.strftime("%Y-%m-%d") if date_of_birth
   end
 
   def set_slug
