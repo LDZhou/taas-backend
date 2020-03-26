@@ -16,9 +16,9 @@ class UserSerializer
   end
 
   attribute :brand do |u|
-    brand = u.brand
-    if brand
-      { product_count: brand.products.count, name: brand.name }
-    end
+    #brand = u.brand
+    #if brand
+    #  { product_count: brand.products.count, name: brand.name }
+    #end
   end
 end
