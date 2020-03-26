@@ -2,6 +2,10 @@ class UserViewSerializer
   include FastJsonapi::ObjectSerializer
   attributes :id, :address, :city, :province, :street, :street_no
 
+  attribute :created_at do |uv|
+    uv.created_at_formatted
+  end
+
   attribute :chain do |uv|
     chain = uv.target
     if chain
