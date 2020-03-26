@@ -1,6 +1,7 @@
 class UserSerializer
   include FastJsonapi::ObjectSerializer
-  attributes :id, :nickname, :gender, :city, :slug, :admin, :email, :avatar, :age, :user_type, :authentication_token
+  attributes :id, :nickname, :gender, :city, :slug, :admin, :email, :avatar, :age, :user_type, :authentication_token,
+            :phone
 
   attribute :created_at do |u|
     u.created_at_formatted
@@ -16,9 +17,9 @@ class UserSerializer
   end
 
   attribute :brand do |u|
-    #brand = u.brand
-    #if brand
-    #  { product_count: brand.products.count, name: brand.name }
-    #end
+    brand = u.brands.first
+    if brand
+      { product_count: brand.products.count, name: brand.name, total_views: brand.total_views.count }
+    end
   end
 end

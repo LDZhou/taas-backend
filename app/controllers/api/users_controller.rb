@@ -55,7 +55,8 @@ class Api::UsersController < ApiController
       Photo.compose(user, 'avatar', params[:user][:avatarUrl])
     end
     if user.save
-      hash = UserSerializer.new(user).serializable_hash
+      options = { scope: { show_view: false } }
+      hash = UserSerializer.new(user, options).serializable_hash
       render json: hash, status: :ok
     else
       render json: { ec: 401, em: user.errors.full_messages[0] }, status: :unauthorized
@@ -81,7 +82,8 @@ class Api::UsersController < ApiController
       if user.errors.present?
         render json: { ec: 400, em: user.errors.full_messages[0] }, status: :bad_request
       else
-        hash = UserSerializer.new(user.reload).serializable_hash
+        options = { scope: { show_view: false } }
+        hash = UserSerializer.new(user, options).serializable_hash
         render json: hash, status: :ok
       end
     else
@@ -92,11 +94,13 @@ class Api::UsersController < ApiController
   def show
     if @admin_request
       user = User.find_by_id(params[:id])
+      options = { scope: { show_view: false } }
     else
       user = current_user
+      options = {}
     end
     if user
-      hash = UserSerializer.new(user).serializable_hash
+      hash = UserSerializer.new(user, options).serializable_hash
       render json: hash, status: :ok
     else
       render json: { ec: 404, em: '无法找到该用户' }, status: :not_found
@@ -111,30 +115,8 @@ class Api::UsersController < ApiController
     render json: {}, status: :ok
   end
 
-  def upload_photo
-    if @admin_request
-      user = User.find_by_id(params[:id])
-    else
-      user = current_user
-    end
-    if user
-      if params[:photo] && params[:photo_type]
-        case params[:photo_type]
-        when 'avatar'
-          photo = Photo.compose(user, 'avatar', nil)
-        end
-        photo.file = params[:photo]
-        photo.save
-      end
-      hash = UserSerializer.new(user).serializable_hash
-      render json: hash, status: :ok
-    else
-      render json: { ec: 404, em: '无法找到该用户' }, status: :not_found
-    end
-  end
-
   private
   def user_params
-    params.require(:user).permit(:nickname, :email, :gender, :city, :admin, :user_type, :date_of_birth)
+    params.require(:user).permit(:nickname, :email, :phone, :gender, :city, :admin, :user_type, :date_of_birth)
   end
 end
