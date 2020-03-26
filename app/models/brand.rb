@@ -36,4 +36,17 @@ class Brand < ApplicationRecord
     views = UserView.where(target_type: 'Chain', target_id: c_ids)
     views
   end
+
+  def gender_ratio
+    views = total_views
+    ids = views.pluck(:user_id)
+    users = User.where(id: ids)
+    male = users.where(gender: 0).count
+    female = users.where(gender: 1).count
+    if male > 0 && female > 0
+      "#{male}:#{female}"
+    else
+      "1:1"
+    end
+  end
 end

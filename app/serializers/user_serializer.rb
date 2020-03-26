@@ -20,8 +20,8 @@ class UserSerializer
 
   attribute :brand do |u|
     brand = u.brands.first
-    if brand
-      { product_count: brand.products.count, name: brand.name, total_views: brand.total_views.count }
+    if u.user_type == 1 && brand
+      { product_count: brand.products.count, name: brand.name, total_views: brand.total_views.count, ratio: brand.gender_ratio }
     end
   end
 end
