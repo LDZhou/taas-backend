@@ -1,7 +1,6 @@
-import React, { useState, useEffect, Fragment } from 'react';
-import { Form, Input, Button, Row, Col, Popconfirm, message, Spin, DatePicker, Select } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Form, Input, Button, Row, Col, Popconfirm, message, Spin, Select } from 'antd';
 import UploadImg from '../../common/uploadImg/index'
-import moment from 'moment'
 import { BrandType } from '../../../utils/utils'
 import WrapPhotos from '../../common/wrapPhotos/index'
 
@@ -12,62 +11,22 @@ const { Option } = Select
 function Application(props) {
   let brandId = props.match.params.id
   useEffect(() => {
-    // if (brandId) {
-    //   activeDetailInit()
-    // } else {
-    //   optionsInit()
-    // }
+    if (brandId) {
+      getBrandDetail()
+    }
   }, [])
 
   const [brandDetail, useBrandDetail] = useState({})
 
-  // const [allproducts, useAllproducts] = useState([])
-
-  // const [allStores, useAllStores] = useState([])
-
-  // function getActiveDetail () {
-  //   return window.send.get(`events/${brandId}`)
-  // }
-
-  // function getAllproducts () {
-  //   return window.send.get('products', {
-  //     params: {
-  //       page: 0
-  //     }
-  //   })
-  // }
-
-  // function getAllStores () {
-  //   return window.send.get('stores', {
-  //     params: {
-  //       page: 0
-  //     }
-  //   })
-  // }
-
-  // function activeDetailInit() {
-  //   Promise.all([getActiveDetail(), getAllproducts(), getAllStores()])
-  //   .then(vals => {
-  //     useBrandDetail(vals[0].data)
-  //     useAllproducts(vals[1].data)
-  //     useAllStores(vals[2].data)
-  //     useLoading(false)
-  //   })
-  //   .catch(err => {
-  //     useLoading(false)
-  //   })
-  // }
-  // function optionsInit() {
-  //   Promise.all([getAllproducts(), getAllStores()])
-  //   .then(vals => {
-  //     useAllproducts(vals[0].data)
-  //     useAllStores(vals[1].data)
-  //     useLoading(false)
-  //   })
-  //   .catch(err => {
-  //     useLoading(false)
-  //   })
-  // }
+  function getBrandDetail () {
+    window.send.get(`brands/${brandId}`).then(data => {
+      useBrandDetail(data.data)
+      useLoading(false)
+    })
+    .catch(err => {
+      useLoading(false)
+    })
+  }
 
   const [loading, useLoading] = useState(() => Boolean(brandId))
 
@@ -79,43 +38,42 @@ function Application(props) {
       if (!err) {
         useLoading(true)
         let params = Object.assign({}, values)
-        if (params.cover_photo_id) {
-          params.cover_photo_id = params.cover_photo_id.id
+        if (params.license_photo_id) {
+          params.license_photo_id = params.license_photo_id.id
         }
-        params.manufactured_at = moment(params.manufactured_at).format('YYYY-MM-DD HH:mm')
-        params.send_date = moment(params.send_date).format('YYYY-MM-DD HH:mm')
-        params.delivery_date = moment(params.delivery_date).format('YYYY-MM-DD HH:mm')
-        console.log('val =>', params)
-        // if (brandDetail.id) {
-        //   window.send.put(`events/${brandDetail.id}`, {event: params})
-        //   .then(data => {
-        //     message.success('产品修改成功！')
-        //     useBrandDetail(data.data)
-        //     useLoading(false)
-        //   })
-        // } else {
-        //   window.send.post(`events`, {event: params})
-        //   .then(data => {
-        //     message.success('产品创建成功！')
-        //     useBrandDetail(data.data)
-        //     useLoading(false)
-        //   })
-        //   .catch(err => {
-        //     useLoading(false)
-        //   })
-        // }
+        if (params.certificate_photo_ids) {
+          params.certificate_photo_ids = params.certificate_photo_ids.map(item => item.id)
+        }
+        if (brandDetail.id) {
+          window.send.put(`brands/${brandDetail.id}`, {brand: params})
+          .then(data => {
+            message.success('品牌修改成功！')
+            useBrandDetail(data.data)
+            useLoading(false)
+          })
+        } else {
+          window.send.post(`brands`, {brand: params})
+          .then(data => {
+            message.success('品牌创建成功！')
+            useBrandDetail(data.data)
+            useLoading(false)
+          })
+          .catch(err => {
+            useLoading(false)
+          })
+        }
       }
     });
   };
 
   const confirmDeleteBrand = () => {
-    // useLoading(true)
-    // window.send.delete(`events/${brandDetail.id}`)
-    // .then(data => {
-    //   message.success('品牌删除成功！')
-    //   useLoading(false)
-    //   props.history.goBack()
-    // })
+    useLoading(true)
+    window.send.delete(`brands/${brandDetail.id}`)
+    .then(data => {
+      message.success('品牌删除成功！')
+      useLoading(false)
+      props.history.goBack()
+    })
   }
 
   const { getFieldDecorator, setFieldsValue } = props.form
@@ -161,37 +119,26 @@ function Application(props) {
     contact_email: {
       label: '联系⼈邮箱'
     },
-    business_license: {
+    license_photo_id: {
       label: '营业执照',
       tag: UploadImg,
       initValue: brandDetail.business_license,
       props: {
         bindUploadProps: {},
         setFieldsValue: (result) => {
-          setFieldsValue({business_license: result})
+          setFieldsValue({license_photo_id: result})
         }
       },
       rules: []
-    },
-    certificates: {
-      label: '相关资质',
-      tag: WrapPhotos,
-      initValue: brandDetail.certificates,
-      props: {
-        isEdit: isEdit,
-        maxCount: 5,
-        setFieldsValue: (result) => {
-          setFieldsValue({certificates: result})
-        }
-      },
-      rules: []
-    },
+    }
   }
 
   const renderDetail = (key) => {
     switch (key) {
-      case 'product_manual':
-        return brandDetail.card_photo ? <img src={brandDetail.card_photo.url} className='cover-photo'/> : '-'
+      case 'brand_type':
+        return BrandType[brandDetail.brand_type] || '-'
+      case 'license_photo_id':
+        return brandDetail.business_license ? <img src={brandDetail.business_license.url} className='cover-photo'/> : '-'
       default :
         return brandDetail[key] || '-'
     }
@@ -232,6 +179,18 @@ function Application(props) {
               )}
             </Item>
           })}
+          <Item label="相关资质">
+            {getFieldDecorator('certificate_photo_ids', {
+              initialValue: brandDetail.certificates || []
+            })(
+              <WrapPhotos
+                isEdit={isEdit}
+                maxCount={5}
+                setFieldsValue={(result) => {
+                  setFieldsValue({certificate_photo_ids: result})
+                }}/>
+            )}
+          </Item>
           <Item label='注册时间'>
             <div>{brandDetail.created_at || '-'}</div>
           </Item>

@@ -10,7 +10,7 @@ class List extends Component {
     ]
   }
   componentDidMount () {
-    // this.getList()
+    this.getList()
   }
 
   getList = () => {
@@ -53,7 +53,7 @@ class List extends Component {
           <span>
             <a onClick={(e) => {
               e.preventDefault()
-              self.viewDetail(record.slug)
+              self.viewDetail(record.id)
             }}>{text}</a>
           </span>
         ),

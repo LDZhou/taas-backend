@@ -10,13 +10,13 @@ class List extends Component {
     ]
   }
   componentDidMount () {
-    // this.getList()
+    this.getList()
   }
 
   getList = () => {
     const { page } = this.state
     this.setState({ loading: true })
-    window.send.get('events', {
+    window.send.get('chains', {
       params: {
         page
       }
@@ -41,7 +41,7 @@ class List extends Component {
           <span>
             <a onClick={(e) => {
               e.preventDefault()
-              self.props.history.push(`/app/activeList/detail/${text}`)
+              self.props.history.push(`/app/chainList/detail/${text}`)
             }}>{text}</a>
           </span>
         ),
@@ -54,7 +54,7 @@ class List extends Component {
           <span>
             <a onClick={(e) => {
               e.preventDefault()
-              self.props.history.push(`/app/activeList/detail/${record.id}`)
+              self.props.history.push(`/app/chainList/detail/${record.id}`)
             }}>{text}</a>
           </span>
         ),

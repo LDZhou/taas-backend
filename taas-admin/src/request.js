@@ -1,8 +1,8 @@
 import axios from 'axios'
 import { message } from 'antd'
 
-export const baseURL =  'https://api.harmay.cn/api/'
-// export const baseURL =  process.env.NODE_ENV === 'development' ? 'www.haoqidian.vip' : 'https://api.haoqidian.vip/api/'
+export const baseURL =  'https://api.trashaus.cn/api/'
+// export const baseURL =  process.env.NODE_ENV === 'development' ? 
 let params = {
   baseURL: baseURL,
   timeout: 100000,

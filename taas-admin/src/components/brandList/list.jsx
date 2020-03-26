@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Table, Button } from 'antd'
+import { BrandType } from '../../utils/utils'
 
 class List extends Component {
   state={
@@ -10,13 +11,13 @@ class List extends Component {
     ]
   }
   componentDidMount () {
-    // this.getList()
+    this.getList()
   }
 
   getList = () => {
     const { page } = this.state
     this.setState({ loading: true })
-    window.send.get('products', {
+    window.send.get('brands', {
       params: {
         page
       }
@@ -41,7 +42,7 @@ class List extends Component {
           <span>
             <a onClick={(e) => {
               e.preventDefault()
-              self.props.history.push(`/app/commodityList/detail/${text}`)
+              self.props.history.push(`/app/brandList/detail/${text}`)
             }}>{text}</a>
           </span>
         )
@@ -53,7 +54,7 @@ class List extends Component {
           <span>
             <a onClick={(e) => {
               e.preventDefault()
-              self.props.history.push(`/app/commodityList/detail/${record.id}`)
+              self.props.history.push(`/app/brandList/detail/${record.id}`)
             }}>{text}</a>
           </span>
         ),
@@ -61,7 +62,9 @@ class List extends Component {
       },
       {
         title: '类别',
-        dataIndex: 'brand_type'
+        dataIndex: 'brand_type',
+        render: text => BrandType[text],
+        width: 90
       },
       {
         title: '公司地址',
@@ -69,11 +72,13 @@ class List extends Component {
       },
       {
         title: '联系⼈姓名',
-        dataIndex: 'contact_name'
+        dataIndex: 'contact_name',
+        width: 110
       },
       {
         title: '联系⼈职位',
-        dataIndex: 'contact_title'
+        dataIndex: 'contact_title',
+        width: 110
       },
       {
         title: '联系⼈电话',

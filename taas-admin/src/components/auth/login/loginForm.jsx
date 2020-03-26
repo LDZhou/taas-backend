@@ -34,12 +34,12 @@ function Login(props) {
   return (
     <div className='login-container'>
       <Form onSubmit={handleSubmit} className="login-form">
-        <div className="form-title">Harmay后台管理系统</div>
+        <div className="form-title">Taas后台管理系统</div>
         <Form.Item>
           {getFieldDecorator('email', {
             rules: [
               { required: true, message: 'Please input your E-mail!' },
-              {type: 'email', message: 'The input is not valid E-mail!'}
+              // {type: 'email', message: 'The input is not valid E-mail!'}
             ],
             validateTrigger: 'onBlur'
           })(

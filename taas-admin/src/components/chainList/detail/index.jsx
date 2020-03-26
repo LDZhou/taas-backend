@@ -1,213 +1,24 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { Form, Input, Button, Row, Col, Popconfirm, message, Spin, Select, Table } from 'antd';
 import UploadImg from '../../common/uploadImg/index'
-import moment from 'moment'
-import { BrandType } from '../../../utils/utils'
-import WrapPhotos from '../../common/wrapPhotos/index'
 
 const { createElement } = React
 const { Item } = Form
 const { Option } = Select
 
 function Application(props) {
-  let productId = props.match.params.id
+  let chainId = props.match.params.id
   useEffect(() => {
-    // if (productId) {
-    //   activeDetailInit()
-    // } else {
-    //   optionsInit()
-    // }
+    if (chainId) {
+      chainDetailInit()
+    } else {
+      getAllProducts()
+    }
   }, [])
 
   const [chainDetail, useChainDetail] = useState({})
 
-  // const [allproducts, useAllproducts] = useState([])
-
-  // const [allStores, useAllStores] = useState([])
-
-  // function getActiveDetail () {
-  //   return window.send.get(`events/${productId}`)
-  // }
-
-  // function getAllproducts () {
-  //   return window.send.get('products', {
-  //     params: {
-  //       page: 0
-  //     }
-  //   })
-  // }
-
-  // function getAllStores () {
-  //   return window.send.get('stores', {
-  //     params: {
-  //       page: 0
-  //     }
-  //   })
-  // }
-
-  // function activeDetailInit() {
-  //   Promise.all([getActiveDetail(), getAllproducts(), getAllStores()])
-  //   .then(vals => {
-  //     useChainDetail(vals[0].data)
-  //     useAllproducts(vals[1].data)
-  //     useAllStores(vals[2].data)
-  //     useLoading(false)
-  //   })
-  //   .catch(err => {
-  //     useLoading(false)
-  //   })
-  // }
-  // function optionsInit() {
-  //   Promise.all([getAllproducts(), getAllStores()])
-  //   .then(vals => {
-  //     useAllproducts(vals[0].data)
-  //     useAllStores(vals[1].data)
-  //     useLoading(false)
-  //   })
-  //   .catch(err => {
-  //     useLoading(false)
-  //   })
-  // }
-
-  const [loading, useLoading] = useState(() => Boolean(productId))
-
-  const [isEdit, useIsEdit] = useState(() => !Boolean(productId))
-
-  const handleSubmit = e => {
-    e.preventDefault();
-    props.form.validateFields((err, values) => {
-      if (!err) {
-        useLoading(true)
-        let params = Object.assign({}, values)
-        if (params.cover_photo_id) {
-          params.cover_photo_id = params.cover_photo_id.id
-        }
-        console.log('val =>', params)
-        // if (chainDetail.id) {
-        //   window.send.put(`events/${chainDetail.id}`, {event: params})
-        //   .then(data => {
-        //     message.success('产品修改成功！')
-        //     useChainDetail(data.data)
-        //     useLoading(false)
-        //   })
-        // } else {
-        //   window.send.post(`events`, {event: params})
-        //   .then(data => {
-        //     message.success('产品创建成功！')
-        //     useChainDetail(data.data)
-        //     useLoading(false)
-        //   })
-        //   .catch(err => {
-        //     useLoading(false)
-        //   })
-        // }
-      }
-    });
-  };
-
-  const confirmDeleteChain = () => {
-    // useLoading(true)
-    // window.send.delete(`events/${chainDetail.id}`)
-    // .then(data => {
-    //   message.success('链条删除成功！')
-    //   useLoading(false)
-    //   props.history.goBack()
-    // })
-  }
-
-  const { getFieldDecorator, setFieldsValue } = props.form
-  const formItemLayout = {
-    labelCol: {
-      xs: { span: 24 },
-      sm: { span: 4 },
-    },
-    wrapperCol: {
-      xs: { span: 24 },
-      sm: { span: 18 },
-    }
-  }
-
-  const renderDetailForm = {
-    name: {
-      label: '名称'
-    },
-    cover_photo: {
-      label: '预览图',
-      tag: UploadImg,
-      initValue: chainDetail.cover_photo,
-      props: {
-        bindUploadProps: {},
-        setFieldsValue: (result) => {
-          setFieldsValue({cover_photo: result})
-        }
-      },
-      rules: []
-    },
-    share_photo: {
-      label: '⼆维码分享图',
-      tag: UploadImg,
-      initValue: chainDetail.share_photo,
-      props: {
-        bindUploadProps: {},
-        setFieldsValue: (result) => {
-          setFieldsValue({share_photo: result})
-        }
-      },
-      rules: []
-    }
-  }
-
-  const renderDetail = (key) => {
-    switch (key) {
-      case 'cover_photo':
-        return chainDetail.cover_photo ? <img src={chainDetail.cover_photo.url} className='cover-photo'/> : '-'
-      case 'share_photo':
-          return chainDetail.share_photo ? <img src={chainDetail.share_photo.url} className='cover-photo'/> : '-'
-      default :
-        return chainDetail[key] || '-'
-    }
-  }
-  // ID（product_id 可以点击跳转到产品详情），名称 （product.name），
-  // 品牌（product.brand_name），⽣产时间 product.manufactured_at
-  const columns = [
-    {
-      title: 'ID',
-      dataIndex: 'id',
-      render: text => (
-        <span>
-          <a onClick={(e) => {
-            e.preventDefault()
-            props.history.push(`/app/commodityList/detail/${text}`)
-          }}>{text}</a>
-        </span>
-      )
-    },
-    {
-      title: '名称',
-      dataIndex: 'name',
-      render: (text, record) => (
-        <span>
-          <a onClick={(e) => {
-            e.preventDefault()
-            props.history.push(`/app/commodityList/detail/${record.id}`)
-          }}>{text}</a>
-        </span>
-      ),
-      width: 180
-    },
-    {
-      title: '品牌',
-      dataIndex: 'description',
-      render: (text, record) => record.product ? record.product.brand_name : '-'
-    },
-    {
-      title: '⽣产时间',
-      dataIndex: 'description1',
-      render: (text, record) => record.product ? record.product.manufactured_at : '-'
-    }
-  ]
-
-  const allproducts = [
+  const [allproducts, useAllproducts] = useState([
     {
       name: '产品1',
       id: 1
@@ -227,6 +38,167 @@ function Application(props) {
     {
       name: '产品5',
       id: 5
+    }
+  ])
+
+  function getAllProducts () {
+    // return window.send.get(`chains/${chainId}`)
+  }
+
+  function getChainDetail () {
+    return window.send.get(`chains/${chainId}`)
+  }
+
+  function chainDetailInit () {
+    // Promise.all([getAllProducts(), getChainDetail()])
+    // .then(vals => {
+    //   useAllproducts(vals[0].data)
+    //   useChainDetail(vals[1].data)
+    //   useLoading(false)
+    // })
+    // .cathch(err => {
+    //   useLoading(false)
+    // })
+    window.send.get(`chains/${chainId}`).then(data => {
+      useChainDetail(data.data)
+      useLoading(false)
+    })
+    .catch(err => {
+      useLoading(false)
+    })
+  }
+
+  const [loading, useLoading] = useState(() => Boolean(chainId))
+
+  const [isEdit, useIsEdit] = useState(() => !Boolean(chainId))
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    props.form.validateFields((err, values) => {
+      if (!err) {
+        useLoading(true)
+        let params = Object.assign({}, values)
+        if (params.cover_photo_id) {
+          params.cover_photo_id = params.cover_photo_id.id
+        }
+        if (params.share_photo_id) {
+          params.share_photo_id = params.share_photo_id.id
+        }
+        console.log('val =>', params)
+        // if (chainDetail.id) {
+        //   window.send.put(`chains/${chainDetail.id}`, {chain: params})
+        //   .then(data => {
+        //     message.success('链条修改成功！')
+        //     useChainDetail(data.data)
+        //     useLoading(false)
+        //   })
+        // } else {
+        //   window.send.post(`chains`, {chain: params})
+        //   .then(data => {
+        //     message.success('链条创建成功！')
+        //     useChainDetail(data.data)
+        //     useLoading(false)
+        //   })
+        //   .catch(err => {
+        //     useLoading(false)
+        //   })
+        // }
+      }
+    });
+  };
+
+  const confirmDeleteChain = () => {
+    useLoading(true)
+    window.send.delete(`chains/${chainDetail.id}`)
+    .then(data => {
+      message.success('链条删除成功！')
+      useLoading(false)
+      props.history.goBack()
+    })
+  }
+
+  const { getFieldDecorator, setFieldsValue } = props.form
+  const formItemLayout = {
+    labelCol: {
+      xs: { span: 24 },
+      sm: { span: 4 },
+    },
+    wrapperCol: {
+      xs: { span: 24 },
+      sm: { span: 18 },
+    }
+  }
+
+  const renderDetailForm = {
+    name: {
+      label: '名称'
+    },
+    cover_photo_id: {
+      label: '预览图',
+      tag: UploadImg,
+      initValue: chainDetail.cover_photo,
+      props: {
+        bindUploadProps: {},
+        setFieldsValue: (result) => {
+          setFieldsValue({cover_photo: result})
+        }
+      },
+      rules: []
+    },
+    share_photo_id: {
+      label: '⼆维码分享图',
+      tag: UploadImg,
+      initValue: chainDetail.share_photo,
+      props: {
+        bindUploadProps: {},
+        setFieldsValue: (result) => {
+          setFieldsValue({share_photo: result})
+        }
+      },
+      rules: []
+    }
+  }
+
+  const renderDetail = (key) => {
+    switch (key) {
+      case 'cover_photo_id':
+        return chainDetail.cover_photo ? <img src={chainDetail.cover_photo.url} className='cover-photo'/> : '-'
+      case 'share_photo_id':
+          return chainDetail.share_photo ? <img src={chainDetail.share_photo.url} className='cover-photo'/> : '-'
+      default :
+        return chainDetail[key] || '-'
+    }
+  }
+  const columns = [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      render: text => (
+        <span>
+          <a onClick={(e) => {
+            e.preventDefault()
+            props.history.push(`/app/productList/detail/${text}`)
+          }}>{text}</a>
+        </span>
+      ),
+      width: 180
+    },
+    {
+      title: '名称',
+      dataIndex: 'name',
+      render: (text, record) => (
+        <span>
+          <a onClick={(e) => {
+            e.preventDefault()
+            props.history.push(`/app/productList/detail/${record.id}`)
+          }}>{text}</a>
+        </span>
+      )
+    },
+    {
+      title: '⽣产时间',
+      dataIndex: 'manufactured_at',
+      width: 300
     }
   ]
 

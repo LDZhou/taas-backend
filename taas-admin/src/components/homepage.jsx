@@ -17,12 +17,8 @@ class Homepage extends Component {
     menuKey: ''
   }
 
-  // componentWillMount () {
-  //   checkLogin(this)
-  // }
-
   componentDidMount () {
-    // checkLogin(this)
+    checkLogin(this)
     const keys = this.props.location.pathname.split('/')
     this.setState({ menuKey: keys[2] ? keys[2] : '' })
   }

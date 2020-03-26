@@ -1,18 +1,18 @@
 
 export function checkLogin(self) {
-  // const cookies = document.cookie
-  // if (cookies.split(';').some((item) => ~item.indexOf('token'))) {
-  //   self.props.location.pathname.length <= 1 && self.props.history.push('/app/userList/list')
-  // } else {
-  //   self.props.history.push('/auth/login')
-  // }
+  const cookies = document.cookie
+  if (cookies.split(';').some((item) => ~item.indexOf('token'))) {
+    self.props.location.pathname.length <= 1 && self.props.history.push('/app/userList/list')
+  } else {
+    self.props.history.push('/auth/login')
+  }
 }
 
-// export function signOut(self) {
-//   window.document.cookie = `token=1;expires=${new Date(0).toGMTString()}`
-//   window.localStorage.clear()
-//   self.props.history.push('/auth/login')
-// }
+export function signOut(self) {
+  window.document.cookie = `token=1;expires=${new Date(0).toGMTString()}`
+  window.localStorage.clear()
+  self.props.history.push('/auth/login')
+}
 
   // const controls = [
   //   'undo', 'redo', 'separator',

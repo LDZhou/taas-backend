@@ -1,9 +1,8 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { Form, Input, Button, Row, Col, Spin, Select, DatePicker, Table } from 'antd';
-import UploadImg from '../../common/uploadImg/index'
+import { Form, Input, Button, Row, Col, Spin, Select, DatePicker, Table, message } from 'antd';
+// import UploadImg from '../../common/uploadImg/index'
 import moment from 'moment'
-import { baseURL } from '../../../request'
-// import { BrandType } from '../../../utils/utils'
+// import { baseURL } from '../../../request'
 
 const { Option } = Select
 const { createElement } = React
@@ -20,13 +19,12 @@ function Application(props) {
   const [userDetail, useUserDetail] = useState({})
 
   function getUserDetail () {
-    // window.send.get(`users/${userId}`)
-    // .then(data => {
-    //   const courseData = data.data
-    //   useUserDetail(courseData)
-    //   useLoading(false)
-    // })
-    useLoading(false)
+    window.send.get(`users/${userId}`)
+    .then(data => {
+      const courseData = data.data
+      useUserDetail(courseData)
+      useLoading(false)
+    })
   }
 
   const [loading, useLoading] = useState(true)
@@ -37,15 +35,17 @@ function Application(props) {
     e.preventDefault();
     props.form.validateFields((err, values) => {
       if (!err) {
-        // useLoading(true)
-        // let params = Object.assign({}, values)
-        // delete params.avatar
-        // params.date_of_birth = moment(params.date_of_birth).format('YYYY-MM-DD')
-        // window.send.put(`users/${userId}`, {user: params})
-        // .then(data => {
-        //   useUserDetail(data.data)
-        //   useLoading(false)
-        // })
+        useLoading(true)
+        let params = Object.assign({}, values)
+        delete params.avatar
+        if (!params.password) delete params.password
+        params.date_of_birth = moment(params.date_of_birth).format('YYYY-MM-DD')
+        window.send.put(`users/${userId}`, {user: params})
+        .then(data => {
+          useUserDetail(data.data)
+          message.success('用户修改成功！')
+          useLoading(false)
+        })
       }
     });
   };
@@ -130,26 +130,26 @@ function Application(props) {
       title: 'ID',
       dataIndex: 'id'
     },
-    { // 点击进入链条详情chain.id
+    {
       title: '链条名称',
       dataIndex: 'chain.name',
-      render: text => (
+      render: (text, record) => (
         <span>
           <a onClick={(e) => {
             e.preventDefault()
-            // props.history.push(`/app/orderList/detail/${id}`)
+            props.history.push(`/app/chainList/detail/${record.chain.id}`)
           }}>{text}</a>
         </span>
       )
     },
-    { // target_id点击 进⼊产品详情
+    {
       title: '产品名称',
-      dataIndex: 'target.name',
-      render: text => (
+      dataIndex: 'product_name',
+      render: (text, record) => (
         <span>
           <a onClick={(e) => {
             e.preventDefault()
-            // props.history.push(`/app/orderList/detail/${id}`)
+            props.history.push(`/app/productList/detail/${record.product_id}`)
           }}>{text}</a>
         </span>
       )
@@ -176,7 +176,7 @@ function Application(props) {
             <div>{userDetail.id || '-'}</div>
           </Item>
           <Item label="头像">
-            {getFieldDecorator('avatar', {
+            {/* {getFieldDecorator('avatar', {
                 initialValue: {url: userDetail.avatar}
               })(
                 isEdit ? <UploadImg
@@ -194,7 +194,8 @@ function Application(props) {
                 }}/> : <div>
                 {userDetail.avatar && <img src={userDetail.avatar} style={{maxWidth: 100, maxHeight: 150, marginLeft: 16}}/>}
               </div>
-            )}
+            )} */}
+            {userDetail.avatar ? <img src={userDetail.avatar} style={{maxWidth: 100, maxHeight: 150, marginLeft: 16}}/> : '-'}
           </Item>
           <Item label={<span>年龄</span>}>
             <div>{userDetail.age}岁</div>
