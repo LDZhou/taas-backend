@@ -55,8 +55,7 @@ class Api::UsersController < ApiController
       Photo.compose(user, 'avatar', params[:user][:avatarUrl])
     end
     if user.save
-      options = { scope: { show_view: false } }
-      hash = UserSerializer.new(user, options).serializable_hash
+      hash = UserSerializer.new(user).serializable_hash
       render json: hash, status: :ok
     else
       render json: { ec: 401, em: user.errors.full_messages[0] }, status: :unauthorized
@@ -74,15 +73,16 @@ class Api::UsersController < ApiController
   def update
     if @admin_request
       user = User.find_by_id(params[:id])
+      options = { scope: { show_view: true } }
     else
       user = current_user
+      options = {}
     end
     if user
       user.update_attributes(user_params)
       if user.errors.present?
         render json: { ec: 400, em: user.errors.full_messages[0] }, status: :bad_request
       else
-        options = { scope: { show_view: false } }
         hash = UserSerializer.new(user, options).serializable_hash
         render json: hash, status: :ok
       end
@@ -94,7 +94,7 @@ class Api::UsersController < ApiController
   def show
     if @admin_request
       user = User.find_by_id(params[:id])
-      options = { scope: { show_view: false } }
+      options = { scope: { show_view: true } }
     else
       user = current_user
       options = {}

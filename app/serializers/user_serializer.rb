@@ -12,8 +12,10 @@ class UserSerializer
   end
 
   attribute :user_views do |u|
-    views = u.user_views
-    UserViewSerializer.new(views).serializable_hash[:data]
+    if scope && scope[:show_view]
+      views = u.user_views
+      UserViewSerializer.new(views).serializable_hash[:data]
+    end
   end
 
   attribute :brand do |u|
