@@ -1,58 +1,58 @@
 class Api::ProductsController < ApiController
-  before_action :check_admin, except: [:create]
+  before_action :check_admin, except: [:create, :update]
 
   respond_to :json
 
    def index
-     brands = Brand.all.order('created_at DESC')
-     hash = BrandSerializer.new(brands).serializable_hash[:data]
+     products = Product.all.order('created_at DESC')
+     hash = ProductSerializer.new(products).serializable_hash[:data]
      page = params[:page] || 1
-     render json: { data: hash, count: brands.count, current_page: page }, status: :ok
+     render json: { data: hash, count: products.count, current_page: page }, status: :ok
    end
 
    def show
-     brand = Brand.find_by_id(params[:id])
-     if brand
-       hash = BrandSerializer.new(brand).serializable_hash
+     product = Product.find_by_id(params[:id])
+     if product
+       hash = ProductSerializer.new(product).serializable_hash
        render json: hash, status: :ok
      else
-       render json: { ec: 404, em: '无法找到该品牌' }, status: :not_found
+       render json: { ec: 404, em: '无法找到该产品' }, status: :not_found
      end
    end
 
    def create
-     brand = Brand.create(brand_params)
-     if brand.id
-       if params[:brand][:license_photo_id]
-         photo = Photo.where(id: params[:brand][:license_photo_id]).first
-         photo.update_attributes(target_id: brand.id, target_type: 'Brand', photo_type: 'license') if photo
-       end
-       if params[:brand][:certificate_photo_ids]
-         ids = params[:brand][:certificate_photo_ids]
-         photos = Photo.where(id: ids)
-         photos.update_all(target_id: brand.id, target_type: 'Brand', photo_type: 'certificate') if photos.present?
-       end
-       hash = BrandSerializer.new(brand).serializable_hash
+     product = Product.create(product_params)
+     if product.id
+			 # Update photos
+			 if params[:product][:photo_ids]
+				 ids = params[:product][:photo_ids]
+				 photos = Photo.where(id: ids)
+				 photos.update_all(target_id: product.id, target_type: 'Product') if photos.present?
+			 end
+       hash = ProductSerializer.new(product).serializable_hash
        render json: hash, status: :ok
      else
-       render json: { ec: 400, em: brand.errors.full_messages[0] }, status: :not_found
+       render json: { ec: 400, em: product.errors.full_messages[0] }, status: :not_found
      end
    end
 
    def update
-     brand = Brand.find_by_id(params[:id])
-     brand.update_attributes(brand_params)
-     if params[:brand][:license_photo_id]
-       photo = Photo.where(id: params[:brand][:license_photo_id]).first
-       photo.update_attributes(target_id: brand.id, target_type: 'Brand', photo_type: 'license') if photo
-     end
-     if params[:brand][:certificate_photo_ids]
-       ids = params[:brand][:certificate_photo_ids]
-       photos = Photo.where(id: ids)
-       photos.update_all(target_id: brand.id, target_type: 'Brand', photo_type: 'certificate') if photos.present?
-     end
-     if brand
-       hash = BrandSerializer.new(brand).serializable_hash
+     product = Product.find_by_id(params[:id])
+     product.update_attributes(product_params)
+		 # Update photos
+		 if params[:product][:photo_ids]
+			 ids = params[:product][:photo_ids]
+			 existing_ids = product.photos.pluck(:id)
+			 # If photo ids are different, meaning photos has been add/delete in the frontend
+			 # then reset all the existing photos first
+			 if ids.sort != existing_ids.sort
+				 product.photos.update_all(target_id: nil, target_type: nil)
+				 photos = Photo.where(id: ids)
+				 photos.update_all(target_id: product.id, target_type: 'Product') if photos.present?
+			 end
+		 end
+     if product
+       hash = ProductSerializer.new(product).serializable_hash
        render json: hash, status: :ok
      else
        render json: { ec: 404, em: '找不到该品牌' }, status: :not_found
@@ -60,9 +60,9 @@ class Api::ProductsController < ApiController
    end
 
    def destroy
-     brand = Brand.find_by_id(params[:id])
-     if brand
-       brand.destroy
+     product = Product.find_by_id(params[:id])
+     if product
+       product.destroy
        render json: {}, status: :ok
      else
        render json: { ec: 404, em: '无法找到该品牌' }, status: :not_found
@@ -70,8 +70,9 @@ class Api::ProductsController < ApiController
    end
 
    private
-   def brand_params
-     params.require(:brand).permit(:id, :brand_type, :name, :address, :city, :province, :contact_name,
-                                   :contact_title, :contact_title, :contact_phone, :contact_email, :user_id)
+   def product_params
+     params.require(:product).permit(:id, :brand_id, :wastage_percent, :additive_percent, :name, :model, :size, :weight,
+                        :quantity, :material, :material_percent, :pkg_name, :pkg_quantity, :sender_name, :sender_address,
+                        :receiver_name, :receiver_address, :shipping_company, :shipping_no, :product_manual, :manufactured_at)
    end
 end
