@@ -48,15 +48,26 @@ class Api::ChainsController < ApiController
      chain = Chain.find_by_id(params[:id])
      if chain
 			 chain.update_attributes(chain_params)
-			 if params[:chain][:license_photo_id]
-				 photo = Photo.where(id: params[:chain][:license_photo_id]).first
-				 photo.update_attributes(target_id: chain.id, target_type: 'Chain', photo_type: 'license') if photo
+			 if params[:chain][:cover_photo_id]
+				 photo = Photo.where(id: params[:chain][:cover_photo_id]).first
+				 photo.update_attributes(target_id: chain.id, target_type: 'Chain', photo_type: 'cover_photo') if photo
 			 end
-			 if params[:chain][:certificate_photo_ids]
-				 ids = params[:chain][:certificate_photo_ids]
-				 photos = Photo.where(id: ids)
-				 photos.update_all(target_id: chain.id, target_type: 'Chain', photo_type: 'certificate') if photos.present?
+			 if params[:chain][:share_photo_id]
+				 id = params[:chain][:share_photo_id]
+				 photo = Photo.find_by_id(id)
+				 photo.update_attributes(target_id: chain.id, target_type: 'Chain', photo_type: 'share_photo') if photo
 			 end
+       if params[:chain][:product_ids]
+         ids = params[:chain][:product_ids]
+         existing_ids = chain.chain_products.pluck(:product_id)
+         if ids.sort != existing_ids.sort
+           chain.chain_products.destroy_all
+           ids.each_with_index do |product_id,i|
+             product = Product.find_by_id(product_id)
+             chain.chain_products.create(product: product, index: i + 1)
+           end
+         end
+       end
 			 hash = ChainSerializer.new(chain).serializable_hash
 			 render json: hash, status: :ok
      else
