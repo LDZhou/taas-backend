@@ -10,13 +10,13 @@ class List extends Component {
     ]
   }
   componentDidMount () {
-    // this.getList()
+    this.getList()
   }
 
   getList = () => {
     const { page } = this.state
     this.setState({ loading: true })
-    window.send.get('events', {
+    window.send.get('products', {
       params: {
         page
       }

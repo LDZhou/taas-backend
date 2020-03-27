@@ -12,37 +12,16 @@ function Application(props) {
     if (chainId) {
       chainDetailInit()
     } else {
-      getAllProducts()
+      createInit()
     }
   }, [])
 
   const [chainDetail, useChainDetail] = useState({})
 
-  const [allproducts, useAllproducts] = useState([
-    {
-      name: '产品1',
-      id: 1
-    },
-    {
-      name: '产品2',
-      id: 2
-    },
-    {
-      name: '产品3',
-      id: 3
-    },
-    {
-      name: '产品4',
-      id: 4
-    },
-    {
-      name: '产品5',
-      id: 5
-    }
-  ])
+  const [allproducts, useAllproducts] = useState([])
 
   function getAllProducts () {
-    // return window.send.get(`chains/${chainId}`)
+    return window.send.get(`products`)
   }
 
   function getChainDetail () {
@@ -50,20 +29,18 @@ function Application(props) {
   }
 
   function chainDetailInit () {
-    // Promise.all([getAllProducts(), getChainDetail()])
-    // .then(vals => {
-    //   useAllproducts(vals[0].data)
-    //   useChainDetail(vals[1].data)
-    //   useLoading(false)
-    // })
-    // .cathch(err => {
-    //   useLoading(false)
-    // })
-    window.send.get(`chains/${chainId}`).then(data => {
-      useChainDetail(data.data)
+    Promise.all([getAllProducts(), getChainDetail()])
+    .then(vals => {
+      useAllproducts(vals[0].data)
+      useChainDetail(vals[1].data)
       useLoading(false)
     })
-    .catch(err => {
+  }
+
+  function createInit () {
+    getAllProducts()
+    .then(data => {
+      useAllproducts(data.data)
       useLoading(false)
     })
   }
@@ -84,25 +61,24 @@ function Application(props) {
         if (params.share_photo_id) {
           params.share_photo_id = params.share_photo_id.id
         }
-        console.log('val =>', params)
-        // if (chainDetail.id) {
-        //   window.send.put(`chains/${chainDetail.id}`, {chain: params})
-        //   .then(data => {
-        //     message.success('链条修改成功！')
-        //     useChainDetail(data.data)
-        //     useLoading(false)
-        //   })
-        // } else {
-        //   window.send.post(`chains`, {chain: params})
-        //   .then(data => {
-        //     message.success('链条创建成功！')
-        //     useChainDetail(data.data)
-        //     useLoading(false)
-        //   })
-        //   .catch(err => {
-        //     useLoading(false)
-        //   })
-        // }
+        if (chainDetail.id) {
+          window.send.put(`chains/${chainDetail.id}`, {chain: params})
+          .then(data => {
+            message.success('链条修改成功！')
+            useChainDetail(data.data)
+            useLoading(false)
+          })
+        } else {
+          window.send.post(`chains`, {chain: params})
+          .then(data => {
+            message.success('链条创建成功！')
+            useChainDetail(data.data)
+            useLoading(false)
+          })
+          .catch(err => {
+            useLoading(false)
+          })
+        }
       }
     });
   };
@@ -140,10 +116,13 @@ function Application(props) {
       props: {
         bindUploadProps: {},
         setFieldsValue: (result) => {
-          setFieldsValue({cover_photo: result})
+          setFieldsValue({cover_photo_id: result})
         }
       },
-      rules: []
+      rules: [
+        { required: true, message: ' ' },
+        { validator:(_, value) => value ? Promise.resolve() : Promise.reject('请选择上传预览图!') }
+      ]
     },
     share_photo_id: {
       label: '⼆维码分享图',
@@ -152,10 +131,13 @@ function Application(props) {
       props: {
         bindUploadProps: {},
         setFieldsValue: (result) => {
-          setFieldsValue({share_photo: result})
+          setFieldsValue({share_photo_id: result})
         }
       },
-      rules: []
+      rules: [
+        { required: true, message: ' ' },
+        { validator:(_, value) => value ? Promise.resolve() : Promise.reject('请选择上传⼆维码分享图!') }
+      ]
     }
   }
 

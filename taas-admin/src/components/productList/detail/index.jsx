@@ -2,7 +2,6 @@ import React, { useState, useEffect, Fragment } from 'react';
 import { Form, Input, Button, Row, Col, Popconfirm, message, Spin, DatePicker, Select } from 'antd';
 import UploadImg from '../../common/uploadImg/index'
 import moment from 'moment'
-import { BrandType } from '../../../utils/utils'
 import WrapPhotos from '../../common/wrapPhotos/index'
 
 const { createElement } = React
@@ -12,62 +11,22 @@ const { Option } = Select
 function Application(props) {
   let productId = props.match.params.id
   useEffect(() => {
-    // if (productId) {
-    //   activeDetailInit()
-    // } else {
-    //   optionsInit()
-    // }
+    if (productId) {
+      getProductDetail()
+    }
   }, [])
 
   const [productDetail, useProductDetail] = useState({})
 
-  // const [allproducts, useAllproducts] = useState([])
-
-  // const [allStores, useAllStores] = useState([])
-
-  // function getActiveDetail () {
-  //   return window.send.get(`events/${productId}`)
-  // }
-
-  // function getAllproducts () {
-  //   return window.send.get('products', {
-  //     params: {
-  //       page: 0
-  //     }
-  //   })
-  // }
-
-  // function getAllStores () {
-  //   return window.send.get('stores', {
-  //     params: {
-  //       page: 0
-  //     }
-  //   })
-  // }
-
-  // function activeDetailInit() {
-  //   Promise.all([getActiveDetail(), getAllproducts(), getAllStores()])
-  //   .then(vals => {
-  //     useProductDetail(vals[0].data)
-  //     useAllproducts(vals[1].data)
-  //     useAllStores(vals[2].data)
-  //     useLoading(false)
-  //   })
-  //   .catch(err => {
-  //     useLoading(false)
-  //   })
-  // }
-  // function optionsInit() {
-  //   Promise.all([getAllproducts(), getAllStores()])
-  //   .then(vals => {
-  //     useAllproducts(vals[0].data)
-  //     useAllStores(vals[1].data)
-  //     useLoading(false)
-  //   })
-  //   .catch(err => {
-  //     useLoading(false)
-  //   })
-  // }
+  function getProductDetail() {
+    window.send.get(`products/${productId}`).then(data => {
+      useProductDetail(data.data)
+      useLoading(false)
+    })
+    .catch(err => {
+      useLoading(false)
+    })
+  }
 
   const [loading, useLoading] = useState(() => Boolean(productId))
 
@@ -79,43 +38,46 @@ function Application(props) {
       if (!err) {
         useLoading(true)
         let params = Object.assign({}, values)
-        if (params.cover_photo_id) {
-          params.cover_photo_id = params.cover_photo_id.id
+        if (params.product_manual_id) {
+          params.product_manual_id = params.product_manual_id.id
         }
-        params.manufactured_at = moment(params.manufactured_at).format('YYYY-MM-DD HH:mm')
-        params.send_date = moment(params.send_date).format('YYYY-MM-DD HH:mm')
-        params.delivery_date = moment(params.delivery_date).format('YYYY-MM-DD HH:mm')
+        if (params.photo_ids) {
+          params.photo_ids = params.photo_ids.map(i => i.id)
+        }
+        params.manufactured_at = moment(params.manufactured_at).format('YYYY-MM-DD')
+        params.send_date = moment(params.send_date).format('YYYY-MM-DD')
+        params.deliver_date = moment(params.deliver_date).format('YYYY-MM-DD')
         console.log('val =>', params)
-        // if (productDetail.id) {
-        //   window.send.put(`events/${productDetail.id}`, {event: params})
-        //   .then(data => {
-        //     message.success('产品修改成功！')
-        //     useProductDetail(data.data)
-        //     useLoading(false)
-        //   })
-        // } else {
-        //   window.send.post(`events`, {event: params})
-        //   .then(data => {
-        //     message.success('产品创建成功！')
-        //     useProductDetail(data.data)
-        //     useLoading(false)
-        //   })
-        //   .catch(err => {
-        //     useLoading(false)
-        //   })
-        // }
+        if (productDetail.id) {
+          window.send.put(`products/${productDetail.id}`, {product: params})
+          .then(data => {
+            message.success('产品修改成功！')
+            useProductDetail(data.data)
+            useLoading(false)
+          })
+        } else {
+          window.send.post(`products`, {product: params})
+          .then(data => {
+            message.success('产品创建成功！')
+            useProductDetail(data.data)
+            useLoading(false)
+          })
+          .catch(err => {
+            useLoading(false)
+          })
+        }
       }
     });
   };
 
   const confirmDeleteProduct = () => {
-    // useLoading(true)
-    // window.send.delete(`events/${productDetail.id}`)
-    // .then(data => {
-    //   message.success('产品删除成功！')
-    //   useLoading(false)
-    //   props.history.goBack()
-    // })
+    useLoading(true)
+    window.send.delete(`products/${productDetail.id}`)
+    .then(data => {
+      message.success('产品删除成功！')
+      useLoading(false)
+      props.history.goBack()
+    })
   }
 
   const { getFieldDecorator, setFieldsValue } = props.form
@@ -131,6 +93,12 @@ function Application(props) {
   }
 
   const renderDetailForm = {
+    brand_id: {
+      label: '品牌id',
+      props: {
+        type: 'number'
+      }
+    },
     name: {
       label: '名称'
     },
@@ -140,15 +108,15 @@ function Application(props) {
     additive_percent: {
       label: '添加物⽐例'
     },
-    product_photos_ids: {
+    photo_ids: {
       label: '产品图⽚',
       tag: WrapPhotos,
-      initValue: productDetail.product_photos_ids,
+      initValue: productDetail.photos,
       props: {
         isEdit: isEdit,
         maxCount: 5,
         setFieldsValue: (result) => {
-          setFieldsValue({product_photos_ids: result})
+          setFieldsValue({photo_ids: result})
         }
       },
       rules: []
@@ -180,14 +148,14 @@ function Application(props) {
     material_percent: {
       label: '各使⽤材料占⽐'
     },
-    product_manual: {
+    product_manual_id: {
       label: '产品⽂档',
       tag: UploadImg,
       initValue: productDetail.product_manual,
       props: {
         bindUploadProps: {},
         setFieldsValue: (result) => {
-          setFieldsValue({product_manual: result})
+          setFieldsValue({product_manual_id: result})
         }
       },
       rules: []
@@ -195,31 +163,28 @@ function Application(props) {
     manufactured_at: {
       label: '⽣产时间',
       tag: DatePicker,
-      initValue: productDetail.manufactured_at ? moment(productDetail.manufactured_at, 'YYYY-MM-DD HH:mm') : null,
+      initValue: productDetail.manufactured_at ? moment(productDetail.manufactured_at, 'YYYY-MM-DD') : null,
       props: {
         placeholder: '请选择⽣产时间',
-        showTime: { format: 'HH:mm' },
-        format: 'YYYY-MM-DD HH:mm'
+        format: 'YYYY-MM-DD'
       }
     },
     send_date: {
       label: '发件⽇期',
       tag: DatePicker,
-      initValue: productDetail.send_date ? moment(productDetail.send_date, 'YYYY-MM-DD HH:mm') : null,
+      initValue: productDetail.send_date ? moment(productDetail.send_date, 'YYYY-MM-DD') : null,
       props: {
         placeholder: '请选择发件⽇期',
-        showTime: { format: 'HH:mm' },
-        format: 'YYYY-MM-DD HH:mm'
+        format: 'YYYY-MM-DD'
       }
     },
-    delivery_date: {
+    deliver_date: {
       label: '收件⽇期',
       tag: DatePicker,
-      initValue: productDetail.delivery_date ? moment(productDetail.delivery_date, 'YYYY-MM-DD HH:mm') : null,
+      initValue: productDetail.deliver_date ? moment(productDetail.deliver_date, 'YYYY-MM-DD') : null,
       props: {
         placeholder: '请选择收件⽇期',
-        showTime: { format: 'HH:mm' },
-        format: 'YYYY-MM-DD HH:mm'
+        format: 'YYYY-MM-DD'
       }
     },
     pkg_name: {
@@ -253,8 +218,16 @@ function Application(props) {
 
   const renderDetail = (key) => {
     switch (key) {
-      case 'product_manual':
-        return productDetail.card_photo ? <img src={productDetail.card_photo.url} className='cover-photo'/> : '-'
+      // case 'manufactured_at':
+      //   return productDetail.manufactured_at ? 
+      // case 'send_date':
+      //   return productDetail.send_date ? 
+      // case 'deliver_date':
+      //   return productDetail.deliver_date ? 
+      case 'photo_ids':
+        return productDetail.photos ? <WrapPhotos value={productDetail.photos} isEdit={isEdit} maxCount={5}/> : '-'
+      case 'product_manual_id':
+        return productDetail.product_manual ? <img src={productDetail.product_manual.url} className='cover-photo'/> : '-'
       default :
         return productDetail[key] || '-'
     }
@@ -279,10 +252,13 @@ function Application(props) {
           <Item label='ID'>
             <div>{productDetail.id || '-'}</div>
           </Item>
-          {/* 品牌（brand.name，点击进⼊品牌详情brand_id） */}
-          <Item label='品牌'>
-            <div>{(productDetail.brand && productDetail.brand.name) || '-'}</div>
-          </Item>
+          {productDetail.brand_id && <Item label='品牌'>
+            <a
+              onClick={(e) => { 
+                e.preventDefault()
+                productDetail.brand_id && props.history.push(`/app/brandList/detail/${productDetail.brand_id}`)
+              }}>{productDetail.brand_name || '-'}</a>
+          </Item>}
           {Object.keys(renderDetailForm).map(key => {
             return <Item label={renderDetailForm[key].label || ''} key={key}>
               {getFieldDecorator(key, {
