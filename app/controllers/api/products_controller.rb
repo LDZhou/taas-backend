@@ -43,29 +43,29 @@ class Api::ProductsController < ApiController
 
    def update
      product = Product.find_by_id(params[:id])
-     product.update_attributes(product_params)
-		 # Update photos
-		 if params[:product][:photo_ids]
-			 ids = params[:product][:photo_ids]
-			 existing_ids = product.photos.pluck(:id)
-			 # If photo ids are different, meaning photos has been add/delete in the frontend
-			 # then reset all the existing photos first
-			 if ids.sort != existing_ids.sort
-				 product.photos.update_all(target_id: nil, target_type: nil)
-				 photos = Photo.where(id: ids)
-				 photos.update_all(target_id: product.id, target_type: 'Product') if photos.present?
-			 end
-		 end
-     if params[:product][:product_manual_id]
-       id = params[:product][:product_manual_id]
-       photo = Photo.find_by_id(id)
-       photo.update_attributes(target_id: product.id, target_type: 'Product', photo_type: 'manual') if photo
-     end
      if product
+       product.update_attributes(product_params)
+       # Update photos
+       if params[:product][:photo_ids]
+         ids = params[:product][:photo_ids]
+         existing_ids = product.photos.pluck(:id)
+         # If photo ids are different, meaning photos has been add/delete in the frontend
+         # then reset all the existing photos first
+         if ids.sort != existing_ids.sort
+           product.photos.update_all(target_id: nil, target_type: nil)
+           photos = Photo.where(id: ids)
+           photos.update_all(target_id: product.id, target_type: 'Product') if photos.present?
+         end
+       end
+       if params[:product][:product_manual_id]
+         id = params[:product][:product_manual_id]
+         photo = Photo.find_by_id(id)
+         photo.update_attributes(target_id: product.id, target_type: 'Product', photo_type: 'manual') if photo
+       end
        hash = ProductSerializer.new(product).serializable_hash
        render json: hash, status: :ok
      else
-       render json: { ec: 404, em: '找不到该品牌' }, status: :not_found
+       render json: { ec: 404, em: '找不到该产品' }, status: :not_found
      end
    end
 
@@ -75,7 +75,7 @@ class Api::ProductsController < ApiController
        product.destroy
        render json: {}, status: :ok
      else
-       render json: { ec: 404, em: '无法找到该品牌' }, status: :not_found
+       render json: { ec: 404, em: '无法找到该产品' }, status: :not_found
      end
    end
 
