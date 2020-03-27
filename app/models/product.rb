@@ -14,6 +14,10 @@ class Product < ApplicationRecord
     end
   end
 
+  def brand_name
+    brand.name if brand
+  end
+
   def created_at_formatted
     created_at.strftime("%Y-%m-%d %H:%M:%S")
   end

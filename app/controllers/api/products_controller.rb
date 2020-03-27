@@ -24,11 +24,16 @@ class Api::ProductsController < ApiController
      product = Product.create(product_params)
      if product.id
 			 # Update photos
-			 if params[:product][:photo_ids]
-				 ids = params[:product][:photo_ids]
-				 photos = Photo.where(id: ids)
-				 photos.update_all(target_id: product.id, target_type: 'Product') if photos.present?
-			 end
+       if params[:product][:photo_ids]
+         ids = params[:product][:photo_ids]
+         photos = Photo.where(id: ids)
+         photos.update_all(target_id: product.id, target_type: 'Product') if photos.present?
+       end
+       if params[:product][:product_manual_id]
+         id = params[:product][:product_manual_id]
+         photo = Photo.find_by_id(id)
+         photo.update_attributes(target_id: product.id, target_type: 'Product', photo_type: 'manual') if photo
+       end
        hash = ProductSerializer.new(product).serializable_hash
        render json: hash, status: :ok
      else
@@ -51,6 +56,11 @@ class Api::ProductsController < ApiController
 				 photos.update_all(target_id: product.id, target_type: 'Product') if photos.present?
 			 end
 		 end
+     if params[:product][:product_manual_id]
+       id = params[:product][:product_manual_id]
+       photo = Photo.find_by_id(id)
+       photo.update_attributes(target_id: product.id, target_type: 'Product', photo_type: 'manual') if photo
+     end
      if product
        hash = ProductSerializer.new(product).serializable_hash
        render json: hash, status: :ok
