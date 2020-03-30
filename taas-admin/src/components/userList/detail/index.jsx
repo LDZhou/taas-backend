@@ -109,7 +109,7 @@ function Application(props) {
     password: {
       label: '密码',
       initValue: '',
-      rules: []
+      rules: [{ min: 6, message: `密码长度不能小于六位!` }]
     }
   }
 

@@ -134,13 +134,15 @@ function Application(props) {
       label: '克重',
       props: {
         type: 'number'
-      }
+      },
+      rules: []
     },
     quantity: {
       label: '数量',
       props: {
         type: 'number'
-      }
+      },
+      rules: []
     },
     material: {
       label: '材质'
