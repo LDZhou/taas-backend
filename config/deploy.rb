@@ -101,7 +101,7 @@ namespace :deploy do
   before :starting,     :check_revision
   #after  :finishing,    :compile_assets
   after  :finishing,    :cleanup
-  #after  :finishing,    :compile
+  after  :finishing,    :compile
   #after  :finishing,    :restart
 end
 
