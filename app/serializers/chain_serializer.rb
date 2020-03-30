@@ -1,6 +1,6 @@
 class ChainSerializer
   include FastJsonapi::ObjectSerializer
-  attributes :id, :name, :cover_photo, :share_photo
+  attributes :id, :name, :cover_photo, :share_photo, :qr_code
 
   attribute :created_at do |c|
     c.created_at_formatted

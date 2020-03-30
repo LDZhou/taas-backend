@@ -135,7 +135,7 @@ function Application(props) {
         }
       },
       rules: [
-        { required: true, message: ' ' },
+        { required: false, message: ' ' },
         { validator:(_, value) => value ? Promise.resolve() : Promise.reject('请选择上传⼆维码分享图!') }
       ]
     }
