@@ -1,9 +1,13 @@
 
-.login-container{
-  width: 100vw;
-  height: 100vh;
+body{
   position: relative;
-  background-image: url('https://res.cloudinary.com/hyyxofhbh/image/upload/v1575044622/test/pandianxia-backgroud.jpg');
+  background: url('https://taas-1257268450.cos.ap-chengdu.myqcloud.com/assets/trashaus-admin-background.jpg') no-repeat;
+	background-position: 50%;
+	background-size: cover;
+	height: 100%;
+	position: relative;
+	z-index: 1;
+	overflow: hidden;
 }
 
 .login-form{

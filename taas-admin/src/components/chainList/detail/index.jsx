@@ -251,7 +251,7 @@ function Application(props) {
 
       {chainDetail.products && <Fragment>
         <div className='title-container title-container-next'>
-          <h2 className="title-text">产品列表</h2>
+          <h2 className="sub-title-text">产品列表</h2>
         </div>
         <Table
           className='list-table'
