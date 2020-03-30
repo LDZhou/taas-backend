@@ -70,8 +70,8 @@ class Homepage extends Component {
         <Layout>
           <Header>
             <div className="login-info">
-              <span className="login-sitename">Taas管理后台</span>
-              <span className='login-name'>欢迎你，{userInfo && userInfo.nickname} （超级管理员）</span>
+              <span className="login-sitename">Trashaus管理后台</span>
+              <span className='login-name'>欢迎你，{userInfo && userInfo.nickname} （管理员）</span>
               <Button onClick={this.signOut} type='link' className='logout-btn'>退出</Button>
             </div>
           </Header>

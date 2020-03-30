@@ -23,14 +23,14 @@ class Product < ApplicationRecord
   end
 
   def manufactured_at_formatted
-    manufactured_at.strftime("%Y-%m-%d %H:%M:%S") if manufactured_at
+    manufactured_at.strftime("%Y-%m-%d") if manufactured_at
   end
 
   def send_date_formatted
-    send_date.strftime("%Y-%m-%d %H:%M:%S") if send_date
+    send_date.strftime("%Y-%m-%d") if send_date
   end
 
   def deliver_date_formatted
-    deliver_date.strftime("%Y-%m-%d %H:%M:%S") if deliver_date
+    deliver_date.strftime("%Y-%m-%d") if deliver_date
   end
 end

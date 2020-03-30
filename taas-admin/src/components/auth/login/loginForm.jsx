@@ -34,12 +34,11 @@ function Login(props) {
   return (
     <div className='login-container'>
       <Form onSubmit={handleSubmit} className="login-form">
-        <div className="form-title">Taas后台管理系统</div>
+        <div className="form-title">Trashaus后台管理系统</div>
         <Form.Item>
           {getFieldDecorator('email', {
             rules: [
-              { required: true, message: 'Please input your E-mail!' },
-              // {type: 'email', message: 'The input is not valid E-mail!'}
+              { required: true, message: '请填写邮箱！' },
             ],
             validateTrigger: 'onBlur'
           })(
@@ -48,7 +47,7 @@ function Login(props) {
         </Form.Item>
         <Form.Item>
           {getFieldDecorator('password', {
-            rules: [{ required: true, message: 'Please input your Password!' }],
+            rules: [{ required: true, message: '请输入密码！' }],
           })(
             <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
           )}

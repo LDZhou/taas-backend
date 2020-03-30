@@ -433,6 +433,28 @@ input {
 	display: inline-block;
 }
 
+.sub-title-text {
+  font-size: 20px;
+	display: inline-block;
+  position: relative;
+  margin: 0;
+  margin-left: 14px;
+  margin-right: auto;
+}
+
+.sub-title-text::before{
+  content: '';
+  height: 30px;
+	width: 3px;
+	position: absolute;
+  top: 0;
+  left: -14px;
+	margin-right: 10px;
+	background-color: #ff3a7f;
+	display: inline-block;
+}
+
+
 .phases-summary h3 {
   font-size: 20px;
 }

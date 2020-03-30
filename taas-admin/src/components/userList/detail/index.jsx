@@ -159,7 +159,7 @@ function Application(props) {
       dataIndex: 'created_at'
     },
     {
-      title: '地点',
+      title: '浏览地点',
       dataIndex: 'address'
     }
   ]

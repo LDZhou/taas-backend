@@ -38,14 +38,14 @@ class UploadImg extends Component {
 
   beforeUpload = (file) => {
     console.log('beforeUpload', file)
-    const formats =  ['image/png', 'image/jpg', 'image/gif', 'image/svg', 'image/bmp', 'image/jpeg']
+    const formats =  ['application/pdf', 'image/png', 'image/jpg', 'image/gif', 'image/svg', 'image/bmp', 'image/jpeg']
     if (!formats.includes(file.type)) {
-      message.error('Image format error (support png jpg gif svg bmp jpeg)!')
+      message.error('File format error (support pdf png jpg gif svg bmp jpeg)!')
       return false
     }
-    const isLt1M = file.size / 1024 / 1024 < 5;
-    if (!isLt1M) {
-      message.error('Image must smaller than 5MB!')
+    const isLt5M = file.size / 1024 / 1024 < 5;
+    if (!isLt5M) {
+      message.error('File must smaller than 5MB!')
       return false
     }
     return true

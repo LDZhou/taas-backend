@@ -94,7 +94,7 @@ function Application(props) {
 
   const renderDetailForm = {
     brand_id: {
-      label: '品牌id',
+      label: '品牌ID',
       props: {
         type: 'number'
       }
@@ -103,10 +103,12 @@ function Application(props) {
       label: '名称'
     },
     wastage_percent: {
-      label: '材料损耗⽐例'
+      label: '材料损耗⽐例',
+      rules: [ { required: false } ]
     },
     additive_percent: {
-      label: '添加物⽐例'
+      label: '添加物⽐例',
+      rules: [ { required: false } ]
     },
     photo_ids: {
       label: '产品图⽚',
@@ -148,7 +150,8 @@ function Application(props) {
       label: '材质'
     },
     material_percent: {
-      label: '各使⽤材料占⽐'
+      label: '各使⽤材料占⽐',
+      rules: [ { required: false } ]
     },
     product_manual_id: {
       label: '产品⽂档',
@@ -178,7 +181,8 @@ function Application(props) {
       props: {
         placeholder: '请选择发件⽇期',
         format: 'YYYY-MM-DD'
-      }
+      },
+      rules: [ { required: false } ]
     },
     deliver_date: {
       label: '收件⽇期',
@@ -187,34 +191,43 @@ function Application(props) {
       props: {
         placeholder: '请选择收件⽇期',
         format: 'YYYY-MM-DD'
-      }
+      },
+      rules: [ { required: false } ]
     },
     pkg_name: {
-      label: '运送物品名称'
+      label: '运送物品名称',
+      rules: [ { required: false } ]
     },
     pkg_quantity: {
       label: '运送量',
       props: {
         type: 'number'
-      }
+      },
+      rules: [ { required: false } ]
     },
     sender_name: {
-      label: '发件⽅名称'
+      label: '发件⽅名称',
+      rules: [ { required: false } ]
     },
     sender_address: {
-      label: '发件⽅地址'
+      label: '发件⽅地址',
+      rules: [ { required: false } ]
     },
     receiver_name: {
-      label: '收件⽅名称'
+      label: '收件⽅名称',
+      rules: [ { required: false } ]
     },
     receiver_address: {
-      label: '收件⽅地址'
+      label: '收件⽅地址',
+      rules: [ { required: false } ]
     },
     shipping_company: {
-      label: '物流公司名称'
+      label: '物流公司名称',
+      rules: [ { required: false } ]
     },
     shipping_no: {
-      label: '物流单号'
+      label: '物流单号',
+      rules: [ { required: false } ]
     }
   }
 

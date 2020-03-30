@@ -61,7 +61,15 @@ class List extends Component {
       },
       {
         title: '品牌',
-        dataIndex: 'brand.name'
+        dataIndex: 'brand_name',
+        render: (text, record) => (
+          <span>
+            <a onClick={(e) => {
+              e.preventDefault()
+              self.props.history.push(`/app/brandList/detail/${record.brand_id}`)
+            }}>{text}</a>
+          </span>
+          )
       },
       {
         title: '型号',
@@ -72,12 +80,24 @@ class List extends Component {
         dataIndex: 'size'
       },
       {
+        title: '数量',
+        dataIndex: 'quantity'
+      },
+      {
+        title: '材质',
+        dataIndex: 'material'
+      },
+      {
+        title: '生产日期',
+        dataIndex: 'manufactured_at'
+      },
+      {
         title: '发件⽇期',
         dataIndex: 'send_date'
       },
       {
         title: '收件⽇期',
-        dataIndex: 'delivery_date'
+        dataIndex: 'deliver_date'
       },
       {
         title: '收件⽅名称',
