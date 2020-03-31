@@ -1,26 +1,25 @@
 import React, { Component } from 'react';
 import { Icon, message, Upload } from 'antd'
-import './index.css'
 import { baseURL } from '../../../request'
+import './index.css'
+import { LinkOutlined, DeleteOutlined } from '@ant-design/icons'
 
 const { createElement } = React
 
 class UploadImg extends Component {
-  state = {
-    token: '',
-    loading: false
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: false
+    }
+    this.token = ''
   }
 
   componentDidMount () {
     // console.log('UploadImg porps:', this.props)
     const tokenItem = document.cookie.split(';').find(item => ~item.indexOf('token'))
-    const token = tokenItem && tokenItem.slice(tokenItem.indexOf('=') + 1)
-    this.setState({ token })
+    this.token = tokenItem && tokenItem.slice(tokenItem.indexOf('=') + 1)
   }
-
-  // componentWillReceiveProps (next) {
-  //   console.log('UploadImg next porps:', next)
-  // }
 
   handleUploadChange = ({fileList, file}) => {
     if (file.status === 'uploading') {
@@ -37,7 +36,7 @@ class UploadImg extends Component {
   }
 
   beforeUpload = (file) => {
-    console.log('beforeUpload', file)
+    // console.log('beforeUpload', file)
     const formats =  ['application/pdf', 'image/png', 'image/jpg', 'image/gif', 'image/svg', 'image/bmp', 'image/jpeg']
     if (!formats.includes(file.type)) {
       message.error('File format error (support pdf png jpg gif svg bmp jpeg)!')
@@ -53,12 +52,12 @@ class UploadImg extends Component {
 
   handleDelete = (event) => {
     event.stopPropagation()
-    // this.props.handleDelete && this.props.handleDelete()
     this.props.setFieldsValue && this.props.setFieldsValue('')
   }
 
   render() {
-    const { token, loading } = this.state
+    const self = this
+    const { loading } = this.state
     const {
       bindUploadProps = {},
       value,
@@ -69,7 +68,7 @@ class UploadImg extends Component {
       name: 'photo',
       action: baseURL + 'photos',
       headers: {
-        Authorization: token
+        Authorization: this.token
       },
       data: {
       },
@@ -96,9 +95,30 @@ class UploadImg extends Component {
         {value && <img src={value.url} className={`cover-photo ${imgClassName}`}/>}
       </div>
     )
+
+    const isPDF = () => {
+      if (value && value.url) {
+        const fileType = value.url.slice(value.url.lastIndexOf(".") + 1).toLowerCase()
+        return fileType === 'pdf'
+      } else {
+        return false
+      }
+    }
+
+    const renderPDF = () => {
+      const fileName = value.url.slice(value.url.lastIndexOf("/") + 1)
+      return (
+        <div className="pdf-file-container">
+          <LinkOutlined />
+          <span onClick={() => window.open(value.url)}>{fileName}</span>
+          <DeleteOutlined onClick={(e) => { self.handleDelete(e) }}/>
+        </div>
+      )
+    }
+
     return (
       createElement(
-        Upload,
+        isPDF() ? renderPDF : Upload,
         Object.assign({}, autoParams, bindUploadProps),
         value ? autoImage : uploadButton)
     );

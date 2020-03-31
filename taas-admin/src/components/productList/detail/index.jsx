@@ -1,12 +1,13 @@
-import React, { useState, useEffect, Fragment } from 'react';
-import { Form, Input, Button, Row, Col, Popconfirm, message, Spin, DatePicker, Select } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Form, Input, Button, Row, Col, Popconfirm, message, Spin, DatePicker } from 'antd';
 import UploadImg from '../../common/uploadImg/index'
+import '../../common/uploadImg/index.css'
 import moment from 'moment'
 import WrapPhotos from '../../common/wrapPhotos/index'
+import { LinkOutlined } from '@ant-design/icons'
 
 const { createElement } = React
 const { Item } = Form
-const { Option } = Select
 
 function Application(props) {
   let productId = props.match.params.id
@@ -47,13 +48,13 @@ function Application(props) {
         params.manufactured_at = moment(params.manufactured_at).format('YYYY-MM-DD')
         params.send_date = moment(params.send_date).format('YYYY-MM-DD')
         params.deliver_date = moment(params.deliver_date).format('YYYY-MM-DD')
-        console.log('val =>', params)
         if (productDetail.id) {
           window.send.put(`products/${productDetail.id}`, {product: params})
           .then(data => {
             message.success('产品修改成功！')
             useProductDetail(data.data)
             useLoading(false)
+            useIsEdit(false)
           })
         } else {
           window.send.post(`products`, {product: params})
@@ -61,6 +62,7 @@ function Application(props) {
             message.success('产品创建成功！')
             useProductDetail(data.data)
             useLoading(false)
+            useIsEdit(false)
           })
           .catch(err => {
             useLoading(false)
@@ -231,18 +233,31 @@ function Application(props) {
     }
   }
 
+  const isPDF = (value) => {
+    if (value && value.url) {
+      const fileType = value.url.slice(value.url.lastIndexOf(".") + 1).toLowerCase()
+      return fileType === 'pdf'
+    } else {
+      return false
+    }
+  }
+
+  const renderPDF = (value) => {
+    const fileName = value.url.slice(value.url.lastIndexOf("/") + 1)
+    return (
+      <div className="pdf-file-container">
+        <LinkOutlined />
+        <span onClick={() => window.open(value.url)}>{fileName}</span>
+      </div>
+    )
+  }
+
   const renderDetail = (key) => {
     switch (key) {
-      // case 'manufactured_at':
-      //   return productDetail.manufactured_at ? 
-      // case 'send_date':
-      //   return productDetail.send_date ? 
-      // case 'deliver_date':
-      //   return productDetail.deliver_date ? 
+      case 'product_manual_id':
+        return productDetail.product_manual ? (isPDF(productDetail.product_manual) ? renderPDF(productDetail.product_manual) : <img src={productDetail.product_manual.url} className='cover-photo'/>) : '-'
       case 'photo_ids':
         return productDetail.photos ? <WrapPhotos value={productDetail.photos} isEdit={isEdit} maxCount={5}/> : '-'
-      case 'product_manual_id':
-        return productDetail.product_manual ? <img src={productDetail.product_manual.url} className='cover-photo'/> : '-'
       default :
         return productDetail[key] || '-'
     }

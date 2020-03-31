@@ -50,6 +50,7 @@ function Application(props) {
             message.success('品牌修改成功！')
             useBrandDetail(data.data)
             useLoading(false)
+            useIsEdit(false)
           })
         } else {
           window.send.post(`brands`, {brand: params})
@@ -57,6 +58,7 @@ function Application(props) {
             message.success('品牌创建成功！')
             useBrandDetail(data.data)
             useLoading(false)
+            useIsEdit(false)
           })
           .catch(err => {
             useLoading(false)

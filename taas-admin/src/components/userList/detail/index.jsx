@@ -45,6 +45,7 @@ function Application(props) {
           useUserDetail(data.data)
           message.success('用户修改成功！')
           useLoading(false)
+          useIsEdit(false)
         })
       }
     });

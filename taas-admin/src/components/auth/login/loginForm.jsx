@@ -6,10 +6,6 @@ import './loginForm.css'
 
 function Login(props) {
 
-  useEffect(() => {
-    console.log(1111, props)
-  }, [])
-
   const [loading, useLoading] = useState(false)
 
   const handleSubmit = (e) => {

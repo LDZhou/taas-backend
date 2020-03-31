@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Icon, message, Upload } from 'antd'
-import './index.css'
 import { baseURL } from '../../../request'
 
 const { createElement } = React

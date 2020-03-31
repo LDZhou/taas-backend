@@ -42,8 +42,8 @@ class Homepage extends Component {
       <Layout style={{height: '100vh'}}>
         <Sider
           breakpoint="lg"
-          onBreakpoint={(broken) => { console.log(broken); }}
-          onCollapse={(collapsed, type) => { console.log(collapsed, type); }}
+          // onBreakpoint={(broken) => { console.log(broken); }}
+          // onCollapse={(collapsed, type) => { console.log(collapsed, type); }}
         >
           <div className="homepage-logo">
             <img src={Logo}/>

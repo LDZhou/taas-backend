@@ -1,0 +1,24 @@
+
+
+.pdf-file-container{
+    transition: all 0.5s;
+    display: flex;
+    align-items: center;
+    height: 20px;
+    margin-top: 10px;
+}
+
+.pdf-file-container > span{
+    margin-left: 10px;
+    text-decoration: underline;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.pdf-file-container:hover{
+    background: #ff3a7f;
+}
+
+.pdf-file-container > .anticon-delete{
+    cursor: pointer;
+}

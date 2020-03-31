@@ -67,6 +67,7 @@ function Application(props) {
             message.success('链条修改成功！')
             useChainDetail(data.data)
             useLoading(false)
+            useIsEdit(false)
           })
         } else {
           window.send.post(`chains`, {chain: params})
@@ -74,6 +75,7 @@ function Application(props) {
             message.success('链条创建成功！')
             useChainDetail(data.data)
             useLoading(false)
+            useIsEdit(false)
           })
           .catch(err => {
             useLoading(false)
@@ -135,8 +137,8 @@ function Application(props) {
         }
       },
       rules: [
-        { required: false, message: ' ' },
-        { validator:(_, value) => value ? Promise.resolve() : Promise.reject('请选择上传⼆维码分享图!') }
+        // { required: false, message: ' ' },
+        // { validator:(_, value) => value ? Promise.resolve() : Promise.reject('请选择上传⼆维码分享图!') }
       ]
     }
   }
@@ -151,7 +153,8 @@ function Application(props) {
         return chainDetail[key] || '-'
     }
   }
-  const columns = [
+
+  let columns = [
     {
       title: 'ID',
       dataIndex: 'id',
@@ -162,8 +165,7 @@ function Application(props) {
             props.history.push(`/app/productList/detail/${text}`)
           }}>{text}</a>
         </span>
-      ),
-      width: 180
+      )
     },
     {
       title: '名称',
@@ -175,12 +177,52 @@ function Application(props) {
             props.history.push(`/app/productList/detail/${record.id}`)
           }}>{text}</a>
         </span>
-      )
+      ),
+      width: 180
     },
     {
-      title: '⽣产时间',
-      dataIndex: 'manufactured_at',
-      width: 300
+      title: '品牌',
+      dataIndex: 'brand_name',
+      render: (text, record) => (
+        <span>
+          <a onClick={(e) => {
+            e.preventDefault()
+            props.history.push(`/app/brandList/detail/${record.brand_id}`)
+          }}>{text}</a>
+        </span>
+        )
+    },
+    {
+      title: '型号',
+      dataIndex: 'model'
+    },
+    {
+      title: '尺⼨',
+      dataIndex: 'size'
+    },
+    {
+      title: '数量',
+      dataIndex: 'quantity'
+    },
+    {
+      title: '材质',
+      dataIndex: 'material'
+    },
+    {
+      title: '生产日期',
+      dataIndex: 'manufactured_at'
+    },
+    {
+      title: '发件⽇期',
+      dataIndex: 'send_date'
+    },
+    {
+      title: '收件⽇期',
+      dataIndex: 'deliver_date'
+    },
+    {
+      title: '收件⽅名称',
+      dataIndex: 'receiver_name'
     }
   ]
 
@@ -237,6 +279,11 @@ function Application(props) {
               )}
             </Item>
           })}
+          {chainDetail.id && !isEdit && <Item label='二维码'>
+            <div>
+              {chainDetail.qr_code ? <img src={chainDetail.qr_code.url} className='cover-photo'/> : '-'}
+            </div>
+          </Item>}
           {isEdit && <Row style={{marginTop: 20}}>
             <Col span={22}>
               <Item className='save-button'>
@@ -249,7 +296,7 @@ function Application(props) {
         </div>
       </Form>
 
-      {chainDetail.products && <Fragment>
+      {!isEdit && chainDetail.products && <Fragment>
         <div className='title-container title-container-next'>
           <h2 className="sub-title-text">产品列表</h2>
         </div>
