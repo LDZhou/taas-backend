@@ -2,7 +2,7 @@ module WechatApi
   class QrCode
     include HTTParty
     BASE_URL = 'https://api.weixin.qq.com/wxa/getwxacode'
-    BASE_PATH = 'pages/index/chain'
+    BASE_PATH = 'pages/solution/retrospect/retrospect'
 
     def self.generate_qr_code(options)
       case options[:type]
