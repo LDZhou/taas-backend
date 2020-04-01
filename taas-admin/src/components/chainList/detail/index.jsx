@@ -116,6 +116,9 @@ function Application(props) {
     },
     total_views: {
       label: '扫码次数'
+      rules: [
+        { required: false }
+      ]
     },
     cover_photo_id: {
       label: '预览图',
