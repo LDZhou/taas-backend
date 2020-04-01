@@ -1,5 +1,5 @@
 class Api::ChainsController < ApiController
-  before_action :check_admin
+  before_action :check_admin, except: [:show]
 
   respond_to :json
 
