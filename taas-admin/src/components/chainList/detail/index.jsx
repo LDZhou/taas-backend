@@ -114,6 +114,9 @@ function Application(props) {
     name: {
       label: '名称'
     },
+    total_views: {
+      label: '扫码次数'
+    },
     cover_photo_id: {
       label: '预览图',
       tag: UploadImg,
