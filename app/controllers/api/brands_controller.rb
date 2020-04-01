@@ -1,4 +1,5 @@
 class Api::BrandsController < ApiController
+  skip_before_action :authenticate_request, only: [:create]
   before_action :check_admin, except: [:create]
 
   respond_to :json
