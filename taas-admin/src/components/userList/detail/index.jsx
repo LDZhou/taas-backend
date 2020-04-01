@@ -105,7 +105,11 @@ function Application(props) {
       label: '⼿机号',
       props: {
         type: 'number'
-      }
+      },
+      rules: [
+        { required: true, message: ' ' },
+        { max: 11, message: `⼿机号长度不超过11位!` }
+      ]
     },
     password: {
       label: '密码',
