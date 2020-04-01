@@ -114,12 +114,6 @@ function Application(props) {
     name: {
       label: '名称'
     },
-    total_views: {
-      label: '扫码次数'
-      rules: [
-        { required: false }
-      ]
-    },
     cover_photo_id: {
       label: '预览图',
       tag: UploadImg,
@@ -254,6 +248,9 @@ function Application(props) {
           <Item label='ID'>
             <div>{chainDetail.id || '-'}</div>
           </Item>
+          {!isEdit && <Item label='扫码次数'>
+            <div>{chainDetail.total_views}次</div>
+          </Item>}
           {isEdit && <Item label="产品链条">
             {getFieldDecorator('product_ids', {
                 rules: [
