@@ -47,6 +47,9 @@ function Application(props) {
           useLoading(false)
           useIsEdit(false)
         })
+        .catch(err => {
+          useLoading(false)
+        })
       }
     });
   };

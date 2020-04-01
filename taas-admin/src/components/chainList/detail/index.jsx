@@ -69,6 +69,9 @@ function Application(props) {
             useLoading(false)
             useIsEdit(false)
           })
+          .catch(err => {
+            useLoading(false)
+          })
         } else {
           window.send.post(`chains`, {chain: params})
           .then(data => {

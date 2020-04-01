@@ -52,6 +52,9 @@ function Application(props) {
             useLoading(false)
             useIsEdit(false)
           })
+          .catch(err => {
+            useLoading(false)
+          })
         } else {
           window.send.post(`brands`, {brand: params})
           .then(data => {
@@ -116,7 +119,11 @@ function Application(props) {
       label: '联系⼈电话',
       props: {
         type: 'number'
-      }
+      },
+      rules: [
+        { required: true, message: ' ' },
+        { max: 11, message: `联系⼈电话长度不超过11位!` }
+      ]
     },
     contact_email: {
       label: '联系⼈邮箱'

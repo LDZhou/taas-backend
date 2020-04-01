@@ -56,6 +56,9 @@ function Application(props) {
             useLoading(false)
             useIsEdit(false)
           })
+          .catch(err => {
+            useLoading(false)
+          })
         } else {
           window.send.post(`products`, {product: params})
           .then(data => {
