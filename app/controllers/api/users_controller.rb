@@ -51,7 +51,6 @@ class Api::UsersController < ApiController
              when 2 then 1
              end
     user.gender = gender unless user.gender
-    Rails.logger.debug "URL: #{params[:user][:avatarUrl]}"
     if params[:user][:avatarUrl] && user.photos.empty?
       Photo.compose(user, 'avatar', params[:user][:avatarUrl])
     end

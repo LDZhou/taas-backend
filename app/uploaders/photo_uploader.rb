@@ -44,6 +44,10 @@ class PhotoUploader < CarrierWave::Uploader::Base
     dir + secure_token
   end
 
+  def filename
+    secure_token + File.extname(super)
+  end
+
   def dir
     "#{Rails.env}/#{model.target_type}/photos/"
   end
