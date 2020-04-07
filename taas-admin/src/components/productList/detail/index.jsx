@@ -107,13 +107,16 @@ function Application(props) {
     name: {
       label: '名称'
     },
+    title: {
+      label: '标题'
+    },
     wastage_percent: {
       label: '材料损耗⽐例',
-      rules: [ { required: false } ]
+      rules: []
     },
     additive_percent: {
       label: '添加物⽐例',
-      rules: [ { required: false } ]
+      rules: []
     },
     photo_ids: {
       label: '产品图⽚',

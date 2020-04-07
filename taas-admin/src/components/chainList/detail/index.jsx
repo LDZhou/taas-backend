@@ -255,7 +255,11 @@ function Application(props) {
             {getFieldDecorator('product_ids', {
                 rules: [
                   { required: true, message: ' ' },
-                  { validator:(_, value) => value && value.length === 5 ? Promise.resolve() : Promise.reject('请选择五个产品!') }
+                  {
+                    validator:(_, value) => {
+                      return value && value.length >= 2 && value.length <= 10 ? Promise.resolve() : Promise.reject('请选择2-10个产品!')
+                    }
+                  }
                 ],
                 initialValue: chainDetail.products ? chainDetail.products.map(i => i.id) : []
               })(
