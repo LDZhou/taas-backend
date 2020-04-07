@@ -94,7 +94,10 @@ function Application(props) {
       ]
     },
     email: {
-      label: '邮箱'
+      label: '邮箱',
+      rules: [
+        { required: false, message: ' ' },
+      ]
     },
     date_of_birth: {
       label: '⽣⽇',
@@ -102,7 +105,10 @@ function Application(props) {
       initValue: userDetail.date_of_birth ? moment(userDetail.date_of_birth, 'YYYY年MM月DD日') : null,
       props: {
         placeholder: '请选择⽣⽇'
-      }
+      },
+      rules: [
+        { required: false, message: ' ' },
+      ]
     },
     phone: {
       label: '⼿机号',
@@ -110,7 +116,7 @@ function Application(props) {
         type: 'number'
       },
       rules: [
-        { required: true, message: ' ' },
+        { required: false, message: ' ' },
         { max: 11, message: `⼿机号长度不超过11位!` }
       ]
     },
