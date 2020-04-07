@@ -84,6 +84,6 @@ class Api::ProductsController < ApiController
      params.require(:product).permit(:id, :brand_id, :wastage_percent, :additive_percent, :name, :model, :size, :weight,
                         :quantity, :material, :material_percent, :pkg_name, :pkg_quantity, :sender_name, :sender_address,
                         :receiver_name, :receiver_address, :shipping_company, :shipping_no, :product_manual, :manufactured_at,
-                        :send_date, :deliver_date)
+                        :send_date, :deliver_date, :title)
    end
 end
