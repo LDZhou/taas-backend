@@ -45,7 +45,7 @@ class PhotoUploader < CarrierWave::Uploader::Base
   end
 
   def filename
-    secure_token + File.extname(super)
+    secure_token + File.extname(super) if super
   end
 
   def dir
