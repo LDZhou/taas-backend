@@ -44,6 +44,7 @@ function Application(props) {
         if (params.certificate_photo_ids) {
           params.certificate_photo_ids = params.certificate_photo_ids.map(item => item.id)
         }
+        params.user_id && (params.user_id = Number(params.user_id))
         if (brandDetail.id) {
           window.send.put(`brands/${brandDetail.id}`, {brand: params})
           .then(data => {
@@ -127,6 +128,13 @@ function Application(props) {
     },
     contact_email: {
       label: '联系⼈邮箱'
+    },
+    user_id: {
+      label: '负责人ID',
+      props: {
+        type: 'number'
+      },
+      rules: []
     },
     license_photo_id: {
       label: '营业执照',
