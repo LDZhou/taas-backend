@@ -1,4 +1,5 @@
 class Api::ChainsController < ApiController
+  skip_before_action :authenticate_request, only: [:show]
   before_action :check_admin, except: [:show]
 
   respond_to :json
@@ -12,8 +13,12 @@ class Api::ChainsController < ApiController
 
    def show
      chain = Chain.find_by_id(params[:id])
+     current_user = AuthorizeApiRequest.call(request.headers).result
      if chain
-       current_user.user_views.create(target: chain)
+       if current_user && params[:scan_code]
+         update_user_location
+         current_user.user_views.create(target: chain, latitude: params[:latitude], longitude: params[:longitude])
+       end
        hash = ChainSerializer.new(chain).serializable_hash
        render json: hash, status: :ok
      else
