@@ -77,7 +77,8 @@ class List extends Component {
       },
       {
         title: '尺⼨',
-        dataIndex: 'size'
+        dataIndex: 'size',
+        width: 60
       },
       {
         title: '数量',
@@ -90,18 +91,6 @@ class List extends Component {
       {
         title: '生产日期',
         dataIndex: 'manufactured_at'
-      },
-      {
-        title: '发件⽇期',
-        dataIndex: 'send_date'
-      },
-      {
-        title: '收件⽇期',
-        dataIndex: 'deliver_date'
-      },
-      {
-        title: '收件⽅名称',
-        dataIndex: 'receiver_name'
       }
     ]
     return (

@@ -108,8 +108,8 @@ function Application(props) {
       label: '名称'
     },
     title: {
-      label: '标题'
-    },
+      label: '步骤分类'
+    },  
     wastage_percent: {
       label: '材料损耗⽐例',
       rules: []
@@ -136,15 +136,10 @@ function Application(props) {
     },
     size: {
       label: '尺⼨',
-      props: {
-        type: 'number'
-      }
+      rules: []
     },
     weight: {
       label: '克重',
-      props: {
-        type: 'number'
-      },
       rules: []
     },
     quantity: {

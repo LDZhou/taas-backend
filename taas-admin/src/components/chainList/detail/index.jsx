@@ -220,6 +220,10 @@ function Application(props) {
       dataIndex: 'send_date'
     },
     {
+      title: '发件方名称',
+      dataIndex: 'sender_name'
+    },
+    {
       title: '收件⽇期',
       dataIndex: 'deliver_date'
     },
@@ -269,7 +273,7 @@ function Application(props) {
                   optionFilterProp='children'
                   className='select-products-ids'
                   getPopupContainer={() => document.getElementsByClassName('select-products-ids')[0]}>
-                  {allproducts.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>)}
+                  {allproducts.map(item => <Option key={item.id} value={item.id}>{item.name}-{item.title}</Option>)}
                 </Select>
             )}
           </Item>}
