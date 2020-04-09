@@ -13,7 +13,6 @@ module WechatApi
       params = "id=#{options[:value]}"
       token = WechatApi::Auth.get_app_token
       query = { access_token: token }
-      binding.pry
       body = { path: "#{BASE_PATH}?#{params}&scan_code=true", width: width }.to_json.gsub!(/\\u([a-f0-9]{4,5})/i){ [$1.hex].pack('U') } 
       res = HTTParty.post(BASE_URL, { body: body, query: query })
       if res.code == 200
