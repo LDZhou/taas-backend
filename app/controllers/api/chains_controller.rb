@@ -13,6 +13,7 @@ class Api::ChainsController < ApiController
    def show
      chain = Chain.find_by_id(params[:id])
      if chain
+       current_user.user_views.create(target: chain)
        hash = ChainSerializer.new(chain).serializable_hash
        render json: hash, status: :ok
      else
