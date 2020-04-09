@@ -10,7 +10,7 @@ module WechatApi
         filename = "qr_code_#{options[:value]}.png"
         width = 15
       end
-      params = "id=#{options[:value]}&scan_code=true"
+      params = "id=#{options[:value]}"
       token = WechatApi::Auth.get_app_token
       query = { access_token: token }
       body = { path: "#{BASE_PATH}?#{params}", width: width }.to_json

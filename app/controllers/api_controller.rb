@@ -1,19 +1,9 @@
 class ApiController < ActionController::API
   before_action :authenticate_request
-  before_action :update_user_location
 
   delegate :t, to: I18n
 
   attr_reader :current_user
-
-  def update_user_location
-    if current_user
-      current_user.update_tracked_fields!(request)
-      if params[:latitude].present? && params[:longitude].present?
-        current_user.update_attributes latitude: params[:latitude], longitude: params[:longitude]
-      end
-    end
-  end
 
   private
 
