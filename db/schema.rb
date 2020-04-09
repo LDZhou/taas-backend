@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200407090336) do
+ActiveRecord::Schema.define(version: 20200409043527) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -63,7 +63,7 @@ ActiveRecord::Schema.define(version: 20200407090336) do
     t.string "name"
     t.string "model"
     t.string "size"
-    t.float "weight"
+    t.string "weight"
     t.integer "quantity"
     t.string "material"
     t.string "material_percent"

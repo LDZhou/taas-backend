@@ -14,7 +14,7 @@ module Pandian
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
-    config.time_zone = 'Pacific Time (US & Canada)'
+    config.time_zone = 'Beijing'
 
     # TODO: Temp enable CORS for any domains
     config.middleware.insert_before 0, Rack::Cors do
