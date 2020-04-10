@@ -16,7 +16,6 @@ class Api::ChainsController < ApiController
      current_user = AuthorizeApiRequest.call(request.headers).result
      if chain
        if current_user && params[:scan_code]
-         update_user_location
          current_user.user_views.create(target: chain, latitude: params[:latitude], longitude: params[:longitude])
        end
        hash = ChainSerializer.new(chain).serializable_hash
