@@ -7,7 +7,7 @@ class ChainSerializer
   end
 
   attribute :products do |c|
-    products = c.chain_products.collect(&:product)
+    products = c.chain_products.collect(&:product).compact
     ProductSerializer.new(products).serializable_hash[:data]
   end
 end
