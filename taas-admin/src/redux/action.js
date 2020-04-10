@@ -3,3 +3,9 @@
 export const SAVE_USER_INFO = 'SAVE_USER_INFO'
 
 export const DELETE_USER_INFO = 'DELETE_USER_INFO'
+
+export const SET_LANG_TYPE = 'SET_LANG_TYPE'
+
+export const SET_ZH_EXPLAIN = 'SET_ZH_EXPLAIN'
+
+export const SET_EN_EXPLAIN = 'SET_EN_EXPLAIN'

@@ -69,3 +69,7 @@ export const BrandType = {
   14: '物流公司',
   99: '其他'
 }
+
+export const explain = {
+  'test': '测试',
+}

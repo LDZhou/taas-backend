@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux'
 import UserInfoReducer from './reducers/userInfoReducer'
-// import ReduceReducer from './reducers/reduceReducer'
+import LangReducer from './reducers/langReducer'
+import ExplainReducer from './reducers/explainReducer'
 
 const Reducers= combineReducers({
   UserInfoReducer,
-    // ReduceReducer
+  LangReducer,
+  ExplainReducer
 })
 
 export default Reducers

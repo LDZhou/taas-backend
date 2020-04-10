@@ -26,6 +26,8 @@ class Homepage extends Component {
   menuClick = ({ item, key, keyPath }) => {
     this.setState({menuKey: key})
     this.props.history.push(`/app/${key}/list`)
+    // this.props.changeLang('en-us')
+    // this.props.changeEnExplain()
   }
 
   signOut = () => {
@@ -37,7 +39,7 @@ class Homepage extends Component {
 
   render() {
     const { menuKey } = this.state
-    const { userInfo } = this.props
+    const { userInfo, explain } = this.props
     return (
       <Layout style={{height: '100vh'}}>
         <Sider
@@ -64,6 +66,7 @@ class Homepage extends Component {
             <Menu.Item key="chainList">
               <Icon type="file-protect" />
               <span className="nav-text">链条列表</span>
+              {/* <span className="nav-text">{explain['Unit']}</span> */}
             </Menu.Item>
           </Menu>
         </Sider>
@@ -98,13 +101,17 @@ class Homepage extends Component {
 
 function mapStateToProps(state) {
   return {
-    userInfo: state.UserInfoReducer.userInfo
+    userInfo: state.UserInfoReducer.userInfo,
+    explain: state.ExplainReducer.explain,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    deleteUserInfo: () => dispatch({ type: actions.DELETE_USER_INFO })
+    deleteUserInfo: () => dispatch({ type: actions.DELETE_USER_INFO }),
+    changeLang: (lang) => dispatch({ type: actions.SET_LANG_TYPE, lang }),
+    changeEnExplain: () => dispatch({ type: actions.SET_EN_EXPLAIN }),
+    changeZhExplain: () => dispatch({ type: actions.SET_ZH_EXPLAIN }),
   }
 }
 
