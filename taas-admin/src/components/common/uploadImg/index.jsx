@@ -10,15 +10,16 @@ class UploadImg extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false
+      loading: false,
+      token: ''
     }
-    this.token = ''
   }
 
   componentDidMount () {
     // console.log('UploadImg porps:', this.props)
     const tokenItem = document.cookie.split(';').find(item => ~item.indexOf('token'))
-    this.token = tokenItem && tokenItem.slice(tokenItem.indexOf('=') + 1)
+    const token = tokenItem && tokenItem.slice(tokenItem.indexOf('=') + 1)
+    this.setState({ token })
   }
 
   handleUploadChange = ({fileList, file}) => {
@@ -57,7 +58,7 @@ class UploadImg extends Component {
 
   render() {
     const self = this
-    const { loading } = this.state
+    const { loading, token } = this.state
     const {
       bindUploadProps = {},
       value,
@@ -68,7 +69,7 @@ class UploadImg extends Component {
       name: 'photo',
       action: baseURL + 'photos',
       headers: {
-        Authorization: this.token
+        Authorization: token
       },
       data: {
       },
