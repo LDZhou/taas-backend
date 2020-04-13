@@ -130,7 +130,7 @@ function Application(props) {
       ]
     },
     share_photo_id: {
-      label: '⼆维码分享图',
+      label: '⼆维码分享图(建议宽高16:25)',
       tag: UploadImg,
       initValue: chainDetail.share_photo,
       props: {

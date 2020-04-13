@@ -78,7 +78,7 @@ class List extends Component {
       {
         title: '尺⼨',
         dataIndex: 'size',
-        width: 60
+        width: 80
       },
       {
         title: '数量',
