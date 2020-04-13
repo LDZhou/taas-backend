@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Row, Col, Popconfirm, message, Spin, Select } from 'antd';
 import UploadImg from '../../common/uploadImg/index'
-import { BrandType } from '../../../utils/utils'
+import { BrandType, EnBrandType } from '../../../utils/utils'
 import WrapPhotos from '../../common/wrapPhotos/index'
+import { connect } from 'react-redux'
 
 const { createElement } = React
 const { Item } = Form
@@ -10,6 +11,7 @@ const { Option } = Select
 
 function Application(props) {
   let brandId = props.match.params.id
+  const { explain, lang } = props
   useEffect(() => {
     if (brandId) {
       getBrandDetail()
@@ -95,29 +97,29 @@ function Application(props) {
   }
   const renderDetailForm = {
     name: {
-      label: '名称'
+      label: lang === 'zh_CN' ? '名称' : 'Name'
     },
     brand_type: {
-      label: '类别',
+      label: explain['Type'],
       tag: Select,
       props: {
         placeholder: '请选择类别',
         className: 'select-brand_type',
         getPopupContainer: () => document.getElementsByClassName('select-brand_type')[0]
       },
-      children: Object.entries(BrandType).map(item => <Option value={item[0]} key={item[0]}>{item[1]}</Option>)
+      children: Object.entries(lang === 'zh_CN' ? BrandType : EnBrandType).map(item => <Option value={item[0]} key={item[0]}>{item[1]}</Option>)
     },
     address: {
-      label: '公司地址'
+      label: explain['Address'],
     },
     contact_name: {
-      label: '联系⼈姓名'
+      label: explain['Representative Name'],
     },
     contact_title: {
-      label: '联系⼈职位'
+      label: explain['Representative Position'],
     },
     contact_phone: {
-      label: '联系⼈电话',
+      label: explain['Representative Mobile No'],
       props: {
         type: 'number'
       },
@@ -127,17 +129,17 @@ function Application(props) {
       ]
     },
     contact_email: {
-      label: '联系⼈邮箱'
+      label: explain['Representative Email Add'],
     },
     user_id: {
-      label: '负责人ID',
+      label: explain['Representative User ID'],
       props: {
         type: 'number'
       },
       rules: []
     },
     license_photo_id: {
-      label: '营业执照',
+      label: explain['Business License'],
       tag: UploadImg,
       initValue: brandDetail.business_license,
       props: {
@@ -153,7 +155,7 @@ function Application(props) {
   const renderDetail = (key) => {
     switch (key) {
       case 'brand_type':
-        return BrandType[brandDetail.brand_type] || '-'
+        return (lang === 'zh_CN' ? BrandType[brandDetail.brand_type] : EnBrandType[brandDetail.brand_type]) || '-'
       case 'license_photo_id':
         return brandDetail.business_license ? <img src={brandDetail.business_license.url} className='cover-photo'/> : '-'
       default :
@@ -164,15 +166,15 @@ function Application(props) {
   return (
     <Spin className='form-container' tip='Loading...' spinning={loading}>
       <div className='title-container'>
-        <h2 className="title-text">品牌详情</h2>
-        <Button type='primary' onClick={() => { useIsEdit(true) }} disabled={isEdit}>编辑</Button>
+        <h2 className="title-text">{explain['Brand Details']}</h2>
+        <Button type='primary' onClick={() => { useIsEdit(true) }} disabled={isEdit}>{explain['Edit']}</Button>
         {brandDetail.id && <Popconfirm
           title="确定删除品牌？"
           onConfirm={confirmDeleteBrand}
           okText="Yes"
           cancelText="No"
         >
-          <Button type="danger" style={{marginLeft: 20}}>删除</Button>
+          <Button type="danger" style={{marginLeft: 20}}>{explain['Delete']}</Button>
         </Popconfirm>}
       </div>
       <Form className='form-content-container' {...formItemLayout} onSubmit={handleSubmit}>
@@ -196,7 +198,7 @@ function Application(props) {
               )}
             </Item>
           })}
-          <Item label="相关资质">
+          <Item label={explain['Relevant Certifications']}>
             {getFieldDecorator('certificate_photo_ids', {
               initialValue: brandDetail.certificates || []
             })(
@@ -208,7 +210,7 @@ function Application(props) {
                 }}/>
             )}
           </Item>
-          <Item label='注册时间'>
+          <Item label={explain['Registration Time']}>
             <div>{brandDetail.created_at || '-'}</div>
           </Item>
           {isEdit && <Row style={{marginTop: 20}}>
@@ -227,5 +229,16 @@ function Application(props) {
   )
 }
 
-const WrappedApplicationForm = Form.create()(Application);
-export default WrappedApplicationForm
+function mapStateToProps(state) {
+  return {
+    lang: state.LangReducer.lang,
+    explain: state.ExplainReducer.explain,
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Form.create()(Application))

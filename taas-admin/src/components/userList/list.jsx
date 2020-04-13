@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Table} from 'antd'
+import { connect } from 'react-redux'
 
 class List extends Component {
   state={
@@ -33,6 +34,7 @@ class List extends Component {
   render () {
     const self = this
     const { data } = this.state
+    const { explain } = this.props
     let columns = [
       {
         title: 'ID',
@@ -47,7 +49,7 @@ class List extends Component {
         )
       },
       {
-        title: '姓名',
+        title: explain['Name'],
         dataIndex: 'nickname',
         render: (text, record) => (
           <span>
@@ -60,33 +62,33 @@ class List extends Component {
         width: 180
       },
       {
-        title: '性别',
+        title: explain['Gender'],
         dataIndex: 'gender',
         render (text) {
           return ['男', '女'][text]
         }
       },
       {
-        title: '年龄',
+        title: explain['Age'],
         dataIndex: 'age'
       },
       {
-        title: '⽣⽇',
+        title: explain['Date of Birth'],
         dataIndex: 'date_of_birth'
       },
       {
-        title: '⼿机号',
+        title: explain['Mobile'],
         dataIndex: 'phone'
       },
       {
-        title: '注册⽇期',
+        title: explain['Registration Time'],
         dataIndex: 'created_at'
       }
     ]
     return (
       <div>
         <div className='title-container'>
-          <h2 className="title-text">用户</h2>
+          <h2 className="title-text">{explain['Users']}</h2>
         </div>
         <Table
           className='list-table'
@@ -108,4 +110,15 @@ class List extends Component {
   }
 }
 
-export default List;
+function mapStateToProps(state) {
+  return {
+    explain: state.ExplainReducer.explain,
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(List)

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Table, Button} from 'antd'
+import { connect } from 'react-redux'
 
 class List extends Component {
   state={
@@ -33,6 +34,7 @@ class List extends Component {
   render() {
     const self = this
     const { data } = this.state
+    const { explain, lang } = this.props
     let columns = [
       {
         title: 'ID',
@@ -47,7 +49,7 @@ class List extends Component {
         )
       },
       {
-        title: '名称',
+        title: lang === 'zh_CN' ? '名称' : 'Name',
         dataIndex: 'name',
         render: (text, record) => (
           <span>
@@ -60,7 +62,7 @@ class List extends Component {
         width: 180
       },
       {
-        title: '品牌',
+        title: explain['Brand'],
         dataIndex: 'brand_name',
         render: (text, record) => (
           <span>
@@ -72,31 +74,31 @@ class List extends Component {
           )
       },
       {
-        title: '型号',
+        title: explain['Model'],
         dataIndex: 'model'
       },
       {
-        title: '尺⼨',
+        title: explain['Size'],
         dataIndex: 'size',
         width: 80
       },
       {
-        title: '数量',
+        title: explain['Quantity'],
         dataIndex: 'quantity'
       },
       {
-        title: '材质',
+        title: explain['Material'],
         dataIndex: 'material'
       },
       {
-        title: '生产日期',
+        title: explain['Production Time'],
         dataIndex: 'manufactured_at'
       }
     ]
     return (
       <div>
         <div className='title-container'>
-          <h2 className="title-text">产品</h2>
+          <h2 className="title-text">{explain['Products']}</h2>
           <Button onClick={this.addProduct} type='primary'>新建产品</Button>
         </div>
         <Table
@@ -119,4 +121,16 @@ class List extends Component {
   }
 }
 
-export default List;
+function mapStateToProps(state) {
+  return {
+    lang: state.LangReducer.lang,
+    explain: state.ExplainReducer.explain,
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(List)

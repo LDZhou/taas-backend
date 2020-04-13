@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Table, Button} from 'antd'
+import { connect } from 'react-redux'
 
 class List extends Component {
   state={
@@ -33,6 +34,7 @@ class List extends Component {
   render() {
     const self = this
     const { data } = this.state
+    const { explain, lang } = this.props
     let columns = [
       {
         title: 'ID',
@@ -48,7 +50,7 @@ class List extends Component {
         width: 90
       },
       {
-        title: '名称',
+        title: lang === 'zh_CN' ? '名称' : 'Name',
         dataIndex: 'name',
         render: (text, record) => (
           <span>
@@ -61,14 +63,14 @@ class List extends Component {
         width: 180
       },
       {
-        title: '创建⽇期',
+        title: explain['Creation Time'],
         dataIndex: 'created_at'
       }
     ]
     return (
       <div>
         <div className='title-container'>
-          <h2 className="title-text">链条</h2>
+          <h2 className="title-text">{explain['Chains']}</h2>
           <Button onClick={this.addChain} type='primary'>新建链条</Button>
         </div>
         <Table
@@ -91,4 +93,18 @@ class List extends Component {
   }
 }
 
-export default List;
+
+function mapStateToProps(state) {
+  return {
+    lang: state.LangReducer.lang,
+    explain: state.ExplainReducer.explain,
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(List)
+

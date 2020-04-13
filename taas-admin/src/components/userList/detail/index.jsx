@@ -3,6 +3,7 @@ import { Form, Input, Button, Row, Col, Spin, Select, DatePicker, Table, message
 // import UploadImg from '../../common/uploadImg/index'
 import moment from 'moment'
 // import { baseURL } from '../../../request'
+import { connect } from 'react-redux'
 
 const { Option } = Select
 const { createElement } = React
@@ -10,6 +11,7 @@ const { Item } = Form
 
 function Application(props) {
   let userId = props.match.params.id
+  const { explain } = props
   useEffect(() => {
     if (userId) {
       getUserDetail()
@@ -67,10 +69,10 @@ function Application(props) {
 
   const renderDetailForm = {
     nickname: {
-      label: '姓名',
+      label: explain['Name'],
     },
     gender: {
-      label: '性别',
+      label: explain['Gender'],
       tag: Select,
       initValue: userDetail.gender,
       props: {
@@ -82,7 +84,7 @@ function Application(props) {
       ]
     },
     user_type: {
-      label: '类别',
+      label: explain['Type'],
       tag: Select,
       initValue: userDetail.user_type,
       props: {
@@ -94,13 +96,13 @@ function Application(props) {
       ]
     },
     email: {
-      label: '邮箱',
+      label: explain['E-mail'],
       rules: [
         { required: false, message: ' ' },
       ]
     },
     date_of_birth: {
-      label: '⽣⽇',
+      label: explain['Date of Birth'],
       tag: DatePicker,
       initValue: userDetail.date_of_birth ? moment(userDetail.date_of_birth, 'YYYY年MM月DD日') : null,
       props: {
@@ -111,7 +113,7 @@ function Application(props) {
       ]
     },
     phone: {
-      label: '⼿机号',
+      label: explain['Mobile'],
       props: {
         type: 'number'
       },
@@ -121,7 +123,7 @@ function Application(props) {
       ]
     },
     password: {
-      label: '密码',
+      label: explain['Password'],
       initValue: '',
       rules: [{ min: 6, message: `密码长度不能小于六位!` }]
     }
@@ -145,7 +147,7 @@ function Application(props) {
       dataIndex: 'id'
     },
     {
-      title: '链条名称',
+      title: explain['Chain Name'],
       dataIndex: 'chain.name',
       render: (text, record) => (
         <span>
@@ -157,7 +159,7 @@ function Application(props) {
       )
     },
     {
-      title: '产品名称',
+      title: explain['Product Name'],
       dataIndex: 'product_name',
       render: (text, record) => (
         <span>
@@ -169,11 +171,11 @@ function Application(props) {
       )
     },
     {
-      title: '浏览时间',
+      title: explain['Browsing Time'],
       dataIndex: 'created_at'
     },
     {
-      title: '浏览地点',
+      title: explain['Browsing Location'],
       dataIndex: 'address'
     }
   ]
@@ -181,7 +183,7 @@ function Application(props) {
   return (
     <Spin className='form-container' tip='Loading...' spinning={loading}>
       <div className='title-container'>
-        <h2 className="title-text">用户详情</h2>
+        <h2 className="title-text">{explain['User Details']}</h2>
         <Button type='primary' onClick={() => { useIsEdit(true) }} disabled={isEdit}>编辑</Button>
       </div>
       <Form className='form-content-container' {...formItemLayout} onSubmit={handleSubmit}>
@@ -189,7 +191,7 @@ function Application(props) {
           <Item label={<span>ID</span>}>
             <div>{userDetail.id || '-'}</div>
           </Item>
-          <Item label="头像">
+          <Item label={explain['Profile Picture']}>
             {/* {getFieldDecorator('avatar', {
                 initialValue: {url: userDetail.avatar}
               })(
@@ -211,8 +213,8 @@ function Application(props) {
             )} */}
             {userDetail.avatar ? <img src={userDetail.avatar} style={{maxWidth: 100, maxHeight: 150, marginLeft: 16}}/> : '-'}
           </Item>
-          <Item label={<span>年龄</span>}>
-            <div>{userDetail.age}岁</div>
+          <Item label={explain['Age']}>
+            <div>{userDetail.age}{explain['years']}</div>
           </Item>
           {Object.keys(renderDetailForm).map(key => {
             return <Item label={renderDetailForm[key].label || ''} key={key}>
@@ -226,7 +228,7 @@ function Application(props) {
               )}
           </Item>
           })}
-          <Item label='注册⽇期'>
+          <Item label={explain['Registration Time']}>
             <div>{userDetail.created_at || '-'}</div>
           </Item>
           {isEdit && <Row style={{marginTop: 20}}>
@@ -244,7 +246,7 @@ function Application(props) {
 
       {userDetail.user_views && <Fragment>
         <div className='title-container title-container-next'>
-          <h2 className="title-text">浏览记录</h2>
+          <h2 className="title-text">{explain['Browsing History']}</h2>
         </div>
         <Table
           className='list-table'
@@ -258,5 +260,15 @@ function Application(props) {
   )
 }
 
-const WrappedApplicationForm = Form.create()(Application);
-export default WrappedApplicationForm
+function mapStateToProps(state) {
+  return {
+    explain: state.ExplainReducer.explain,
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Form.create()(Application))

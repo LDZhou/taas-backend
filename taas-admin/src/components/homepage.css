@@ -73,3 +73,33 @@
   box-sizing: border-box;
   padding: 30px 40px;
 }
+
+.login-info{
+  position: relative;
+}
+
+.switch-lang-container{
+  width: 80px;
+  border-radius: 8px;
+  border: 2px solid #ff3a7f;
+  display: flex;
+  margin: 40px 40px 0 auto;
+  color: #ff3a7f;
+  position: absolute;
+  left: -100px;
+  bottom: 20px;
+}
+
+.switch-lang-container > div{
+  width: 50%;
+  text-align: center;
+  height: 30px;
+  line-height: 30px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.switch-lang-container > .active{
+  background: #ff3a7f;
+  color: #fff;
+}

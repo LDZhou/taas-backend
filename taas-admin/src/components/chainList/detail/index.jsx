@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { Form, Input, Button, Row, Col, Popconfirm, message, Spin, Select, Table } from 'antd';
 import UploadImg from '../../common/uploadImg/index'
+import { connect } from 'react-redux'
 
 const { createElement } = React
 const { Item } = Form
@@ -8,6 +9,7 @@ const { Option } = Select
 
 function Application(props) {
   let chainId = props.match.params.id
+  const { explain, lang } = props
   useEffect(() => {
     if (chainId) {
       chainDetailInit()
@@ -112,10 +114,10 @@ function Application(props) {
 
   const renderDetailForm = {
     name: {
-      label: '名称'
+      label: lang === 'zh_CN' ? '名称' : 'Name',
     },
     cover_photo_id: {
-      label: '预览图',
+      label: explain['Preview Image'],
       tag: UploadImg,
       initValue: chainDetail.cover_photo,
       props: {
@@ -130,7 +132,7 @@ function Application(props) {
       ]
     },
     share_photo_id: {
-      label: '⼆维码分享图(建议宽高16:25)',
+      label: <span title={explain['Image to be Shared with QR Code(Recommended width and height 16:25)']}>{lang === 'zh_CN' ? explain['Image to be Shared with QR Code(Recommended width and height 16:25)'] : 'Image to be Shared...'}</span>,
       tag: UploadImg,
       initValue: chainDetail.share_photo,
       props: {
@@ -171,7 +173,7 @@ function Application(props) {
       )
     },
     {
-      title: '名称',
+      title: lang === 'zh_CN' ? '名称' : 'Name',
       dataIndex: 'name',
       render: (text, record) => (
         <span>
@@ -184,7 +186,7 @@ function Application(props) {
       width: 180
     },
     {
-      title: '品牌',
+      title: explain['Brand'],
       dataIndex: 'brand_name',
       render: (text, record) => (
         <span>
@@ -196,39 +198,39 @@ function Application(props) {
         )
     },
     {
-      title: '型号',
+      title: explain['Model'],
       dataIndex: 'model'
     },
     {
-      title: '尺⼨',
+      title: explain['Size'],
       dataIndex: 'size'
     },
     {
-      title: '数量',
+      title: explain['Quantity'],
       dataIndex: 'quantity'
     },
     {
-      title: '材质',
+      title: explain['Material'],
       dataIndex: 'material'
     },
     {
-      title: '生产日期',
+      title: explain['Production Time'],
       dataIndex: 'manufactured_at'
     },
     {
-      title: '发件⽇期',
+      title: explain['Shipping Date'],
       dataIndex: 'send_date'
     },
     {
-      title: '发件方名称',
+      title: explain['Consignor Name'],
       dataIndex: 'sender_name'
     },
     {
-      title: '收件⽇期',
+      title: explain['Reception Date'],
       dataIndex: 'deliver_date'
     },
     {
-      title: '收件⽅名称',
+      title: explain['Consignee Name'],
       dataIndex: 'receiver_name'
     }
   ]
@@ -236,15 +238,15 @@ function Application(props) {
   return (
     <Spin className='form-container' tip='Loading...' spinning={loading}>
       <div className='title-container'>
-        <h2 className="title-text">链条详情</h2>
-        <Button type='primary' onClick={() => { useIsEdit(true) }} disabled={isEdit}>编辑</Button>
+        <h2 className="title-text">{explain['Chain Details']}</h2>
+        <Button type='primary' onClick={() => { useIsEdit(true) }} disabled={isEdit}>{explain['Edit']}</Button>
         {chainDetail.id && <Popconfirm
           title="确定删除链条？"
           onConfirm={confirmDeleteChain}
           okText="Yes"
           cancelText="No"
         >
-          <Button type="danger" style={{marginLeft: 20}}>删除</Button>
+          <Button type="danger" style={{marginLeft: 20}}>{explain['Delete']}</Button>
         </Popconfirm>}
       </div>
       <Form className='form-content-container' {...formItemLayout} onSubmit={handleSubmit}>
@@ -252,10 +254,10 @@ function Application(props) {
           <Item label='ID'>
             <div>{chainDetail.id || '-'}</div>
           </Item>
-          {!isEdit && <Item label='扫码次数'>
-            <div>{chainDetail.total_views}次</div>
+          {!isEdit && <Item label={explain['Number of Scans']}>
+            <div>{chainDetail.total_views}{explain['times']}</div>
           </Item>}
-          {isEdit && <Item label="产品链条">
+          {isEdit && <Item label={explain['Choosing Products of the Chain']}>
             {getFieldDecorator('product_ids', {
                 rules: [
                   { required: true, message: ' ' },
@@ -293,7 +295,7 @@ function Application(props) {
               )}
             </Item>
           })}
-          {chainDetail.id && !isEdit && <Item label='二维码'>
+          {chainDetail.id && !isEdit && <Item label={explain['QR code']}>
             <div>
               {chainDetail.qr_code ? <img src={chainDetail.qr_code.url} className='cover-photo'/> : '-'}
             </div>
@@ -312,7 +314,7 @@ function Application(props) {
 
       {!isEdit && chainDetail.products && <Fragment>
         <div className='title-container title-container-next'>
-          <h2 className="sub-title-text">产品列表</h2>
+          <h2 className="sub-title-text">{explain['Product List']}</h2>
         </div>
         <Table
           className='list-table'
@@ -326,5 +328,17 @@ function Application(props) {
   )
 }
 
-const WrappedApplicationForm = Form.create()(Application);
-export default WrappedApplicationForm
+
+function mapStateToProps(state) {
+  return {
+    lang: state.LangReducer.lang,
+    explain: state.ExplainReducer.explain,
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Form.create()(Application))

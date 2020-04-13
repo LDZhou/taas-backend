@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Button } from 'antd'
 import { BrandType } from '../../utils/utils'
+import { connect } from 'react-redux'
 
 class List extends Component {
   state={
@@ -34,6 +35,7 @@ class List extends Component {
   render() {
     const self = this
     const { data } = this.state
+    const { explain, lang } = this.props
     const columns = [
       {
         title: 'ID',
@@ -48,7 +50,7 @@ class List extends Component {
         )
       },
       {
-        title: '名称',
+        title: lang === 'zh_CN' ? '名称' : 'Name',
         dataIndex: 'name',
         render: (text, record) => (
           <span>
@@ -61,42 +63,42 @@ class List extends Component {
         width: 180
       },
       {
-        title: '类别',
+        title: explain['Type'],
         dataIndex: 'brand_type',
         render: text => BrandType[text],
         width: 90
       },
       {
-        title: '公司地址',
+        title: explain['Address'],
         dataIndex: 'address'
       },
       {
-        title: '联系⼈姓名',
+        title: explain['Representative Name'],
         dataIndex: 'contact_name',
         width: 110
       },
       {
-        title: '联系⼈职位',
+        title: explain['Representative Position'],
         dataIndex: 'contact_title',
         width: 110
       },
       {
-        title: '联系⼈电话',
+        title: explain['Representative Mobile No'],
         dataIndex: 'contact_phone'
       },
       {
-        title: '联系⼈邮箱',
+        title: explain['Representative Email Add'],
         dataIndex: 'contact_email'
       },
       {
-        title: '注册时间',
+        title: explain['Registration Time'],
         dataIndex: 'created_at'
       }
     ]
     return (
       <div>
         <div className='title-container'>
-          <h2 className="title-text">品牌</h2>
+          <h2 className="title-text">{explain['Brands']}</h2>
           <Button onClick={this.addBrand} type='primary'>新建品牌</Button>
         </div>
         <Table
@@ -119,4 +121,16 @@ class List extends Component {
   }
 }
 
-export default List;
+function mapStateToProps(state) {
+  return {
+    lang: state.LangReducer.lang,
+    explain: state.ExplainReducer.explain,
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(List)

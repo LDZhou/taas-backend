@@ -5,12 +5,14 @@ import '../../common/uploadImg/index.css'
 import moment from 'moment'
 import WrapPhotos from '../../common/wrapPhotos/index'
 import { LinkOutlined } from '@ant-design/icons'
+import { connect } from 'react-redux'
 
 const { createElement } = React
 const { Item } = Form
 
 function Application(props) {
   let productId = props.match.params.id
+  const { explain, lang } = props
   useEffect(() => {
     if (productId) {
       getProductDetail()
@@ -99,27 +101,27 @@ function Application(props) {
 
   const renderDetailForm = {
     brand_id: {
-      label: '品牌ID',
+      label: explain['Brand ID'],
       props: {
         type: 'number'
       }
     },
     name: {
-      label: '名称'
+      label: lang === 'zh_CN' ? '名称' : 'Name'
     },
     title: {
-      label: '步骤分类'
+      label: explain['Procedure']
     },  
     wastage_percent: {
-      label: '材料损耗⽐例',
+      label: explain['Material Loss Ratio'],
       rules: []
     },
     additive_percent: {
-      label: '添加物⽐例',
+      label: explain['Additive Ratio'],
       rules: []
     },
     photo_ids: {
-      label: '产品图⽚',
+      label: explain['Product Pictures'],
       tag: WrapPhotos,
       initValue: productDetail.photos,
       props: {
@@ -132,32 +134,32 @@ function Application(props) {
       rules: []
     },
     model: {
-      label: '型号'
+      label: explain['Model'],
     },
     size: {
-      label: '尺⼨',
+      label: explain['Size'],
       rules: []
     },
     weight: {
-      label: '克重',
+      label: explain['Unit Weight'],
       rules: []
     },
     quantity: {
-      label: '数量',
+      label: explain['Quantity'],
       props: {
         type: 'number'
       },
       rules: []
     },
     material: {
-      label: '材质'
+      label: explain['Material'],
     },
     material_percent: {
-      label: '各使⽤材料占⽐',
+      label: explain['Material Ratio'],
       rules: [ { required: false } ]
     },
     product_manual_id: {
-      label: '产品⽂档',
+      label: explain['Product Document'],
       tag: UploadImg,
       initValue: productDetail.product_manual,
       props: {
@@ -169,7 +171,7 @@ function Application(props) {
       rules: []
     },
     manufactured_at: {
-      label: '⽣产时间',
+      label: explain['Production Time'],
       tag: DatePicker,
       initValue: productDetail.manufactured_at ? moment(productDetail.manufactured_at, 'YYYY-MM-DD') : null,
       props: {
@@ -178,7 +180,7 @@ function Application(props) {
       }
     },
     send_date: {
-      label: '发件⽇期',
+      label: explain['Shipping Date'],
       tag: DatePicker,
       initValue: productDetail.send_date ? moment(productDetail.send_date, 'YYYY-MM-DD') : null,
       props: {
@@ -188,7 +190,7 @@ function Application(props) {
       rules: [ { required: false } ]
     },
     deliver_date: {
-      label: '收件⽇期',
+      label: explain['Reception Date'],
       tag: DatePicker,
       initValue: productDetail.deliver_date ? moment(productDetail.deliver_date, 'YYYY-MM-DD') : null,
       props: {
@@ -198,38 +200,38 @@ function Application(props) {
       rules: [ { required: false } ]
     },
     pkg_name: {
-      label: '运送物品名称',
+      label: explain['Name of the Delivered Good'],
       rules: [ { required: false } ]
     },
     pkg_quantity: {
-      label: '运送量',
+      label: explain['Quantity Delivered'],
       props: {
         type: 'number'
       },
       rules: [ { required: false } ]
     },
     sender_name: {
-      label: '发件⽅名称',
+      label: explain['Consignor Name'],
       rules: [ { required: false } ]
     },
     sender_address: {
-      label: '发件⽅地址',
+      label: explain['Consignor Address'],
       rules: [ { required: false } ]
     },
     receiver_name: {
-      label: '收件⽅名称',
+      label: explain['Consignee Name'],
       rules: [ { required: false } ]
     },
     receiver_address: {
-      label: '收件⽅地址',
+      label: explain['Consignee Address'],
       rules: [ { required: false } ]
     },
     shipping_company: {
-      label: '物流公司名称',
+      label: explain['Logistics Company Name'],
       rules: [ { required: false } ]
     },
     shipping_no: {
-      label: '物流单号',
+      label: explain['Tracking Number'],
       rules: [ { required: false } ]
     }
   }
@@ -268,14 +270,14 @@ function Application(props) {
     <Spin className='form-container' tip='Loading...' spinning={loading}>
       <div className='title-container'>
         <h2 className="title-text">产品详情</h2>
-        <Button type='primary' onClick={() => { useIsEdit(true) }} disabled={isEdit}>编辑</Button>
+        <Button type='primary' onClick={() => { useIsEdit(true) }} disabled={isEdit}>{explain['Edit']}</Button>
         {productDetail.id && <Popconfirm
           title="确定删除产品？"
           onConfirm={confirmDeleteProduct}
           okText="Yes"
           cancelText="No"
         >
-          <Button type="danger" style={{marginLeft: 20}}>删除</Button>
+          <Button type="danger" style={{marginLeft: 20}}>{explain['Delete']}</Button>
         </Popconfirm>}
       </div>
       <Form className='form-content-container' {...formItemLayout} onSubmit={handleSubmit}>
@@ -283,7 +285,7 @@ function Application(props) {
           <Item label='ID'>
             <div>{productDetail.id || '-'}</div>
           </Item>
-          {productDetail.brand_id && <Item label='品牌'>
+          {productDetail.brand_id && <Item label={explain['Brand']}>
             <a
               onClick={(e) => { 
                 e.preventDefault()
@@ -322,5 +324,17 @@ function Application(props) {
   )
 }
 
-const WrappedApplicationForm = Form.create()(Application);
-export default WrappedApplicationForm
+
+function mapStateToProps(state) {
+  return {
+    lang: state.LangReducer.lang,
+    explain: state.ExplainReducer.explain,
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Form.create()(Application))
