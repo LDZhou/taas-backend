@@ -53,7 +53,7 @@ function Application(props) {
         if (productDetail.id) {
           window.send.put(`products/${productDetail.id}`, {product: params})
           .then(data => {
-            message.success('产品修改成功！')
+            message.success(`${explain['Product']}${explain[' modified successfully!']}`)
             useProductDetail(data.data)
             useLoading(false)
             useIsEdit(false)
@@ -64,7 +64,7 @@ function Application(props) {
         } else {
           window.send.post(`products`, {product: params})
           .then(data => {
-            message.success('产品创建成功！')
+            message.success(`${explain['Product']}${explain[' created successfully!']}`)
             useProductDetail(data.data)
             useLoading(false)
             useIsEdit(false)
@@ -81,7 +81,7 @@ function Application(props) {
     useLoading(true)
     window.send.delete(`products/${productDetail.id}`)
     .then(data => {
-      message.success('产品删除成功！')
+      message.success(`${explain['Product']}${explain[' deleted successfully!']}`)
       useLoading(false)
       props.history.goBack()
     })
@@ -175,7 +175,7 @@ function Application(props) {
       tag: DatePicker,
       initValue: productDetail.manufactured_at ? moment(productDetail.manufactured_at, 'YYYY-MM-DD') : null,
       props: {
-        placeholder: '请选择⽣产时间',
+        placeholder: `${explain['Please select the ']}${explain['Production Time']}`,
         format: 'YYYY-MM-DD'
       }
     },
@@ -184,7 +184,7 @@ function Application(props) {
       tag: DatePicker,
       initValue: productDetail.send_date ? moment(productDetail.send_date, 'YYYY-MM-DD') : null,
       props: {
-        placeholder: '请选择发件⽇期',
+        placeholder: `${explain['Please select the ']}${explain['Shipping Date']}`,
         format: 'YYYY-MM-DD'
       },
       rules: [ { required: false } ]
@@ -194,7 +194,7 @@ function Application(props) {
       tag: DatePicker,
       initValue: productDetail.deliver_date ? moment(productDetail.deliver_date, 'YYYY-MM-DD') : null,
       props: {
-        placeholder: '请选择收件⽇期',
+        placeholder: `${explain['Please select the ']}${explain['Reception Date']}`,
         format: 'YYYY-MM-DD'
       },
       rules: [ { required: false } ]
@@ -269,10 +269,10 @@ function Application(props) {
   return (
     <Spin className='form-container' tip='Loading...' spinning={loading}>
       <div className='title-container'>
-        <h2 className="title-text">产品详情</h2>
+        <h2 className="title-text">{explain['Product Details']}</h2>
         <Button type='primary' onClick={() => { useIsEdit(true) }} disabled={isEdit}>{explain['Edit']}</Button>
         {productDetail.id && <Popconfirm
-          title="确定删除产品？"
+          title={explain['Sure to delete?']}
           onConfirm={confirmDeleteProduct}
           okText="Yes"
           cancelText="No"
@@ -295,13 +295,13 @@ function Application(props) {
           {Object.keys(renderDetailForm).map(key => {
             return <Item label={renderDetailForm[key].label || ''} key={key}>
               {getFieldDecorator(key, {
-                rules:  renderDetailForm[key].rules || [{ required: true, message: `${renderDetailForm[key].label}不能为空!` }],
+                rules:  renderDetailForm[key].rules || [{ required: true, message: `${renderDetailForm[key].label}${explain[' cannot be empty!']}` }],
                 initialValue: renderDetailForm[key].initValue !== undefined ? renderDetailForm[key].initValue : (productDetail[key] || undefined)
               })(
                 isEdit ? createElement(
                   renderDetailForm[key].tag || Input,
                   Object.assign({},
-                    {placeholder: `请输入${renderDetailForm[key].label}`},
+                    {placeholder: `${explain['Please enter the ']}${renderDetailForm[key].label}`},
                     renderDetailForm[key].props),
                     renderDetailForm[key].children
                   ) : <div>{renderDetail(key)}</div>
@@ -312,7 +312,7 @@ function Application(props) {
             <Col span={22}>
               <Item className='save-button'>
                 <Button type="primary" htmlType="submit">
-                  保存
+                  {explain['Save']}
                 </Button>
               </Item>
             </Col>

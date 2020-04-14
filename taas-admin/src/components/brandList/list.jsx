@@ -99,7 +99,7 @@ class List extends Component {
       <div>
         <div className='title-container'>
           <h2 className="title-text">{explain['Brands']}</h2>
-          <Button onClick={this.addBrand} type='primary'>新建品牌</Button>
+          <Button onClick={this.addBrand} type='primary'>{lang === 'zh_CN' ? '新建品牌' : 'New'}</Button>
         </div>
         <Table
           className='list-table'

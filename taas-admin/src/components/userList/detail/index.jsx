@@ -11,7 +11,7 @@ const { Item } = Form
 
 function Application(props) {
   let userId = props.match.params.id
-  const { explain } = props
+  const { explain, lang } = props
   useEffect(() => {
     if (userId) {
       getUserDetail()
@@ -45,7 +45,7 @@ function Application(props) {
         window.send.put(`users/${userId}`, {user: params})
         .then(data => {
           useUserDetail(data.data)
-          message.success('用户修改成功！')
+          message.success(`${explain['User']}${explain[' modified successfully!']}`)
           useLoading(false)
           useIsEdit(false)
         })
@@ -76,11 +76,11 @@ function Application(props) {
       tag: Select,
       initValue: userDetail.gender,
       props: {
-        placeholder: '请选择性别'
+        placeholder: `${explain['Please select the ']}${explain['Gender']}`
       },
       children: [
-        <Option value={0} key={1}>男</Option>,
-        <Option value={1} key={2}>女</Option>
+        <Option value={0} key={1}>{lang === 'zh_CN' ? '男' : 'male'}</Option>,
+        <Option value={1} key={2}>{lang === 'zh_CN' ? '女' : 'female'}</Option>
       ]
     },
     user_type: {
@@ -88,11 +88,11 @@ function Application(props) {
       tag: Select,
       initValue: userDetail.user_type,
       props: {
-        placeholder: '请选择类别'
+        placeholder: `${explain['Please select the ']}${explain['Type']}`
       },
       children: [
-        <Option value={0} key={0}>⽤户</Option>,
-        <Option value={1} key={1}>品牌负责⼈</Option>
+        <Option value={0} key={0}>{lang === 'zh_CN' ? '⽤户' : 'User'}</Option>,
+        <Option value={1} key={1}>{lang === 'zh_CN' ? '品牌负责⼈' : 'Brand Representative User'}</Option>
       ]
     },
     email: {
@@ -106,7 +106,7 @@ function Application(props) {
       tag: DatePicker,
       initValue: userDetail.date_of_birth ? moment(userDetail.date_of_birth, 'YYYY年MM月DD日') : null,
       props: {
-        placeholder: '请选择⽣⽇'
+        placeholder: `${explain['Please select the ']}${explain['Date of Birth']}`
       },
       rules: [
         { required: false, message: ' ' },
@@ -119,13 +119,13 @@ function Application(props) {
       },
       rules: [
         { required: false, message: ' ' },
-        { max: 11, message: `⼿机号长度不超过11位!` }
+        { max: 11, message: lang === 'zh_CN' ? '⼿机号长度不超过11位！' : 'The length of the phone number must not exceed 11 digits!' }
       ]
     },
     password: {
       label: explain['Password'],
       initValue: '',
-      rules: [{ min: 6, message: `密码长度不能小于六位!` }]
+      rules: [{ min: 6, message: lang === 'zh_CN' ? '密码长度不能小于六位！' : 'Password length must not be less than six!' }]
     }
   }
 
@@ -133,9 +133,9 @@ function Application(props) {
   const renderDetail = (key) => {
     switch (key) {
       case 'gender':
-        return ['男', '女'][userDetail.gender] || '-'
+        return (lang === 'zh_CN' ? ['男', '女'][userDetail.gender] : ['male', 'female'][userDetail.gender]) || '-'
       case 'user_type':
-        return ['⽤户', '品牌负责⼈'][userDetail.user_type] || '-'
+        return (lang === 'zh_CN' ? ['⽤户', '品牌负责⼈'][userDetail.user_type] : ['User', 'Brand Representative User'][userDetail.user_type]) || '-'
       default :
         return userDetail[key] || '-'
     }
@@ -184,7 +184,7 @@ function Application(props) {
     <Spin className='form-container' tip='Loading...' spinning={loading}>
       <div className='title-container'>
         <h2 className="title-text">{explain['User Details']}</h2>
-        <Button type='primary' onClick={() => { useIsEdit(true) }} disabled={isEdit}>编辑</Button>
+        <Button type='primary' onClick={() => { useIsEdit(true) }} disabled={isEdit}>{explain['Edit']}</Button>
       </div>
       <Form className='form-content-container' {...formItemLayout} onSubmit={handleSubmit}>
         <div className='form-content-wrap'>
@@ -219,12 +219,12 @@ function Application(props) {
           {Object.keys(renderDetailForm).map(key => {
             return <Item label={renderDetailForm[key].label || ''} key={key}>
               {getFieldDecorator(key, {
-                // rules: renderDetailForm[key].rules || [{ required: true, message: `${renderDetailForm[key].label}不能为空!` }],
+                // rules: renderDetailForm[key].rules || [{ required: true, message: `${renderDetailForm[key].label}${explain[' cannot be empty!']}` }],
                 initialValue: renderDetailForm[key].initValue !== undefined ? renderDetailForm[key].initValue : (userDetail[key] || undefined)
               })(
                 isEdit ? createElement(
                   renderDetailForm[key].tag || Input,
-          Object.assign({}, {placeholder: `请输入${renderDetailForm[key].label}`}, renderDetailForm[key].props), renderDetailForm[key].children) : <div>{renderDetail(key)}</div>
+          Object.assign({}, {placeholder: `${explain['Please enter the ']}${renderDetailForm[key].label}`}, renderDetailForm[key].props), renderDetailForm[key].children) : <div>{renderDetail(key)}</div>
               )}
           </Item>
           })}
@@ -235,7 +235,7 @@ function Application(props) {
             <Col span={22}>
               <Item className='save-button'>
                 <Button type="primary" htmlType="submit">
-                  保存
+                  {explain['Save']}
                 </Button>
               </Item>
             </Col>
@@ -262,6 +262,7 @@ function Application(props) {
 
 function mapStateToProps(state) {
   return {
+    lang: state.LangReducer.lang,
     explain: state.ExplainReducer.explain,
   }
 }

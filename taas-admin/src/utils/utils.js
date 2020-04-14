@@ -96,6 +96,7 @@ export const explain = {
   // User List
   'User List': '用户列表',
   'Users': '用户',
+  'User': '用户',
   'User Details': '用户详情',
   'Profile Picture': '头像',
   'Age': '年龄',
@@ -117,6 +118,7 @@ export const explain = {
   // Product List
   'Product List': '产品列表',
   'Products': '产品',
+  'Product': '产品',
   'Product Details': '产品详情',
   'Brand': '品牌',
   'Brand ID': '品牌ID',
@@ -176,6 +178,7 @@ export const explain = {
   'Chain List': '链条列表',
   'Chain Details': '链条详情',
   'Chains': '链条',
+  'Chain': '链条',
   'Choosing Products of the Chain': '产品链条',
   'Number of Scans': '扫码次数',
   'times': '次',
@@ -183,4 +186,15 @@ export const explain = {
   'Preview Image': '预览图',
   'Image to be Shared with QR Code(Recommended width and height 16:25)': '二维码分享图(建议宽高16:25)',
   'QR code': '二维码',
+  // form
+  ' deleted successfully!': '删除成功！',
+  ' created successfully!': '创建成功！',
+  ' modified successfully!': '修改成功！',
+  'Sure to delete?': '确定删除？',
+  'Save': '保存',
+  'Login': '登陆',
+  'Please enter the ': '请输入',
+  'Please select the ': '请选择',
+  'Please upload the ': '请上传',
+  ' cannot be empty!': '不能为空！'
 }

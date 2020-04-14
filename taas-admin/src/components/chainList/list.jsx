@@ -71,7 +71,7 @@ class List extends Component {
       <div>
         <div className='title-container'>
           <h2 className="title-text">{explain['Chains']}</h2>
-          <Button onClick={this.addChain} type='primary'>新建链条</Button>
+          <Button onClick={this.addChain} type='primary'>{lang === 'zh_CN' ? '新建链条' : 'New'}</Button>
         </div>
         <Table
           className='list-table'

@@ -41,9 +41,24 @@ body{
 }
 
 .login-form-button{
-  background-color: #1890ff;
-  border-color: #1890ff;
+  background-color: #ff3a7f;
+  border-color: #ff3a7f;
   color: #fff;
+}
+
+.login-form-button:hover{
+  color: #ff3a7f;
+  border-color: #ff3a7f;
+}
+
+.login-form-button:active{
+  color: #ff3a7f;
+  border-color: #ff3a7f;
+}
+
+.login-form-button:focus{
+  color: #ff3a7f;
+  border-color: #ff3a7f;
 }
 
 .user-setting-item{

@@ -66,7 +66,7 @@ function Application(props) {
         if (chainDetail.id) {
           window.send.put(`chains/${chainDetail.id}`, {chain: params})
           .then(data => {
-            message.success('链条修改成功！')
+            message.success(`${explain['Chain']}${explain[' modified successfully!']}`)
             useChainDetail(data.data)
             useLoading(false)
             useIsEdit(false)
@@ -77,7 +77,7 @@ function Application(props) {
         } else {
           window.send.post(`chains`, {chain: params})
           .then(data => {
-            message.success('链条创建成功！')
+            message.success(`${explain['Chain']}${explain[' created successfully!']}`)
             useChainDetail(data.data)
             useLoading(false)
             useIsEdit(false)
@@ -94,7 +94,7 @@ function Application(props) {
     useLoading(true)
     window.send.delete(`chains/${chainDetail.id}`)
     .then(data => {
-      message.success('链条删除成功！')
+      message.success(`${explain['Chain']}${explain[' deleted successfully!']}`)
       useLoading(false)
       props.history.goBack()
     })
@@ -128,7 +128,7 @@ function Application(props) {
       },
       rules: [
         { required: true, message: ' ' },
-        { validator:(_, value) => value ? Promise.resolve() : Promise.reject('请选择上传预览图!') }
+        { validator:(_, value) => value ? Promise.resolve() : Promise.reject(lang === 'zh_CN' ? '请上传预览图！' : (explain['Please upload the '] + explain['Preview Image'] + '!')) }
       ]
     },
     share_photo_id: {
@@ -241,7 +241,7 @@ function Application(props) {
         <h2 className="title-text">{explain['Chain Details']}</h2>
         <Button type='primary' onClick={() => { useIsEdit(true) }} disabled={isEdit}>{explain['Edit']}</Button>
         {chainDetail.id && <Popconfirm
-          title="确定删除链条？"
+          title={explain['Sure to delete?']}
           onConfirm={confirmDeleteChain}
           okText="Yes"
           cancelText="No"
@@ -257,20 +257,20 @@ function Application(props) {
           {!isEdit && <Item label={explain['Number of Scans']}>
             <div>{chainDetail.total_views}{explain['times']}</div>
           </Item>}
-          {isEdit && <Item label={explain['Choosing Products of the Chain']}>
+          {isEdit && <Item label={<span title={explain['Choosing Products of the Chain']}>{lang === 'zh_CN' ? explain['Choosing Products of the Chain'] : 'Choosing Products...'}</span>}>
             {getFieldDecorator('product_ids', {
                 rules: [
                   { required: true, message: ' ' },
                   {
                     validator:(_, value) => {
-                      return value && value.length >= 2 && value.length <= 10 ? Promise.resolve() : Promise.reject('请选择2-10个产品!')
+                      return value && value.length >= 2 && value.length <= 10 ? Promise.resolve() : Promise.reject(lang === 'zh_CN' ? '请选择2-10个产品!' : 'Please choose 2-10 products!')
                     }
                   }
                 ],
                 initialValue: chainDetail.products ? chainDetail.products.map(i => i.id) : []
               })(
                 <Select
-                  placeholder='请选择产品'
+                  placeholder={`${explain['Please select the ']}${explain['Products']}`}
                   mode='multiple'
                   optionFilterProp='children'
                   className='select-products-ids'
@@ -282,13 +282,13 @@ function Application(props) {
           {Object.keys(renderDetailForm).map(key => {
             return <Item label={renderDetailForm[key].label || ''} key={key}>
               {getFieldDecorator(key, {
-                rules:  renderDetailForm[key].rules || [{ required: true, message: `${renderDetailForm[key].label}不能为空!` }],
+                rules:  renderDetailForm[key].rules || [{ required: true, message: `${renderDetailForm[key].label}${explain[' cannot be empty!']}` }],
                 initialValue: renderDetailForm[key].initValue !== undefined ? renderDetailForm[key].initValue : (chainDetail[key] || undefined)
               })(
                 isEdit ? createElement(
                   renderDetailForm[key].tag || Input,
                   Object.assign({},
-                    {placeholder: `请输入${renderDetailForm[key].label}`},
+                    {placeholder: `${explain['Please enter the ']}${renderDetailForm[key].label}`},
                     renderDetailForm[key].props),
                     renderDetailForm[key].children
                   ) : <div>{renderDetail(key)}</div>
@@ -304,7 +304,7 @@ function Application(props) {
             <Col span={22}>
               <Item className='save-button'>
                 <Button type="primary" htmlType="submit">
-                  保存
+                  {explain['Save']}
                 </Button>
               </Item>
             </Col>

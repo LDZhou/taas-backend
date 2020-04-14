@@ -50,7 +50,7 @@ function Application(props) {
         if (brandDetail.id) {
           window.send.put(`brands/${brandDetail.id}`, {brand: params})
           .then(data => {
-            message.success('品牌修改成功！')
+            message.success(`${explain['Brand']}${explain[' modified successfully!']}`)
             useBrandDetail(data.data)
             useLoading(false)
             useIsEdit(false)
@@ -61,7 +61,7 @@ function Application(props) {
         } else {
           window.send.post(`brands`, {brand: params})
           .then(data => {
-            message.success('品牌创建成功！')
+            message.success(`${explain['Brand']}${explain[' created successfully!']}`)
             useBrandDetail(data.data)
             useLoading(false)
             useIsEdit(false)
@@ -78,7 +78,7 @@ function Application(props) {
     useLoading(true)
     window.send.delete(`brands/${brandDetail.id}`)
     .then(data => {
-      message.success('品牌删除成功！')
+      message.success(`${explain['Brand']}${explain[' deleted successfully!']}`)
       useLoading(false)
       props.history.goBack()
     })
@@ -103,7 +103,7 @@ function Application(props) {
       label: explain['Type'],
       tag: Select,
       props: {
-        placeholder: '请选择类别',
+        placeholder: `${explain['Please select the ']}${explain['Type']}`,
         className: 'select-brand_type',
         getPopupContainer: () => document.getElementsByClassName('select-brand_type')[0]
       },
@@ -124,8 +124,8 @@ function Application(props) {
         type: 'number'
       },
       rules: [
-        { required: true, message: ' ' },
-        { max: 11, message: `联系⼈电话长度不超过11位!` }
+        { max: 11, message: lang === 'zh_CN' ? '联系⼈电话长度不超过11位！' : 'The length of the phone number must not exceed 11 digits!' },
+        { required: true, message: `${explain['Representative Mobile No']}${explain[' cannot be empty!']}` },
       ]
     },
     contact_email: {
@@ -169,7 +169,7 @@ function Application(props) {
         <h2 className="title-text">{explain['Brand Details']}</h2>
         <Button type='primary' onClick={() => { useIsEdit(true) }} disabled={isEdit}>{explain['Edit']}</Button>
         {brandDetail.id && <Popconfirm
-          title="确定删除品牌？"
+          title={explain['Sure to delete?']}
           onConfirm={confirmDeleteBrand}
           okText="Yes"
           cancelText="No"
@@ -185,13 +185,13 @@ function Application(props) {
           {Object.keys(renderDetailForm).map(key => {
             return <Item label={renderDetailForm[key].label || ''} key={key}>
               {getFieldDecorator(key, {
-                rules:  renderDetailForm[key].rules || [{ required: true, message: `${renderDetailForm[key].label}不能为空!` }],
+                rules:  renderDetailForm[key].rules || [{ required: true, message: `${renderDetailForm[key].label}${explain[' cannot be empty!']}` }],
                 initialValue: renderDetailForm[key].initValue !== undefined ? renderDetailForm[key].initValue : (brandDetail[key] || undefined)
               })(
                 isEdit ? createElement(
                   renderDetailForm[key].tag || Input,
                   Object.assign({},
-                    {placeholder: `请输入${renderDetailForm[key].label}`},
+                    {placeholder: `${explain['Please enter the ']}${renderDetailForm[key].label}`},
                     renderDetailForm[key].props),
                     renderDetailForm[key].children
                   ) : <div>{renderDetail(key)}</div>
@@ -217,7 +217,7 @@ function Application(props) {
             <Col span={22}>
               <Item className='save-button'>
                 <Button type="primary" htmlType="submit">
-                  保存
+                  {explain['Save']}
                 </Button>
               </Item>
             </Col>
