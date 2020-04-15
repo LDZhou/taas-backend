@@ -89,7 +89,7 @@ export const EnBrandType = {
 }
 
 export const explain = {
-  'TRASHAUS Management Backend': 'TRASHAUS管理后台',
+  'TRASHAUS CRM System': 'TRASHAUS管理后台',
   'Welcome': '欢迎你',
   'Administrator': '管理员',
   'Log Out': '退出',

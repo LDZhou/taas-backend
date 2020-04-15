@@ -84,7 +84,7 @@ class Homepage extends Component {
                 <div className={lang === 'zh_CN' ? 'active' : ''} onClick={() => this.SwitchLang('zh_CN')}>中文</div>
                 <div className={lang === 'zh_CN' ? '' : 'active'} onClick={() => this.SwitchLang('en_US')}>Eng</div>
               </div>
-              <span className="login-sitename">{explain['TRASHAUS Management Backend']}</span>
+              <span className="login-sitename">{explain['TRASHAUS CRM System']}</span>
               <span className='login-name'>{explain['Welcome']}，{userInfo && userInfo.nickname} （{explain['Administrator']}）</span>
               <Button onClick={this.signOut} type='link' className='logout-btn'>{explain['Log Out']}</Button>
             </div>
