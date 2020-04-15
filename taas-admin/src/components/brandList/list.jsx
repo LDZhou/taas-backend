@@ -73,26 +73,29 @@ class List extends Component {
         dataIndex: 'address'
       },
       {
-        title: explain['Representative Name'],
+        title: explain['Rep. Name'],
         dataIndex: 'contact_name',
         width: 110
       },
       {
-        title: explain['Representative Position'],
+        title: explain['Rep. Position'],
         dataIndex: 'contact_title',
-        width: 110
+        width: 130
       },
       {
-        title: explain['Representative Mobile No'],
-        dataIndex: 'contact_phone'
+        title: explain['Rep. Mobile No'],
+        dataIndex: 'contact_phone',
+        width: 150
       },
       {
-        title: explain['Representative Email Add'],
-        dataIndex: 'contact_email'
+        title: explain['Rep. Email'],
+        dataIndex: 'contact_email',
+        width: 180
       },
       {
         title: explain['Registration Time'],
-        dataIndex: 'created_at'
+        dataIndex: 'created_at',
+        width: 160
       }
     ]
     return (

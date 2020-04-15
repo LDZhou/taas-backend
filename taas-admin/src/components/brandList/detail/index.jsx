@@ -113,26 +113,26 @@ function Application(props) {
       label: explain['Address'],
     },
     contact_name: {
-      label: explain['Representative Name'],
+      label: explain['Rep. Name'],
     },
     contact_title: {
-      label: explain['Representative Position'],
+      label: explain['Rep. Position'],
     },
     contact_phone: {
-      label: explain['Representative Mobile No'],
+      label: explain['Rep. Mobile No'],
       props: {
         type: 'number'
       },
       rules: [
         { max: 11, message: lang === 'zh_CN' ? '联系⼈电话长度不超过11位！' : 'The length of the phone number must not exceed 11 digits!' },
-        { required: true, message: `${explain['Representative Mobile No']}${explain[' cannot be empty!']}` },
+        { required: true, message: `${explain['Rep. Mobile No']}${explain[' cannot be empty!']}` },
       ]
     },
     contact_email: {
-      label: explain['Representative Email Add'],
+      label: explain['Rep. Email'],
     },
     user_id: {
-      label: explain['Representative User ID'],
+      label: explain['Rep. User ID'],
       props: {
         type: 'number'
       },

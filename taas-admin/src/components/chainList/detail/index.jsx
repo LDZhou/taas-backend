@@ -132,7 +132,7 @@ function Application(props) {
       ]
     },
     share_photo_id: {
-      label: <span title={explain['Image to be Shared with QR Code(Recommended width and height 16:25)']}>{lang === 'zh_CN' ? explain['Image to be Shared with QR Code(Recommended width and height 16:25)'] : 'Image to be Shared...'}</span>,
+      label: <span title={explain['(Recommended width and height 16:25)']}>{explain['Share Image']}</span>,
       tag: UploadImg,
       initValue: chainDetail.share_photo,
       props: {
@@ -254,7 +254,7 @@ function Application(props) {
           <Item label='ID'>
             <div>{chainDetail.id || '-'}</div>
           </Item>
-          {!isEdit && <Item label={explain['Number of Scans']}>
+          {!isEdit && <Item label={explain['Number of Views']}>
             <div>{chainDetail.total_views}{explain['times']}</div>
           </Item>}
           {isEdit && <Item label={<span title={explain['Choosing Products of the Chain']}>{lang === 'zh_CN' ? explain['Choosing Products of the Chain'] : 'Choosing Products...'}</span>}>

@@ -92,7 +92,7 @@ function Application(props) {
       },
       children: [
         <Option value={0} key={0}>{lang === 'zh_CN' ? '⽤户' : 'User'}</Option>,
-        <Option value={1} key={1}>{lang === 'zh_CN' ? '品牌负责⼈' : 'Brand Representative User'}</Option>
+        <Option value={1} key={1}>{lang === 'zh_CN' ? '品牌负责⼈' : 'Brand Rep. User'}</Option>
       ]
     },
     email: {
@@ -135,7 +135,7 @@ function Application(props) {
       case 'gender':
         return (lang === 'zh_CN' ? ['男', '女'][userDetail.gender] : ['male', 'female'][userDetail.gender]) || '-'
       case 'user_type':
-        return (lang === 'zh_CN' ? ['⽤户', '品牌负责⼈'][userDetail.user_type] : ['User', 'Brand Representative User'][userDetail.user_type]) || '-'
+        return (lang === 'zh_CN' ? ['⽤户', '品牌负责⼈'][userDetail.user_type] : ['User', 'Brand Rep. User'][userDetail.user_type]) || '-'
       default :
         return userDetail[key] || '-'
     }
