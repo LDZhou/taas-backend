@@ -37,9 +37,10 @@ class Api::ChainsController < ApiController
          photo.update_attributes(target_id: chain.id, target_type: 'Chain', photo_type: 'share_photo') if photo
        end
        if params[:chain][:product_ids]
-         products = Product.where(id: params[:chain][:product_ids])
-         products.each do |p|
-           chain.chain_products.create(product: p)
+         products = params[:chain][:product_ids]
+         products.each do |p_id|
+           p = Product.find_by_id(p_id)
+           chain.chain_products.create(product: p) if p
          end
        end
        hash = ChainSerializer.new(chain).serializable_hash
