@@ -38,9 +38,9 @@ class Api::ChainsController < ApiController
        end
        if params[:chain][:product_ids]
          products = params[:chain][:product_ids]
-         products.each do |p_id|
+         products.each_with_index do |p_id, i|
            p = Product.find_by_id(p_id)
-           chain.chain_products.create(product: p) if p
+           chain.chain_products.create(product: p, index: i + 1) if p
          end
        end
        hash = ChainSerializer.new(chain).serializable_hash
@@ -70,7 +70,7 @@ class Api::ChainsController < ApiController
            chain.chain_products.destroy_all
            ids.each_with_index do |product_id,i|
              product = Product.find_by_id(product_id)
-             chain.chain_products.create(product: product, index: i + 1)
+             chain.chain_products.create(product: product, index: i + 1) if product
            end
          end
        end
