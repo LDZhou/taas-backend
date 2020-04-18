@@ -14,7 +14,8 @@ import * as actions from '../redux/action'
 const { Header, Content, Sider } = Layout;
 class Homepage extends Component {
   state = {
-    menuKey: ''
+    menuKey: '',
+    collapsed: false
   }
 
   componentDidMount () {
@@ -46,17 +47,17 @@ class Homepage extends Component {
   }
 
   render() {
-    const { menuKey } = this.state
+    const { menuKey, collapsed } = this.state
     const { userInfo, explain, lang } = this.props
     return (
       <Layout style={{height: '100vh'}}>
         <Sider
           breakpoint="lg"
           // onBreakpoint={(broken) => { console.log(broken); }}
-          // onCollapse={(collapsed, type) => { console.log(collapsed, type); }}
+          onCollapse={(collapsed, type) => { this.setState({ collapsed }) }}
         >
           <div className="homepage-logo">
-            <img src={Logo}/>
+            <img src={Logo} style={{maxWidth: collapsed ? '100%' : 174}}/>
           </div>
           <Menu theme="dark" mode="inline" selectedKeys={[menuKey]} onClick={this.menuClick} className='homepage-menus'>
             <Menu.Item key="userList">
