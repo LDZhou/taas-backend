@@ -1,5 +1,5 @@
 class PagesController < ApplicationController
   def root
-    render :nothing => true, :status => 200
+    render file: 'public/index.html'
   end
 end
