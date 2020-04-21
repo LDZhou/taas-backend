@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="./faviconicon.ico"/>
+  <title>TRASHAUS Admin</title>
+  <style>
+    div{
+      box-sizing: border-box;
+    }
+
+    body{
+      margin: 0;
+      color: #dcdddd;
+    }
+
+    .entrance-container{
+      width: 100vw;
+      height: 100vh;
+      background-color: #000;
+      position: relative;
+    }
+
+    .entrance-btn-wrap{
+      padding: 40px 30px;
+      color: #fff;
+      font-size: 12px;
+      text-align: right;
+    }
+
+    .entrance-btn{
+      display: inline-block;
+      padding: 6px 14px;
+      border: 1px solid #dcdddd;
+      color: #dcdddd;
+      cursor: pointer;
+    }
+
+    .code-wrap{
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      margin-left: -80px;
+      margin-top: -90px;
+    }
+
+    .code-wrap > img{
+      width: 160px;
+      height: 160px;
+    }
+
+    .code-info{
+      font-size: 11px;
+      transform: translate(8px, -10px);
+    }
+    
+    .footer-container{
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      text-align: center;
+    }
+
+    .footer-info-wrap{
+      font-size: 10px;
+      text-align: right;
+      padding: 0 10px 10px 0;
+    }
+
+    .logo{
+      max-width: 220px;
+    }
+
+    .footer-info-wrap > span:last-child{
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="entrance-container">
+    <div class="entrance-btn-wrap">
+      <div class="entrance-btn">点击进入TaaS后台管理系统</div>
+    </div>
+
+    <div class="code-wrap">
+      <img src='./qrcode.png' alt='二维码'></img>
+      <div class="code-info">扫码进入TaaS垃圾追溯小程序</div>
+    </div>
+    <footer class="footer-container">
+      <img class="logo" src='./logo.png' alt='logo'></img>
+      <div class="footer-info-wrap">
+        <span>乐设科技 泸ICP备20005239号-1 www.trashaus.cn</span>
+        <span>Copyright &copy; 2020 TRASHAUS. All Rights Reserved.</span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    var btn = document.getElementsByClassName('entrance-btn')[0]
+    btn.addEventListener('click', function () {
+      window.location.href = 'http://api.trashaus.cn/admin'
+    })
+  </script>
+</body>
+</html>
