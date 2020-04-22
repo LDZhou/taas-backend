@@ -131,6 +131,14 @@ function Application(props) {
     contact_email: {
       label: explain['Rep. Email'],
     },
+    province: {
+      label: explain['Province'],
+      rules: []
+    },
+    city: {
+      label: explain['City'],
+      rules: []
+    },
     user_id: {
       label: explain['Rep. User ID'],
       props: {

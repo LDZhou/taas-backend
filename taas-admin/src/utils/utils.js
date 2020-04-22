@@ -157,6 +157,8 @@ export const explain = {
   'Rep. Mobile No': '联系人电话',
   'Rep. Email': '联系人邮箱',
   'Rep. User ID': '负责人ID',
+  'Province': '省',
+  'City': '市',
   'Business License': '营业执照',
   'Relevant Certifications': '相关资质',
   // 'Commercial brand': '商业品牌',
