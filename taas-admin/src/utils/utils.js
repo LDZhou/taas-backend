@@ -1,7 +1,7 @@
 
 export function checkLogin(self) {
   const cookies = document.cookie
-  if (cookies.split(';').some((item) => ~item.indexOf('token'))) {
+  if (cookies.split(';').some((item) => ~item.substring(0, 10).indexOf('token'))) {
     self.props.location.pathname.length <= 1 && self.props.history.push('/app/userList/list')
   } else {
     self.props.history.push('/auth/login')
@@ -25,7 +25,7 @@ export function signOut(self) {
   //   'clear'
   // ]
 const controls = [
-  'undo', 'redo', 'separator',
+  'undo', 'redo', 'remove-styles', 'separator',
   'font-size', 'bold', 'separator',
   'text-align', 'separator',
   'media', 'separator',

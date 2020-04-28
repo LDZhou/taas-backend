@@ -13,7 +13,7 @@ let params = {
 let instance = axios.create(params)
 
 instance.interceptors.request.use(function (config) {
-  const tokenItem = document.cookie.split(';').find(item => ~item.indexOf('token'))
+  const tokenItem = document.cookie.split(';').find(item => ~item.substring(0, 10).indexOf('token'))
   const token = tokenItem && tokenItem.slice(tokenItem.indexOf('=') + 1)
   token && (config.headers['Authorization'] = token)
   // console.log('config', config)
