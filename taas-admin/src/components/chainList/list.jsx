@@ -34,7 +34,7 @@ class List extends Component {
   render() {
     const self = this
     const { data } = this.state
-    const { explain, lang } = this.props
+    const { explain, lang, userInfo } = this.props
     let columns = [
       {
         title: 'ID',
@@ -60,7 +60,7 @@ class List extends Component {
             }}>{text}</a>
           </span>
         ),
-        width: 180
+        width: 360
       },
       {
         title: explain['Creation Time'],
@@ -71,7 +71,7 @@ class List extends Component {
       <div>
         <div className='title-container'>
           <h2 className="title-text">{explain['Chains']}</h2>
-          <Button onClick={this.addChain} type='primary'>{lang === 'zh_CN' ? '新建链条' : 'New'}</Button>
+          {userInfo && !userInfo.brand && <Button onClick={this.addChain} type='primary'>{lang === 'zh_CN' ? '新建链条' : 'New'}</Button>}
         </div>
         <Table
           className='list-table'
@@ -96,6 +96,7 @@ class List extends Component {
 
 function mapStateToProps(state) {
   return {
+    userInfo: state.UserInfoReducer.userInfo,
     lang: state.LangReducer.lang,
     explain: state.ExplainReducer.explain,
   }

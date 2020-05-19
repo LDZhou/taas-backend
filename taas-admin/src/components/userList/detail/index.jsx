@@ -11,7 +11,7 @@ const { Item } = Form
 
 function Application(props) {
   let userId = props.match.params.id
-  const { explain, lang } = props
+  const { explain, lang, userInfo } = props
   useEffect(() => {
     if (userId) {
       getUserDetail()
@@ -184,7 +184,7 @@ function Application(props) {
     <Spin className='form-container' tip='Loading...' spinning={loading}>
       <div className='title-container'>
         <h2 className="title-text">{explain['User Details']}</h2>
-        <Button type='primary' onClick={() => { useIsEdit(true) }} disabled={isEdit}>{explain['Edit']}</Button>
+        {userInfo && !userInfo.brand && <Button type='primary' onClick={() => { useIsEdit(true) }} disabled={isEdit}>{explain['Edit']}</Button>}
       </div>
       <Form className='form-content-container' {...formItemLayout} onSubmit={handleSubmit}>
         <div className='form-content-wrap'>
@@ -262,6 +262,7 @@ function Application(props) {
 
 function mapStateToProps(state) {
   return {
+    userInfo: state.UserInfoReducer.userInfo,
     lang: state.LangReducer.lang,
     explain: state.ExplainReducer.explain,
   }
