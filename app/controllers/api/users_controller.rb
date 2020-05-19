@@ -64,9 +64,17 @@ class Api::UsersController < ApiController
 
   def index
     page = params[:page] || 1
-		user = User.all.order('created_at DESC').page(page)
-    count = user.total_count
-    json = UserSerializer.new(user).serializable_hash[:data]
+    users = if current_user.brand_admin?
+              total_views = []
+              current_user.brands.each do |brand|
+                total_views.concat(brand.total_views)
+              end
+              User.where(id: total_views.pluck(:user_id).uniq).order('created_at DESC').page(page)
+            else
+              User.all.order('created_at DESC').page(page)
+            end
+    count = users.total_count
+    json = UserSerializer.new(users).serializable_hash[:data]
     render json: { data: json, count: count, current_page: page }, status: :ok
   end
 
