@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component, Fragment} from 'react'
 import { Layout, Menu, Icon, Button } from 'antd';
 import {HashRouter, Route, Switch} from 'react-router-dom'
 import UserList from './userList/index'
@@ -64,14 +64,14 @@ class Homepage extends Component {
               <Icon type="user" />
               <span className="nav-text">{explain['User List']}</span>
             </Menu.Item>
-            <Menu.Item key="productList">
+            {userInfo && !userInfo.brand && <Menu.Item key="productList">
               <Icon type="book" />
               <span className="nav-text">{explain['Product List']}</span>
-            </Menu.Item>
-            <Menu.Item key="brandList">
+            </Menu.Item>}
+            {userInfo && !userInfo.brand && <Menu.Item key="brandList">
               <Icon type="read" />
               <span className="nav-text">{explain['Brand List']}</span>
-            </Menu.Item>
+            </Menu.Item>}
             <Menu.Item key="chainList">
               <Icon type="file-protect" />
               <span className="nav-text">{explain['Chain List']}</span>

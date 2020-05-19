@@ -9,7 +9,7 @@ const { Option } = Select
 
 function Application(props) {
   let chainId = props.match.params.id
-  const { explain, lang } = props
+  const { explain, lang, userInfo } = props
   useEffect(() => {
     if (chainId) {
       chainDetailInit()
@@ -239,8 +239,8 @@ function Application(props) {
     <Spin className='form-container' tip='Loading...' spinning={loading}>
       <div className='title-container'>
         <h2 className="title-text">{explain['Chain Details']}</h2>
-        <Button type='primary' onClick={() => { useIsEdit(true) }} disabled={isEdit}>{explain['Edit']}</Button>
-        {chainDetail.id && <Popconfirm
+        {userInfo && !userInfo.brand && <Button type='primary' onClick={() => { useIsEdit(true) }} disabled={isEdit}>{explain['Edit']}</Button>}
+        {chainDetail.id && userInfo && !userInfo.brand && <Popconfirm
           title={explain['Sure to delete?']}
           onConfirm={confirmDeleteChain}
           okText="Yes"
@@ -312,7 +312,7 @@ function Application(props) {
         </div>
       </Form>
 
-      {!isEdit && chainDetail.products && <Fragment>
+      {!isEdit && chainDetail.products && userInfo && !userInfo.brand && <Fragment>
         <div className='title-container title-container-next'>
           <h2 className="sub-title-text">{explain['Product List']}</h2>
         </div>
@@ -331,6 +331,7 @@ function Application(props) {
 
 function mapStateToProps(state) {
   return {
+    userInfo: state.UserInfoReducer.userInfo,
     lang: state.LangReducer.lang,
     explain: state.ExplainReducer.explain,
   }
