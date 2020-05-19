@@ -29,13 +29,21 @@ class Brand < ApplicationRecord
   end
 
   def total_views
+    # 1. Find all chains
+    c_ids = chain_ids
+    # 2. Find all user_views that related to the chains
+    UserView.where(target_type: 'Chain', target_id: c_ids)
+  end
+
+  def chain_ids
     # 1. Find all products
     p_ids = products.pluck(:id)
     # 2. Find all chains that have those products
-    c_ids = ChainProduct.where(product_id: p_ids).pluck(:chain_id).uniq
-    # 3. Find all user_views that related to the chains
-    views = UserView.where(target_type: 'Chain', target_id: c_ids)
-    views
+    ChainProduct.where(product_id: p_ids).pluck(:chain_id).uniq
+  end
+
+  def chains
+    Chain.where(id: chain_ids)
   end
 
   def gender_ratio

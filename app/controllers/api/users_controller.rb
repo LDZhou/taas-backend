@@ -69,7 +69,8 @@ class Api::UsersController < ApiController
               current_user.brands.each do |brand|
                 total_views.concat(brand.total_views)
               end
-              User.where(id: total_views.pluck(:user_id).uniq).order('created_at DESC').page(page)
+              ids = total_views.pluck(:user_id).uniq
+              User.where(id: ids).order('created_at DESC').page(page)
             else
               User.all.order('created_at DESC').page(page)
             end
