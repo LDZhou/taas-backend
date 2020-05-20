@@ -63,6 +63,16 @@ class List extends Component {
         width: 360
       },
       {
+        title: 'App Id',
+        dataIndex: 'app_id',
+        width: 90
+      },
+      {
+        title: lang === 'zh_CN' ? '应用名' : 'App Name',
+        dataIndex: 'app_name',
+        width: 200
+      },
+      {
         title: explain['Creation Time'],
         dataIndex: 'created_at'
       }
