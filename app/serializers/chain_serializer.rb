@@ -1,6 +1,6 @@
 class ChainSerializer
   include FastJsonapi::ObjectSerializer
-  attributes :id, :name, :cover_photo, :share_photo, :qr_code, :total_views
+  attributes :id, :name, :cover_photo, :share_photo, :qr_code, :total_views, app_id
 
   attribute :created_at do |c|
     c.created_at_formatted
@@ -9,5 +9,9 @@ class ChainSerializer
   attribute :products do |c|
     products = c.chain_products.collect(&:product).compact
     ProductSerializer.new(products).serializable_hash[:data]
+  end
+
+  attribute :app_name do |b|
+    b.application&.name || ''
   end
 end
