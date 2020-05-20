@@ -33,8 +33,12 @@ class User < ApplicationRecord
     now.year - date_of_birth.year - ((now.month > date_of_birth.month || (now.month == date_of_birth.month && now.day >= date_of_birth.day)) ? 0 : 1)
   end
 
+  def super_admin?
+    admin && user_type == 3
+  end
+
   def brand_admin?
-    admin && brands.count.positive?
+    !super_admin? && (admin && brands.count.positive?)
   end
 
   def created_at_formatted
