@@ -17,5 +17,9 @@ class ApiController < ActionController::API
     unless current_user.admin
       render json: { ec: 401, em: 'Not Authorized' }, status: :unauthorized and return
     end
+
+    if current_user.brand_admin? && %w[api/users#index api/chains#index].exclude?("#{params['controller']}##{params['action']}")
+      render json: { ec: 401, em: 'Not Authorized' }, status: :unauthorized and return
+    end
   end
 end
