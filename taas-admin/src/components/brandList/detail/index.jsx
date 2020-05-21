@@ -46,6 +46,9 @@ function Application(props) {
         if (params.certificate_photo_ids) {
           params.certificate_photo_ids = params.certificate_photo_ids.map(item => item.id)
         }
+        if (brandDetail.app_id) {
+          params.app_id = brandDetail.app_id
+        }
         params.user_id && (params.user_id = Number(params.user_id))
         if (brandDetail.id) {
           window.send.put(`brands/${brandDetail.id}`, {brand: params})
@@ -98,6 +101,9 @@ function Application(props) {
   const renderDetailForm = {
     name: {
       label: lang === 'zh_CN' ? '名称' : 'Name'
+    },
+    app_name: {
+      label: lang === 'zh_CN' ? '应用名' : 'App Name',
     },
     brand_type: {
       label: explain['Type'],
@@ -189,6 +195,9 @@ function Application(props) {
         <div className='form-content-wrap'>
           <Item label='ID'>
             <div>{brandDetail.id || '-'}</div>
+          </Item>
+          <Item label='App ID'>
+            <div>{brandDetail.app_id || '-'}</div>
           </Item>
           {Object.keys(renderDetailForm).map(key => {
             return <Item label={renderDetailForm[key].label || ''} key={key}>

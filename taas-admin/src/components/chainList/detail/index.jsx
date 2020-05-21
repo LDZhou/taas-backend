@@ -63,6 +63,9 @@ function Application(props) {
         if (params.share_photo_id) {
           params.share_photo_id = params.share_photo_id.id
         }
+        if (chainDetail.app_id) {
+          params.app_id = chainDetail.app_id
+        }
         if (chainDetail.id) {
           window.send.put(`chains/${chainDetail.id}`, {chain: params})
           .then(data => {
@@ -115,6 +118,9 @@ function Application(props) {
   const renderDetailForm = {
     name: {
       label: lang === 'zh_CN' ? '名称' : 'Name',
+    },
+    app_name: {
+      label: lang === 'zh_CN' ? '应用名' : 'App Name',
     },
     cover_photo_id: {
       label: explain['Preview Image'],
@@ -253,6 +259,9 @@ function Application(props) {
         <div className='form-content-wrap'>
           <Item label='ID'>
             <div>{chainDetail.id || '-'}</div>
+          </Item>
+          <Item label='App ID'>
+            <div>{chainDetail.app_id || '-'}</div>
           </Item>
           {!isEdit && <Item label={explain['Number of Views']}>
             <div>{chainDetail.total_views}{explain['times']}</div>
