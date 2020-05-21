@@ -12,6 +12,7 @@ Rails.application.routes.draw do
         post :view
       end
     end
+    resources :applications
     resources :products
     resources :photos
     resources :brands
