@@ -44,7 +44,12 @@ class Api::ProductsController < ApiController
    def update
      product = Product.find_by_id(params[:id])
      if product
-       product.update_attributes(product_params)
+       begin
+         product.update_attributes!(product_params)
+       rescue => e
+         msg = e.message
+         render json: { ec: 400, em: msg }, status: :bad_request and return
+       end
        # Update photos
        if params[:product][:photo_ids]
          ids = params[:product][:photo_ids]
