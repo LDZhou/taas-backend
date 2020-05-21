@@ -44,6 +44,9 @@ function Application(props) {
       useApplications(vals[2].data)
       useLoading(false)
     })
+    .catch(err => {
+      useLoading(false)
+    })
   }
 
   function createInit () {
