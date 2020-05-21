@@ -93,6 +93,7 @@ export const explain = {
   'Welcome': '欢迎你',
   'Administrator': '管理员',
   'Log Out': '退出',
+  'App Name': '应用名',
   // User List
   'User List': '用户列表',
   'Users': '用户',

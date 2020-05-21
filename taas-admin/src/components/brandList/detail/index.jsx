@@ -14,20 +14,31 @@ function Application(props) {
   const { explain, lang } = props
   useEffect(() => {
     if (brandId) {
-      getBrandDetail()
+      detailInit()
     }
   }, [])
 
   const [brandDetail, useBrandDetail] = useState({})
 
-  function getBrandDetail () {
-    window.send.get(`brands/${brandId}`).then(data => {
-      useBrandDetail(data.data)
+  const [applications, useApplications] = useState([])
+
+  function detailInit () {
+    Promise.all([getBrandDetail(), getApplications()]).then(vals => {
+      useBrandDetail(vals[0].data)
+      useApplications(vals[1].data)
       useLoading(false)
     })
     .catch(err => {
       useLoading(false)
     })
+  }
+
+  function getBrandDetail () {
+    return window.send.get(`brands/${brandId}`)
+  }
+
+  function getApplications () {
+    return window.send.get(`applications`)
   }
 
   const [loading, useLoading] = useState(() => Boolean(brandId))
@@ -45,9 +56,6 @@ function Application(props) {
         }
         if (params.certificate_photo_ids) {
           params.certificate_photo_ids = params.certificate_photo_ids.map(item => item.id)
-        }
-        if (brandDetail.app_id) {
-          params.app_id = brandDetail.app_id
         }
         params.user_id && (params.user_id = Number(params.user_id))
         if (brandDetail.id) {
@@ -102,8 +110,15 @@ function Application(props) {
     name: {
       label: lang === 'zh_CN' ? '名称' : 'Name'
     },
-    app_name: {
-      label: lang === 'zh_CN' ? '应用名' : 'App Name',
+    app_id: {
+      label: explain['App Name'],
+      tag: Select,
+      props: {
+        placeholder: `${explain['Please select the ']}${explain['App Name']}`,
+        className: 'select-app_id',
+        getPopupContainer: () => document.getElementsByClassName('select-app_id')[0]
+      },
+      children: applications.map(item => <Option value={item.id} key={item.id}>{item.name}</Option>)
     },
     brand_type: {
       label: explain['Type'],

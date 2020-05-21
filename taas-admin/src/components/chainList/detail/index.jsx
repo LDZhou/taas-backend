@@ -22,6 +22,8 @@ function Application(props) {
 
   const [allproducts, useAllproducts] = useState([])
 
+  const [applications, useApplications] = useState([])
+
   function getAllProducts () {
     return window.send.get(`products`)
   }
@@ -30,11 +32,16 @@ function Application(props) {
     return window.send.get(`chains/${chainId}`)
   }
 
+  function getApplications () {
+    return window.send.get(`applications`)
+  }
+
   function chainDetailInit () {
-    Promise.all([getAllProducts(), getChainDetail()])
+    Promise.all([getAllProducts(), getChainDetail(), getApplications()])
     .then(vals => {
       useAllproducts(vals[0].data)
       useChainDetail(vals[1].data)
+      useApplications(vals[2].data)
       useLoading(false)
     })
   }
@@ -62,9 +69,6 @@ function Application(props) {
         }
         if (params.share_photo_id) {
           params.share_photo_id = params.share_photo_id.id
-        }
-        if (chainDetail.app_id) {
-          params.app_id = chainDetail.app_id
         }
         if (chainDetail.id) {
           window.send.put(`chains/${chainDetail.id}`, {chain: params})
@@ -119,8 +123,15 @@ function Application(props) {
     name: {
       label: lang === 'zh_CN' ? '名称' : 'Name',
     },
-    app_name: {
-      label: lang === 'zh_CN' ? '应用名' : 'App Name',
+    app_id: {
+      label: explain['App Name'],
+      tag: Select,
+      props: {
+        placeholder: `${explain['Please select the ']}${explain['App Name']}`,
+        className: 'select-app_id',
+        getPopupContainer: () => document.getElementsByClassName('select-app_id')[0]
+      },
+      children: applications.map(item => <Option value={item.id} key={item.id}>{item.name}</Option>)
     },
     cover_photo_id: {
       label: explain['Preview Image'],
