@@ -34,6 +34,12 @@ class Api::ApplicationsController < ApiController
     render json: {}, status: :ok
   end
 
+  def index
+    apps = Application.all.order('created_at ASC')
+    hash = ApplicationSerializer.new(apps).serializable_hash
+    render json: hash, status: :ok
+  end
+
   private
 
   def app_params

@@ -2,7 +2,7 @@ class Brand < ApplicationRecord
   paginates_per 20
 
   belongs_to :user, optional: true
-  belongs_to :application, optional: true
+  belongs_to :app, class_name: 'Application', foreign_key: :app_id, optional: true
   has_many :products, -> { order 'created_at DESC'  }
   has_many :photos, -> { order 'created_at DESC'  }, as: :target
 

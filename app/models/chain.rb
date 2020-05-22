@@ -3,7 +3,7 @@ require 'wechat_api'
 class Chain < ApplicationRecord
   paginates_per 20
 
-  belongs_to :application, optional: true
+  belongs_to :app, class_name: 'Application', foreign_key: :app_id, optional: true
   has_many :chain_products, -> { order('index ASC') }
   has_many :photos, -> { order 'created_at DESC'  }, as: :target
   has_many :user_views, -> { order 'created_at DESC'  }, as: :target

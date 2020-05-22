@@ -61,29 +61,29 @@ class Api::ChainsController < ApiController
   def update
     chain = Chain.find_by_id(params[:id])
     if chain
-			   chain.update_attributes(chain_params)
-			 if params[:chain][:cover_photo_id]
-				  photo = Photo.where(id: params[:chain][:cover_photo_id]).first
-				 photo.update_attributes(target_id: chain.id, target_type: 'Chain', photo_type: 'cover_photo') if photo
-			 end
-			 if params[:chain][:share_photo_id]
-				  id = params[:chain][:share_photo_id]
-				 photo = Photo.find_by_id(id)
-				 photo.update_attributes(target_id: chain.id, target_type: 'Chain', photo_type: 'share_photo') if photo
-			 end
-    if params[:chain][:product_ids]
-      ids = params[:chain][:product_ids]
-      existing_ids = chain.chain_products.pluck(:product_id)
-      if ids.sort != existing_ids.sort
-        chain.chain_products.destroy_all
-        ids.each_with_index do |product_id,i|
-          product = Product.find_by_id(product_id)
-          chain.chain_products.create(product: product, index: i + 1) if product
+      chain.update_attributes(chain_params)
+      if params[:chain][:cover_photo_id]
+        photo = Photo.where(id: params[:chain][:cover_photo_id]).first
+        photo.update_attributes(target_id: chain.id, target_type: 'Chain', photo_type: 'cover_photo') if photo
+      end
+      if params[:chain][:share_photo_id]
+        id = params[:chain][:share_photo_id]
+        photo = Photo.find_by_id(id)
+        photo.update_attributes(target_id: chain.id, target_type: 'Chain', photo_type: 'share_photo') if photo
+      end
+      if params[:chain][:product_ids]
+        ids = params[:chain][:product_ids]
+        existing_ids = chain.chain_products.pluck(:product_id)
+        if ids.sort != existing_ids.sort
+          chain.chain_products.destroy_all
+          ids.each_with_index do |product_id,i|
+            product = Product.find_by_id(product_id)
+            chain.chain_products.create(product: product, index: i + 1) if product
+          end
         end
       end
-    end
-			 hash = ChainSerializer.new(chain).serializable_hash
-			 render json: hash, status: :ok
+      hash = ChainSerializer.new(chain).serializable_hash
+      render json: hash, status: :ok
     else
       render json: { ec: 404, em: '找不到该链条' }, status: :not_found
     end
@@ -93,7 +93,7 @@ class Api::ChainsController < ApiController
     chain = Chain.find_by_id(params[:id])
     if chain
       chain.destroy
-			   render json: {}, status: :ok
+      render json: {}, status: :ok
     else
       render json: { ec: 404, em: '找不到该链条' }, status: :not_found
     end
@@ -101,6 +101,6 @@ class Api::ChainsController < ApiController
 
    private
   def chain_params
-    params.require(:chain).permit(:id, :name)
+    params.require(:chain).permit(:id, :name, :app_id)
   end
 end

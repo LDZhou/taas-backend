@@ -10,6 +10,6 @@ class ChainSerializer
   end
 
   attribute :app_name do |b|
-    b.application&.name || ''
+    b.app&.name || ''
   end
 end
