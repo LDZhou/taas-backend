@@ -70,7 +70,7 @@ class List extends Component {
       {
         title: lang === 'zh_CN' ? '应用名' : 'App Name',
         dataIndex: 'app_name',
-        width: 200
+        width: 160
       },
       {
         title: explain['Type'],
@@ -80,7 +80,8 @@ class List extends Component {
       },
       {
         title: explain['Address'],
-        dataIndex: 'address'
+        dataIndex: 'address',
+        width: 260
       },
       {
         title: explain['Rep. Name'],
