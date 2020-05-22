@@ -50,9 +50,13 @@ function Application(props) {
   }
 
   function createInit () {
-    getAllProducts()
-    .then(data => {
-      useAllproducts(data.data)
+    Promise.all([getAllProducts(), getApplications()])
+    .then(vals => {
+      useAllproducts(vals[0].data)
+      useApplications(vals[1].data)
+      useLoading(false)
+    })
+    .catch(err => {
       useLoading(false)
     })
   }

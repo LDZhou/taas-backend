@@ -15,6 +15,14 @@ function Application(props) {
   useEffect(() => {
     if (brandId) {
       detailInit()
+    } else {
+      getApplications().then(data => {
+        useApplications(data.data)
+        useLoading(false)
+      })
+      .catch(err => {
+        useLoading(false)
+      })
     }
   }, [])
 
