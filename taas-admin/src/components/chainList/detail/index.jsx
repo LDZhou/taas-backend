@@ -174,6 +174,8 @@ function Application(props) {
 
   const renderDetail = (key) => {
     switch (key) {
+      case 'app_id':
+        return chainDetail.app_name || '-'
       case 'cover_photo_id':
         return chainDetail.cover_photo ? <img src={chainDetail.cover_photo.url} className='cover-photo'/> : '-'
       case 'share_photo_id':

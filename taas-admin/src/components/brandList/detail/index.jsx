@@ -191,6 +191,8 @@ function Application(props) {
 
   const renderDetail = (key) => {
     switch (key) {
+      case 'app_id':
+        return brandDetail.app_name || '-'
       case 'brand_type':
         return (lang === 'zh_CN' ? BrandType[brandDetail.brand_type] : EnBrandType[brandDetail.brand_type]) || '-'
       case 'license_photo_id':
