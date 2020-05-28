@@ -26,7 +26,7 @@ class Api::UsersController < ApiController
         openid = '12345'
       else
         Rails.logger.debug "Start WechatApi: #{Time.now}"
-        openid = WechatApi::Auth.get_openid(params[:user][:wechat_code])
+        openid, unionid, session_key = WechatApi::Auth.get_openid(params[:user][:wechat_code])
         Rails.logger.debug "Openid: #{openid}"
         Rails.logger.debug "Finish WechatApi: #{Time.now}"
       end
@@ -41,6 +41,7 @@ class Api::UsersController < ApiController
       user.destroy if user
     end
     user.openid = openid if openid && user.openid.nil?
+    user.unionid = unionid if unionid
     user.email = params[:user][:email] if params[:user][:email].present? && user.email.nil?
     user.nickname = params[:user][:nickname] if params[:user][:nickname].present? && user.nickname.nil?
     user.city = params[:user][:city] if params[:user][:city].present? && user.city.nil?

@@ -21,7 +21,8 @@ module WechatApi
         openid = parsed_json['openid']
         raise 'No user' unless openid
         unionid = parsed_json['unionid']
-        openid
+        session_key = parsed_json['session_key']
+        [openid, unionid, session_key]
       else
         raise parsed_json['errmsg']
       end
