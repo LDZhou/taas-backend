@@ -49,7 +49,7 @@ class Chain < ApplicationRecord
   def generate_qr_code
     photo = photos.where(photo_type: 'qr_code').first
     unless photo
-      options = { type: 'chain', value: id }
+      options = { type: 'chain', value: id, app_id: app_id }
       file = WechatApi::QrCode.generate_qr_code(options)
       photo = Photo.compose(self, 'qr_code', nil, file)
     end

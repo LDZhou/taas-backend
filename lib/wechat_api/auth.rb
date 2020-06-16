@@ -3,14 +3,12 @@ module WechatApi
     include HTTParty
     SESSION_URL = 'https://api.weixin.qq.com/sns/jscode2session'
     TOKEN_URL = 'https://api.weixin.qq.com/cgi-bin/token'
-    ID = ENV['WECHAT_APP_ID']
-    SECRET = ENV['WECHAT_APP_SECRET']
 
-    def self.get_openid(code)
+    def self.get_openid(code, app_id = nil)
       raise 'Missing Wechat Code' unless code
       body = {
-        appid: ID,
-        secret: SECRET,
+        appid: get_app_id(app_id),
+        secret: get_app_secret(app_id),
         js_code: code,
         grant_type: 'authorization_code'
       }
@@ -28,10 +26,10 @@ module WechatApi
       end
     end
 
-    def self.get_app_token
+    def self.get_app_token(app_id = nil)
       query = {
-        appid: ID,
-        secret: SECRET,
+        appid: get_app_id(app_id),
+        secret: get_app_secret(app_id),
         grant_type: 'client_credential'
       }
       res = HTTParty.get(TOKEN_URL, { query: query })
@@ -42,6 +40,30 @@ module WechatApi
       else
         raise res['errmsg']
       end
+    end
+
+    def self.get_app_id(app_id)
+      case app_id
+      when 1, nil
+        # Trashaus小程序
+        id = ENV['WECHAT_APP_ID']
+      when 2
+        # 青山计划小程序
+        id = ENV['QS_WECHAT_APP_ID']
+      end
+      id
+    end
+
+    def self.get_app_secret(app_id)
+      case app_id
+      when 1, nil
+        # Trashaus小程序
+        secret = ENV['QS_WECHAT_APP_SECRET']
+      when 2
+        # 青山计划小程序
+        secret = ENV['QS_WECHAT_APP_SECRET']
+      end
+      secret
     end
   end
 end
