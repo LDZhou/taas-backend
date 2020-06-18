@@ -125,6 +125,11 @@ class Api::UsersController < ApiController
     render json: {}, status: :ok
   end
 
+  def review
+    Review.create user: current_user, name: params[:name], email: params[:email], body: params[:body]
+    render json: {}, status: :ok
+  end
+
   private
   def user_params
     params.require(:user).permit(:nickname, :email, :phone, :gender, :city, :admin, :user_type, :date_of_birth, :password, :name, :notes)

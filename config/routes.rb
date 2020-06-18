@@ -10,6 +10,7 @@ Rails.application.routes.draw do
         post :login
         post :admin_login
         post :view
+        post :review
       end
     end
     resources :applications
