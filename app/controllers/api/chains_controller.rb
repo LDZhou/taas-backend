@@ -101,6 +101,6 @@ class Api::ChainsController < ApiController
 
    private
   def chain_params
-    params.require(:chain).permit(:id, :name, :app_id)
+    params.require(:chain).permit(:id, :name, :app_id, :reduce_volume, :reduce_power, :reduce_co2)
   end
 end

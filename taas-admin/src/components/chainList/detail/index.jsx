@@ -140,6 +140,24 @@ function Application(props) {
       },
       children: applications.map(item => <Option value={item.id} key={item.id}>{item.name}</Option>)
     },
+    reduce_volume: {
+      label: '减少填埋体积',
+      rules: [
+        { required: false }
+      ]
+    },
+    reduce_co2: {
+      label: '减少二氧化碳排放',
+      rules: [
+        { required: false }
+      ]
+    },
+    reduce_power: {
+      label: '减少填埋能源消耗',
+      rules: [
+        { required: false }
+      ]
+    },
     cover_photo_id: {
       label: explain['Preview Image'],
       tag: UploadImg,
@@ -176,6 +194,12 @@ function Application(props) {
     switch (key) {
       case 'app_id':
         return chainDetail.app_name || '-'
+      case 'reduce_volume':
+        return chainDetail[key] ? chainDetail[key] + ' ' + String.fromCharCode(13221) : '-'
+      case 'reduce_co2':
+        return chainDetail[key] ? chainDetail[key] + ' kg' : '-'
+      case 'reduce_power':
+        return chainDetail[key] ? chainDetail[key] + ' kwh' : '-'
       case 'cover_photo_id':
         return chainDetail.cover_photo ? <img src={chainDetail.cover_photo.url} className='cover-photo'/> : '-'
       case 'share_photo_id':
