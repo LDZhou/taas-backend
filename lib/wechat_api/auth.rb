@@ -58,7 +58,7 @@ module WechatApi
       case app_id
       when 1, nil
         # Trashaus小程序
-        secret = ENV['QS_WECHAT_APP_SECRET']
+        secret = ENV['WECHAT_APP_SECRET']
       when 2
         # 青山计划小程序
         secret = ENV['QS_WECHAT_APP_SECRET']
