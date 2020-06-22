@@ -12,7 +12,7 @@ class ApiController < ActionController::API
   def authenticate_app
     @api_key = request.headers['Api-Key']
     if @api_key.present?
-      @app_id = Application.find_by_api_key(@api_key)
+      @app_id = Application.find_by_api_key(@api_key).id rescue nil
     else
       @app_id = nil
     end
