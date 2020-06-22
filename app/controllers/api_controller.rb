@@ -1,4 +1,5 @@
 class ApiController < ActionController::API
+  before_action :authenticate_app
   before_action :authenticate_request
 
   delegate :t, to: I18n
@@ -7,6 +8,15 @@ class ApiController < ActionController::API
   attr_reader :current_app
 
   private
+
+  def authenticate_app
+    @api_key = request.headers['Api-Key']
+    if @api_key.present?
+      @app_id = Application.find_by_api_key(api_key)
+    else
+      @app_id = nil
+    end
+  end
 
   def authenticate_request
     @current_user = AuthorizeApiRequest.call(request.headers).result
