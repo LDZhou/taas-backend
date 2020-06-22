@@ -26,9 +26,9 @@ class Api::UsersController < ApiController
         openid = '12345'
       else
         Rails.logger.debug "Start WechatApi: #{Time.now}"
-        Rails.logger.debug "Api-Key: #{api_key}"
-        Rails.logger.debug "AppID: #{app_id}"
-        openid, unionid, session_key = WechatApi::Auth.get_openid(params[:user][:wechat_code], app_id)
+        Rails.logger.debug "Api-Key: #{@api_key}"
+        Rails.logger.debug "AppID: #{@app_id}"
+        openid, unionid, session_key = WechatApi::Auth.get_openid(params[:user][:wechat_code], @app_id)
         Rails.logger.debug "Openid: #{openid}"
         Rails.logger.debug "Finish WechatApi: #{Time.now}"
       end
