@@ -1,6 +1,6 @@
 class Api::ChainsController < ApiController
-  skip_before_action :authenticate_request, only: [:show]
-  before_action :check_admin, except: [:show]
+  skip_before_action :authenticate_request, only: [:show, :app_index]
+  before_action :check_admin, except: [:show, :app_index]
 
   respond_to :json
 
@@ -17,6 +17,16 @@ class Api::ChainsController < ApiController
              end
     hash = ChainSerializer.new(chains).serializable_hash[:data]
     render json: { data: hash, count: chains.count, current_page: page }, status: :ok
+  end
+
+  def app_index
+    if @app_id
+      chains = Chain.where(app_id: @app_id).order('created_at DESC')
+      hash = ChainSerializer.new(chains).serializable_hash[:data]
+      render json: { data: hash }, status: :ok
+    else
+      render json: { ec: 404, em: '无法找到链条' }, status: :not_found
+    end
   end
 
   def show

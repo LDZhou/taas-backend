@@ -18,7 +18,11 @@ Rails.application.routes.draw do
     resources :photos
     resources :brands
     resources :user_views
-    resources :chains
+    resources :chains do
+      collection do
+        get :app_index
+      end
+    end
   end
 
   get '*path', to: "application#fallback_index_html", constraints: ->(request) do
