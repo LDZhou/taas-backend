@@ -1,4 +1,10 @@
 GIT
+  remote: https://github.com/Blur-Consulting/alipay.git
+  revision: 52b236842fc0d90679b860c99a9e356286b3273d
+  specs:
+    alipay (0.16.0)
+
+GIT
   remote: https://github.com/collectiveidea/audited.git
   revision: af5d51b45368eabb0e727d064faf29f4af6e1458
   specs:
@@ -345,6 +351,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts-as-taggable-on (~> 6.0)
+  alipay!
   audited!
   byebug
   cancancan

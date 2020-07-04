@@ -28,9 +28,17 @@ class Api::UsersController < ApiController
         Rails.logger.debug "Start WechatApi: #{Time.now}"
         Rails.logger.debug "Api-Key: #{@api_key}"
         Rails.logger.debug "AppID: #{@app_id}"
-        openid, unionid, session_key = WechatApi::Auth.get_openid(params[:user][:wechat_code], @app_id)
+        if @app_id == 4
+          # 支付宝小程序
+          unionid = nil
+          openid, token = ZhifubaoApi::Auth.get_openid(params[:user][:zhifubao_code])
+          params[:nickname] = params[:nickName] if params[:nickName].present?
+          params[:avatarUrl] = params[:avatar] if params[:avatar].present?
+        else
+          # 微信小程序
+          openid, unionid, session_key = WechatApi::Auth.get_openid(params[:user][:wechat_code], @app_id)
+        end
         Rails.logger.debug "Openid: #{openid}"
-        Rails.logger.debug "Finish WechatApi: #{Time.now}"
       end
     rescue => e
       e.message
@@ -48,10 +56,10 @@ class Api::UsersController < ApiController
     user.nickname = params[:user][:nickname] if params[:user][:nickname].present? && user.nickname.nil?
     user.city = params[:user][:city] if params[:user][:city].present? && user.city.nil?
     # For WeChat, 0: Unknown, 1: Male, 2: Female
-    gender = case params[:user][:gender].to_i
-             when 0 then nil
-             when 1 then 0
-             when 2 then 1
+    gender = case params[:user][:gender]
+             when '0' then nil
+             when '1', 'm' then 0
+             when '2', 'f' then 1
              end
     user.gender = gender unless user.gender
     if params[:user][:avatarUrl] && user.photos.empty?
