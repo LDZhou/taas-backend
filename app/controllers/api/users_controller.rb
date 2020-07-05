@@ -22,7 +22,7 @@ class Api::UsersController < ApiController
   end
 
   def login
-    #begin
+    begin
       if Rails.env.test?
         openid = '12345'
       else
@@ -43,10 +43,10 @@ class Api::UsersController < ApiController
         end
         Rails.logger.debug "Openid: #{openid}"
       end
-    #rescue => e
-    #  e.message
-    #  render json: { ec: 401, em: e.message }, status: :unauthorized and return
-    #end
+    rescue => e
+      e.message
+      render json: { ec: 401, em: e.message }, status: :unauthorized and return
+    end
     begin
       user = User.unscoped.where(openid: openid).first_or_create
     rescue => e
