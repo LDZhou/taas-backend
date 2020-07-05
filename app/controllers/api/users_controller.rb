@@ -60,7 +60,7 @@ class Api::UsersController < ApiController
     # Register source: wechat/zhifubao
     user.source = source
     # For WeChat, 0: Unknown, 1: Male, 2: Female
-    gender = case params[:user][:gender]
+    gender = case params[:user][:gender].to_s
              when '0' then nil
              when '1', 'm' then 0
              when '2', 'f' then 1

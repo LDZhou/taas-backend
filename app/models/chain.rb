@@ -50,7 +50,11 @@ class Chain < ApplicationRecord
     photo = photos.where(photo_type: 'qr_code').first
     unless photo
       options = { type: 'chain', value: id, app_id: app_id }
-      file = WechatApi::QrCode.generate_qr_code(options)
+      if app_id == 4
+        file = ZhifubaoApi::Auth.generate_qr_code(options)
+      else
+        file = WechatApi::QrCode.generate_qr_code(options)
+      end
       photo = Photo.compose(self, 'qr_code', nil, file)
     end
     photo
