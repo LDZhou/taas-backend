@@ -29,12 +29,14 @@ class Api::UsersController < ApiController
         Rails.logger.debug "Api-Key: #{@api_key}"
         Rails.logger.debug "AppID: #{@app_id}"
         if @app_id == 4
+          source = 'zhifubao'
           # 支付宝小程序
           unionid = nil
           openid, token = ZhifubaoApi::Auth.get_openid(params[:user][:zhifubao_code])
           params[:nickname] = params[:nickName] if params[:nickName].present?
           params[:avatarUrl] = params[:avatar] if params[:avatar].present?
         else
+          source = 'wechat'
           # 微信小程序
           openid, unionid, session_key = WechatApi::Auth.get_openid(params[:user][:wechat_code], @app_id)
         end
@@ -55,6 +57,8 @@ class Api::UsersController < ApiController
     user.email = params[:user][:email] if params[:user][:email].present? && user.email.nil?
     user.nickname = params[:user][:nickname] if params[:user][:nickname].present? && user.nickname.nil?
     user.city = params[:user][:city] if params[:user][:city].present? && user.city.nil?
+    # Register source: wechat/zhifubao
+    user.source = source
     # For WeChat, 0: Unknown, 1: Male, 2: Female
     gender = case params[:user][:gender]
              when '0' then nil
