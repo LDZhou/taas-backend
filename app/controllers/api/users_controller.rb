@@ -1,4 +1,5 @@
 require 'wechat_api'
+require 'zhifubao_api'
 
 class Api::UsersController < ApiController
   skip_before_action :authenticate_request, only: [:admin_login, :login]
