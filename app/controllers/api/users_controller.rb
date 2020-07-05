@@ -33,7 +33,7 @@ class Api::UsersController < ApiController
           source = 'zhifubao'
           # 支付宝小程序
           unionid = nil
-          openid, token = ZhifubaoApi::Auth.get_openid(params[:user][:zhifubao_code])
+          openid, token = ZhifubaoApi::Auth.get_userid(params[:user][:zhifubao_code])
           params[:nickname] = params[:nickName] if params[:nickName].present?
           params[:avatarUrl] = params[:avatar] if params[:avatar].present?
         else
