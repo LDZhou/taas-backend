@@ -40,6 +40,9 @@ class Api::ApplicationsController < ApiController
     render json: hash, status: :ok
   end
 
+  def redirect_app
+  end
+
   private
 
   def app_params

@@ -13,7 +13,11 @@ Rails.application.routes.draw do
         post :review
       end
     end
-    resources :applications
+    resources :applications do
+      collection do
+        get :redirect_app
+      end
+    end
     resources :products
     resources :photos
     resources :brands
