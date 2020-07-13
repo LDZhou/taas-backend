@@ -50,6 +50,9 @@ module WechatApi
       when 2
         # 青山计划小程序
         id = ENV['QS_WECHAT_APP_ID']
+      when 3
+        # 饿了吗小程序
+        id = ENV['ELM_WECHAT_APP_ID']
       end
       id
     end
@@ -62,6 +65,9 @@ module WechatApi
       when 2
         # 青山计划小程序
         secret = ENV['QS_WECHAT_APP_SECRET']
+      when 3
+        # 饿了吗小程序
+        secret = ENV['ELM_WECHAT_APP_SECRET']
       end
       secret
     end
