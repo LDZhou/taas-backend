@@ -2,7 +2,7 @@
   "name": "taas-admin",
   "version": "0.1.0",
   "private": true,
-  "homepage": "./admin",
+  "homepage": ".",
   "dependencies": {
     "@ant-design/icons": "^4.0.5",
     "antd": "^3.15.2",
