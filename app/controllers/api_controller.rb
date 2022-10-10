@@ -21,6 +21,12 @@ class ApiController < ActionController::API
   def authenticate_request
     @current_user = AuthorizeApiRequest.call(request.headers).result
     @current_app = AuthenticateApp.call(request.headers).result
+    puts "request:"
+    puts request
+    puts "domain:"
+    puts request.domain
+    puts "params:"
+    puts params
     @admin_request = request.domain.match('admin') || params[:admin]
     @current_app ||= Application.where(name: 'trashaus').first
     render json: { error: 'Not Authorized' }, status: 401 unless @current_user
