@@ -27,7 +27,7 @@ class ApiController < ActionController::API
     puts request.domain
     puts "params:"
     puts params
-    @admin_request = request.domain.match('admin') || params[:admin]
+    @admin_request = params[:admin]
     @current_app ||= Application.where(name: 'trashaus').first
     render json: { error: 'Not Authorized' }, status: 401 unless @current_user
   end
